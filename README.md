@@ -1,78 +1,80 @@
 # 🚖 Zygo Cabs - Complete Taxi Booking Ecosystem
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/aklove4047-cpu/zygo-cab-booking)
+
 Welcome to the **Zygo Cabs** ride-sharing and taxi booking ecosystem.
 
 ---
 
-## 📁 Project Structure
+## 🌟 Key Features
 
-```
-zygo car booking/
-│
-├── zygo-website/               👉 Customer Car & Taxi Booking Website (Modern Web UI)
-│   ├── index.html              (Landing page, Fare calculator, Fleet showcase, Leaflet live map, Live trip tracking modal)
-│   └── assets/
-│       ├── css/style.css       (Zygo Brand UI styling: Teal #1FB6A6, Deep Blue #0E5CAD, Accent Gold #F4C430)
-│       ├── js/app.js           (Booking logic, Fare estimation, Live tracking simulation, OTP login)
-│       ├── js/api-config.js    (API endpoint mappings & toggle for Live / Mock API)
-│       └── images/             (Zygo branding, vehicle icons, and assets)
-│
-├── zygo-admin/                 👉 Operations, Fleet & Dispatch Admin Panel
-│   ├── index.html              (Dashboard KPIs, Live Dispatch map, Bookings, Driver KYC, Fleet Fares, Promos)
-│   └── assets/
-│       ├── css/admin.css       (SaaS Admin Dashboard UI styling)
-│       ├── js/admin.js         (Dispatch radar, Table filtering, KYC approval action, Chart.js analytics)
-│       └── js/admin-api.js     (Admin API service connecting to https://login.zygocab.in)
-│
-├── zygo_extracted/             👉 Extracted Mobile Apps Source Code (from zygo (1).zip)
-│   ├── user_app/               (Flutter Zygo User / Passenger Mobile App)
-│   └── driver_app/             (Flutter Zygo Driver / Captain Mobile App)
-│
-└── zygo (1).zip                (Original release package containing both Flutter apps)
-```
+1. **Customer Taxi Booking Web App (`/`)**:
+   - Modern, responsive ride hailing interface (Daily Rides, Outstation, Hourly Rentals).
+   - Dynamic vehicle selection (Zygo Bike, Auto, Mini AC, Sedan Prime, SUV XL) with instant fare estimation.
+   - Interactive map with route line, live driver markers, and geolocation detection.
+   - 4-Digit Security Ride OTP & Live Trip Tracking Modal.
+   - Emergency SOS & Captain partner registration.
+
+2. **Operations & Fleet Admin Panel (`/admin`)**:
+   - Real-time revenue & trip analytics with interactive charts.
+   - Live Dispatch Radar Map for tracking on-duty drivers.
+   - Bookings / Trips Management & audit modal.
+   - Driver KYC verification (Driving License & RC inspection) with 1-click approval.
+   - Fleet Category & Pricing Rules editor (Base fare, per km rate, waiting fee, commission %).
+   - **Dynamic API & Integration Manager**: Set Backend URL, Google Maps key, Firebase OTP, Razorpay keys, and Ping/Test server connection directly from the UI without touching code!
+
+3. **Node.js Production Server (`server.js`)**:
+   - Ready for Render, Railway, AWS, or VPS hosting.
+   - Serves both Website (`/`) and Admin Panel (`/admin`).
+   - Built-in zero-downtime healthcheck (`/healthz`).
 
 ---
 
-## 🚀 How to Run the Website & Admin Panel Locally
+## 🚀 1-Click Render Deployment
 
-You can open the files directly in any web browser, or start a local server:
+Click the button below to deploy this repository directly on Render:
 
-### Option 1: Direct Double-Click
-- Double-click `zygo-website/index.html` to open the customer booking website.
-- Double-click `zygo-admin/index.html` to open the admin panel.
+👉 **[Deploy to Render](https://render.com/deploy?repo=https://github.com/aklove4047-cpu/zygo-cab-booking)**
 
-### Option 2: Run via Node or Python local server
-```bash
-# Using Python:
-python -m http.server 3000
-
-# Open in browser:
-# Website:      http://localhost:3000/zygo-website/
-# Admin Panel:  http://localhost:3000/zygo-admin/
-```
+### Manual Steps on Render:
+1. Go to [Render Dashboard](https://dashboard.render.com/).
+2. Click **New +** ➔ Select **Web Service**.
+3. Choose **Build and deploy from a Git repository** ➔ Select `aklove4047-cpu/zygo-cab-booking`.
+4. Render will automatically detect settings from `render.yaml`:
+   - **Runtime:** `Node`
+   - **Build Command:** `npm install`
+   - **Start Command:** `node server.js`
+   - **Health Check Path:** `/healthz`
+5. Click **Create Web Service**. Your website and admin panel will be live in 1 minute!
 
 ---
 
-## 🔌 API Integration Guide
+## 🔌 API Configuration via Admin Panel
 
-Both the Website (`zygo-website/assets/js/api-config.js`) and Admin Panel (`zygo-admin/assets/js/admin-api.js`) are pre-configured to connect to:
-**Base URL:** `https://login.zygocab.in`
+You do NOT need to edit source code to connect APIs!
+1. Open Admin Panel: `https://your-app.onrender.com/admin`
+2. Go to **"System & APIs"** tab in the sidebar.
+3. Switch between **Mock Demo Mode** and **Live Server Mode**.
+4. Enter your Backend URL (`https://login.zygocab.in`) and click **"Ping / Test"**.
+5. Add your Google Maps Key, Firebase SMS Key, and Razorpay Keys.
+6. Click **"Save & Apply API Configuration"** — changes immediately sync to the booking website!
 
-To switch from Mock mode to Live Backend API mode:
-In `zygo-website/assets/js/api-config.js`:
-```javascript
-const API_CONFIG = {
-  BASE_URL: 'https://login.zygocab.in',
-  USE_MOCK_DATA: false, // Change to false for live backend
-  ...
-}
+---
+
+## 📁 Repository Structure
+
 ```
-In `zygo-admin/assets/js/admin-api.js`:
-```javascript
-const ADMIN_API_CONFIG = {
-  BASE_URL: 'https://login.zygocab.in',
-  USE_MOCK: false, // Change to false for live backend
-  ...
-}
+zygo-cab-booking/
+├── server.js                   # Node.js production web server
+├── package.json                # Dependencies & scripts
+├── render.yaml                 # Render Blueprint configuration
+├── zygo-website/               # Customer booking website & web app
+│   ├── index.html
+│   └── assets/ (css, js, images)
+├── zygo-admin/                 # Fleet operations & dispatch admin panel
+│   ├── index.html
+│   └── assets/ (css, js, images)
+└── zygo_extracted/             # Flutter User & Driver mobile apps source code
+    ├── user_app/
+    └── driver_app/
 ```
-
