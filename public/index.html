@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zygo Cabs - India's Reliable & Affordable Taxi Booking</title>
+  <meta name="description" content="Book affordable, safe, and comfortable cab rides with Zygo. City rides, Outstation cabs, and Airport transfers with verified drivers and instant OTP booking.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Zygo Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo-wrapper">
+        <img src="assets/images/logo_with_name.png" alt="Zygo Cabs" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='block';">
+        <div id="brandFallback" class="brand-fallback-text" style="display: none;">ZYGO <span>CABS</span></div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#booking" class="active">Book Ride</a></li>
+          <li><a href="#fleet">Our Fleet</a></li>
+          <li><a href="#outstation">Outstation</a></li>
+          <li><a href="#safety">Safety</a></li>
+          <li><a href="#driver-partner">Drive with Us</a></li>
+          <li><a href="#download-app">Download App</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="admin/" class="btn btn-outline" target="_blank">
+          <i class="fa-solid fa-gauge"></i> Admin Panel
+        </a>
+        <button id="openLoginBtn" class="btn btn-primary">
+          <i class="fa-regular fa-user"></i> Login / Sign Up
+        </button>
+        <button class="mobile-menu-btn" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO & BOOKING ENGINE ================= -->
+  <section class="hero-section" id="booking">
+    <div class="container">
+      <div class="hero-grid">
+        
+        <!-- Left: Booking Engine -->
+        <div class="booking-wrapper">
+          <div class="hero-tag">
+            <i class="fa-solid fa-shield-halved"></i> 100% Safe &amp; Verified Captains
+          </div>
+          <h1 class="hero-title">Rides that fit your <span>Pocket &amp; Lifestyle</span></h1>
+          <p class="hero-subtitle">Affordable city commutes, highway outstation trips, and instant airport pickups at transparent fares with zero surge surprises.</p>
+
+          <div class="booking-card">
+            <!-- Ride Type Tabs -->
+            <div class="ride-tabs">
+              <button class="ride-tab active" data-type="daily">
+                <i class="fa-solid fa-car"></i> Daily Ride
+              </button>
+              <button class="ride-tab" data-type="outstation">
+                <i class="fa-solid fa-road"></i> Outstation
+              </button>
+              <button class="ride-tab" data-type="rental">
+                <i class="fa-solid fa-clock"></i> Hourly Rentals
+              </button>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="bookingForm" onsubmit="return false;">
+              
+              <!-- Pickup Input -->
+              <div class="form-group">
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-circle-dot input-icon icon-pickup"></i>
+                  <input type="text" id="pickupInput" class="form-control" placeholder="Enter Pickup Location" value="Sector 62, Noida, Uttar Pradesh">
+                  <button type="button" id="locateMeBtn" class="locate-me-btn">
+                    <i class="fa-solid fa-crosshairs"></i> Locate Me
+                  </button>
+                </div>
+                <div class="popular-chips">
+                  <span class="chip" data-type="pickup" data-location="Sector 62, Noida">Sector 62</span>
+                  <span class="chip" data-type="pickup" data-location="Cyber City, Gurugram">Cyber City</span>
+                  <span class="chip" data-type="pickup" data-location="Connaught Place, New Delhi">Connaught Place</span>
+                  <span class="chip" data-type="pickup" data-location="Huda City Centre, Gurgaon">Huda Metro</span>
+                </div>
+              </div>
+
+              <!-- Drop Input -->
+              <div class="form-group">
+                <div class="input-icon-wrapper">
+                  <i class="fa-solid fa-location-dot input-icon icon-drop"></i>
+                  <input type="text" id="dropInput" class="form-control" placeholder="Where do you want to go?" value="Indira Gandhi International Airport, Terminal 3, New Delhi">
+                </div>
+                <div class="popular-chips">
+                  <span class="chip" data-type="drop" data-location="Indira Gandhi International Airport (DEL)">✈️ IGI Airport</span>
+                  <span class="chip" data-type="drop" data-location="New Delhi Railway Station (NDLS)">🚆 New Delhi Rly</span>
+                  <span class="chip" data-type="drop" data-location="Noida Electronic City Metro">🚇 Electronic City</span>
+                  <span class="chip" data-type="drop" data-location="Select CITYWALK Mall, Saket">🛍️ Saket Mall</span>
+                </div>
+              </div>
+
+              <!-- Fleet Selector -->
+              <div class="fleet-selection-heading">
+                <h4>Choose Zygo Ride</h4>
+                <small style="color: #10B981; font-weight: 600;"><i class="fa-solid fa-bolt"></i> Instant Confirmation</small>
+              </div>
+
+              <div class="fleet-list">
+                <!-- Bike -->
+                <div class="fleet-item" data-category="bike">
+                  <img src="assets/images/bike.png" alt="Zygo Bike" class="fleet-thumb" onerror="this.src='assets/images/car.png'">
+                  <div class="fleet-title">Bike</div>
+                  <div class="fleet-eta">2 mins away</div>
+                  <div class="fleet-fare" id="fare-bike">₹185</div>
+                </div>
+
+                <!-- Auto -->
+                <div class="fleet-item" data-category="auto">
+                  <img src="assets/images/car.png" alt="Zygo Auto" class="fleet-thumb">
+                  <div class="fleet-title">Auto</div>
+                  <div class="fleet-eta">3 mins away</div>
+                  <div class="fleet-fare" id="fare-auto">₹295</div>
+                </div>
+
+                <!-- Mini -->
+                <div class="fleet-item" data-category="mini">
+                  <img src="assets/images/car.png" alt="Zygo Mini" class="fleet-thumb">
+                  <div class="fleet-title">Mini AC</div>
+                  <div class="fleet-eta">4 mins away</div>
+                  <div class="fleet-fare" id="fare-mini">₹385</div>
+                </div>
+
+                <!-- Sedan -->
+                <div class="fleet-item active" data-category="sedan">
+                  <span class="badge-fastest">Popular</span>
+                  <img src="assets/images/car.png" alt="Zygo Sedan" class="fleet-thumb">
+                  <div class="fleet-title">Sedan Prime</div>
+                  <div class="fleet-eta">3 mins away</div>
+                  <div class="fleet-fare" id="fare-sedan">₹489</div>
+                </div>
+
+                <!-- SUV -->
+                <div class="fleet-item" data-category="suv">
+                  <img src="assets/images/car.png" alt="Zygo SUV" class="fleet-thumb">
+                  <div class="fleet-title">SUV XL</div>
+                  <div class="fleet-eta">5 mins away</div>
+                  <div class="fleet-fare" id="fare-suv">₹675</div>
+                </div>
+              </div>
+
+              <!-- Fare Breakdown & Coupon -->
+              <div class="fare-estimate-box">
+                <div class="fare-row">
+                  <span>Estimated Distance &amp; Time</span>
+                  <span><strong id="summaryDistance">34.5 km</strong> (<span id="summaryDuration">55 mins</span>)</span>
+                </div>
+                <div class="fare-row">
+                  <span>Base Ride Fare</span>
+                  <span id="summaryBaseFare">₹489</span>
+                </div>
+                <div class="fare-row" id="summaryDiscountRow" style="display: none; color: #10B981;">
+                  <span>Promo Discount Applied</span>
+                  <span id="summaryDiscount">-₹0</span>
+                </div>
+                <div class="fare-row total">
+                  <span>Total Payable:</span>
+                  <span id="summaryTotalFare">₹489</span>
+                </div>
+
+                <!-- Coupon Bar -->
+                <div class="coupon-bar">
+                  <input type="text" id="couponInput" class="coupon-input" placeholder="Enter Coupon (e.g. ZYGO100)">
+                  <button type="button" id="applyCouponBtn" class="coupon-btn">Apply</button>
+                </div>
+                <small id="couponMsg" style="display: none; font-size: 11px; margin-top: 4px;"></small>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="payment-selector">
+                <div class="payment-option active" data-method="cash">
+                  <i class="fa-solid fa-money-bill-wave" style="color: #10B981;"></i> Cash on Trip
+                </div>
+                <div class="payment-option" data-method="upi">
+                  <i class="fa-solid fa-qrcode" style="color: #0E5CAD;"></i> UPI / GPay / Paytm
+                </div>
+                <div class="payment-option" data-method="wallet">
+                  <i class="fa-solid fa-wallet" style="color: #F4C430;"></i> Zygo Wallet
+                </div>
+              </div>
+
+              <!-- Book Button -->
+              <button type="button" id="bookRideBtn" class="btn-book-ride">
+                <i class="fa-solid fa-taxi"></i> <span class="btn-text">Confirm Zygo Booking</span>
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Live Map Preview -->
+        <div class="map-preview-container">
+          <div class="map-overlay-badge">
+            <span class="pulse-dot"></span> Live Fleet: 42 Cabs Nearby
+          </div>
+          <div id="map"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OUR FLEET SHOWCASE ================= -->
+  <section class="section-pad" id="fleet">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Our Vehicles</div>
+        <h2 class="section-title">A Ride for Every Journey</h2>
+        <p class="section-desc">From solo quick hops across traffic to spacious family SUV vacations, choose the vehicle class that matches your style.</p>
+      </div>
+
+      <div class="fleet-grid">
+        <!-- Bike -->
+        <div class="fleet-card">
+          <img src="assets/images/bike.png" alt="Zygo Bike" class="fleet-card-img" onerror="this.src='assets/images/car.png'">
+          <h3>Zygo Moto</h3>
+          <p>Beat the rush hour traffic. Quick, helmet-equipped, solo rides.</p>
+          <div class="fleet-specs">
+            <span><i class="fa-solid fa-user"></i> 1 Person</span>
+            <span><i class="fa-solid fa-shield"></i> Helmet Provided</span>
+          </div>
+          <div class="fleet-price-tag">Starting from <strong>₹25</strong></div>
+        </div>
+
+        <!-- Auto -->
+        <div class="fleet-card">
+          <img src="assets/images/car.png" alt="Zygo Auto" class="fleet-card-img">
+          <h3>Zygo Auto</h3>
+          <p>The timeless pocket-friendly Indian commute with doorstep pickup.</p>
+          <div class="fleet-specs">
+            <span><i class="fa-solid fa-users"></i> 3 Seats</span>
+            <span><i class="fa-solid fa-bolt"></i> Quick Dispatch</span>
+          </div>
+          <div class="fleet-price-tag">Starting from <strong>₹45</strong></div>
+        </div>
+
+        <!-- Mini -->
+        <div class="fleet-card">
+          <img src="assets/images/car.png" alt="Zygo Mini" class="fleet-card-img">
+          <h3>Zygo Mini (AC)</h3>
+          <p>Comfortable hatchbacks like WagonR, Swift, and Tiago with full AC.</p>
+          <div class="fleet-specs">
+            <span><i class="fa-solid fa-users"></i> 4 Seats</span>
+            <span><i class="fa-solid fa-snowflake"></i> Air Conditioned</span>
+          </div>
+          <div class="fleet-price-tag">Starting from <strong>₹60</strong></div>
+        </div>
+
+        <!-- Sedan -->
+        <div class="fleet-card">
+          <img src="assets/images/car.png" alt="Zygo Sedan" class="fleet-card-img">
+          <h3>Zygo Prime Sedan</h3>
+          <p>Spacious sedans (Dzire, Etios, Amaze) with top rated drivers.</p>
+          <div class="fleet-specs">
+            <span><i class="fa-solid fa-users"></i> 4 Seats</span>
+            <span><i class="fa-solid fa-suitcase"></i> 2 Large Bags</span>
+          </div>
+          <div class="fleet-price-tag">Starting from <strong>₹90</strong></div>
+        </div>
+
+        <!-- SUV -->
+        <div class="fleet-card">
+          <img src="assets/images/car.png" alt="Zygo SUV" class="fleet-card-img">
+          <h3>Zygo Prime SUV</h3>
+          <p>6-7 Seater premium SUVs (Ertiga, Innova, Carens) for family & luggage.</p>
+          <div class="fleet-specs">
+            <span><i class="fa-solid fa-users"></i> 6-7 Seats</span>
+            <span><i class="fa-solid fa-suitcase-rolling"></i> 4 Bags</span>
+          </div>
+          <div class="fleet-price-tag">Starting from <strong>₹140</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OUTSTATION & AIRPORT TRANSFERS ================= -->
+  <section class="section-pad" id="outstation" style="background-color: #ffffff;">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Intercity &amp; Airport</div>
+        <h2 class="section-title">Stress-Free Highway Travel</h2>
+        <p class="section-desc">One-way drops, return roadtrips, and scheduled airport runs with certified highway captains.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-plane-departure"></i></div>
+          <h4>Guaranteed Airport Pickups</h4>
+          <p>Never miss a flight. Schedule your ride 24 hours in advance with guaranteed driver assignment and flight tracking.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+          <h4>One-Way Outstation Fares</h4>
+          <p>Why pay round-trip charges when you're only travelling one-way? Save up to 40% on one-way intercity cab routes.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-receipt"></i></div>
+          <h4>Transparent Toll &amp; Taxes</h4>
+          <p>All toll charges, state entry taxes, and parking fees are itemized clearly on your digital invoice with zero hidden costs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SAFETY SECTION ================= -->
+  <section class="section-pad" id="safety">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Safety First</div>
+        <h2 class="section-title">Your Safety Is Our Top Priority</h2>
+        <p class="section-desc">Every Zygo trip is monitored with state-of-the-art security features and 24x7 emergency response.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-id-card"></i></div>
+          <h4>100% Verified Captains</h4>
+          <p>Comprehensive police verification, driving background verification, and commercial vehicle fitness checks.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-key"></i></div>
+          <h4>Secure 4-Digit Ride OTP</h4>
+          <p>Your ride cannot begin without sharing the 4-digit security OTP with the driver, preventing any unauthorized pickups.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-circle"><i class="fa-solid fa-share-nodes"></i></div>
+          <h4>Live Trip Sharing &amp; SOS</h4>
+          <p>Share your real-time GPS route with loved ones via WhatsApp, or trigger emergency SOS with one tap in case of distress.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DRIVER PARTNER ONBOARDING ================= -->
+  <section class="section-pad" id="driver-partner">
+    <div class="container">
+      <div class="driver-partner-banner">
+        <div class="driver-banner-content">
+          <div class="hero-tag" style="background: rgba(255,255,255,0.2); color: #fff;">
+            <i class="fa-solid fa-handshake"></i> Partner With Zygo
+          </div>
+          <h2>Drive with Zygo &amp; Earn up to ₹40,000 / month</h2>
+          <p>Join thousands of happy captains across the country. Enjoy daily payouts, lowest platform commission, 24x7 captain support, and flexible working hours.</p>
+
+          <div class="driver-perks">
+            <div class="driver-perk-item"><i class="fa-solid fa-circle-check"></i> Lowest Platform Commission (Only 10% vs 25% elsewhere)</div>
+            <div class="driver-perk-item"><i class="fa-solid fa-circle-check"></i> Instant Daily Bank &amp; UPI Payouts</div>
+            <div class="driver-perk-item"><i class="fa-solid fa-circle-check"></i> ₹5,000 Joining Bonus on your first 50 rides</div>
+          </div>
+        </div>
+
+        <div class="driver-signup-box">
+          <h3>Apply as Driver Partner</h3>
+          <p>Fill out the basic details and our onboarding team will contact you within 24 hours.</p>
+
+          <form id="driverForm">
+            <div class="form-group">
+              <input type="text" id="driverName" class="form-control" placeholder="Full Name" required>
+            </div>
+            <div class="form-group">
+              <input type="tel" id="driverPhone" class="form-control" placeholder="Mobile Number (+91)" required>
+            </div>
+            <div class="form-group">
+              <input type="text" id="driverCity" class="form-control" placeholder="Your City (e.g. Delhi, Noida, Lucknow)" required>
+            </div>
+            <div class="form-group">
+              <select id="driverVehicle" class="form-control" required>
+                <option value="">Select Your Vehicle Type</option>
+                <option value="sedan">Sedan (Dzire, Etios, Aura)</option>
+                <option value="hatchback">Hatchback (WagonR, Swift)</option>
+                <option value="suv">SUV (Ertiga, Innova)</option>
+                <option value="auto">Auto Rickshaw</option>
+                <option value="bike">Bike / Two-Wheeler</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-weight: 700;">
+              Register as Zygo Captain
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DOWNLOAD APP BANNER ================= -->
+  <section class="section-pad app-download-section" id="download-app">
+    <div class="container">
+      <div class="app-cta-grid">
+        <div class="app-cta-content">
+          <div class="section-tag">Mobile Experience</div>
+          <h2>Book Cabs in Seconds with the Zygo App</h2>
+          <p>Get the best booking experience with live radar driver tracking, in-app messaging, exclusive app discounts, and seamless payments.</p>
+
+          <div class="store-buttons">
+            <a href="#" class="store-btn">
+              <i class="fa-brands fa-google-play"></i>
+              <div class="store-btn-text">
+                <span>GET IT ON</span>
+                <strong>Google Play</strong>
+              </div>
+            </a>
+            <a href="#" class="store-btn">
+              <i class="fa-brands fa-apple"></i>
+              <div class="store-btn-text">
+                <span>DOWNLOAD ON</span>
+                <strong>App Store</strong>
+              </div>
+            </a>
+          </div>
+
+          <div style="margin-top: 24px; display: flex; align-items: center; gap: 16px;">
+            <div style="background: #F3F4F6; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px;">
+              📱 Also available: <strong>Zygo Driver App</strong> for Captains
+            </div>
+          </div>
+        </div>
+
+        <div class="app-mockup-wrapper">
+          <img src="assets/images/splash_logo.png" alt="Zygo App Mockup" class="app-phone-img" onerror="this.src='assets/images/car.png'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">ZYGO <span>CABS</span></div>
+          <p class="footer-about">Zygo is your trusted, affordable, and safe on-demand taxi hailing platform. Connecting passengers with verified captains across the nation.</p>
+          <div style="display: flex; gap: 14px; font-size: 18px;">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#booking">Book a Cab</a></li>
+            <li><a href="#fleet">Our Fleet</a></li>
+            <li><a href="#outstation">Outstation Cabs</a></li>
+            <li><a href="#safety">Safety Guidelines</a></li>
+            <li><a href="../zygo-admin/index.html" target="_blank">Admin Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Top Cities</h4>
+          <ul>
+            <li><a href="#">Delhi NCR</a></li>
+            <li><a href="#">Noida &amp; Greater Noida</a></li>
+            <li><a href="#">Gurugram</a></li>
+            <li><a href="#">Lucknow</a></li>
+            <li><a href="#">Jaipur</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact &amp; Support</h4>
+          <p style="margin-bottom: 8px;"><i class="fa-solid fa-phone" style="color: var(--primary);"></i> +91 98765 43210</p>
+          <p style="margin-bottom: 8px;"><i class="fa-solid fa-envelope" style="color: var(--primary);"></i> support@zygocab.in</p>
+          <p><i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> Zygo Mobility HQ, Cyber City, India</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Zygo Cabs Mobility Technologies. All rights reserved.</div>
+        <div style="display: flex; gap: 20px;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. Live Ride Tracking Modal -->
+  <div id="trackingModal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close">&times;</button>
+      
+      <div class="tracking-header">
+        <div>
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">BOOKING ID</span>
+          <h3 id="trackTripId" style="font-size: 18px; font-weight: 800; color: var(--primary-dark);">ZYG-498212</h3>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 11px; color: var(--text-muted); display: block;">SHARE OTP WITH DRIVER</span>
+          <span id="trackOtp" class="ride-otp-badge">4829</span>
+        </div>
+      </div>
+
+      <!-- Status Stepper -->
+      <div class="ride-status-steps">
+        <div class="status-step completed" id="step-assign">
+          <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+          <span>Assigned</span>
+        </div>
+        <div class="status-step active" id="step-arriving">
+          <div class="step-circle"><i class="fa-solid fa-car-side"></i></div>
+          <span>Arriving</span>
+        </div>
+        <div class="status-step" id="step-trip">
+          <div class="step-circle"><i class="fa-solid fa-road"></i></div>
+          <span>On Trip</span>
+        </div>
+        <div class="status-step" id="step-done">
+          <div class="step-circle"><i class="fa-solid fa-flag-checkered"></i></div>
+          <span>Completed</span>
+        </div>
+      </div>
+
+      <!-- Driver & Vehicle Details -->
+      <div class="driver-info-card">
+        <div class="driver-avatar"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="driver-meta" style="flex: 1;">
+          <h4 id="trackDriverName">Rajesh Sharma</h4>
+          <p><span id="trackVehicleModel">White Maruti Dzire</span> &bull; <strong id="trackPlate">DL 01 AB 8942</strong></p>
+          <small style="color: #F59E0B; font-weight: 700;"><span id="trackRating">4.9 ★</span> (1,840 rides)</small>
+        </div>
+        <div>
+          <a href="tel:+919871234567" class="btn btn-outline" style="padding: 8px 14px; font-size: 13px;">
+            <i class="fa-solid fa-phone"></i> Call
+          </a>
+        </div>
+      </div>
+
+      <!-- Route Details -->
+      <div style="background: #FAFAFA; border-radius: 8px; padding: 14px; margin-bottom: 18px; font-size: 13px;">
+        <div style="margin-bottom: 8px;">
+          <span style="color: #10B981; font-weight: 700;">● Pickup:</span> <span id="trackPickup">Sector 62, Noida</span>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <span style="color: #EF4444; font-weight: 700;">● Destination:</span> <span id="trackDrop">IGI Airport, Terminal 3, New Delhi</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-top: 1px solid #E5E7EB; padding-top: 8px; font-weight: 700;">
+          <span>Total Fare (Cash):</span>
+          <span id="trackFare" style="color: var(--primary); font-size: 16px;">₹489</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="tracking-actions">
+        <button id="sosBtn" class="btn btn-outline" style="flex: 1; border-color: #EF4444; color: #EF4444;">
+          <i class="fa-solid fa-triangle-exclamation"></i> Emergency SOS
+        </button>
+        <button id="cancelRideBtn" class="btn btn-outline" style="flex: 1;">
+          <i class="fa-solid fa-xmark"></i> Cancel Ride
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2. Auth Modal (Login / Signup) -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 420px;">
+      <button class="modal-close">&times;</button>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 style="font-size: 22px; font-weight: 800; color: #0F172A;">Login to Zygo</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">Enter your mobile number to get started</p>
+      </div>
+
+      <div class="form-group">
+        <label style="font-size: 12px; font-weight: 700; color: #4B5563; margin-bottom: 4px; display: block;">Mobile Number</label>
+        <input type="tel" id="authPhone" class="form-control" placeholder="10-digit mobile number" value="9876543210">
+      </div>
+
+      <button type="button" id="sendOtpBtn" class="btn btn-primary" style="width: 100%; padding: 12px; margin-bottom: 12px;">
+        Send OTP
+      </button>
+
+      <div id="otpGroup" class="form-group" style="display: none;">
+        <label style="font-size: 12px; font-weight: 700; color: #4B5563; margin-bottom: 4px; display: block;">Enter OTP (Use 1234)</label>
+        <input type="text" id="authOtp" class="form-control" placeholder="4-digit OTP" maxlength="4">
+      </div>
+
+      <button type="button" id="verifyOtpBtn" class="btn btn-primary" style="width: 100%; padding: 12px; display: none;">
+        Verify &amp; Continue
+      </button>
+
+      <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 16px;">
+        By continuing, you agree to Zygo's <a href="#" style="color: var(--primary);">Terms of Service</a> &amp; <a href="#" style="color: var(--primary);">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Zygo Scripts -->
+  <script src="assets/js/api-config.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
+
