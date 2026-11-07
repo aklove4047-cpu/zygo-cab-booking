@@ -1,0 +1,30 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+
+# Large Archives & Temporary
+zygo (1).zip
+*.zip
+
+# Flutter / Android / iOS Build and Cache directories
+**/.gradle/
+**/build/
+**/.dart_tool/
+**/.idea/
+**/.vscode/
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/build/
+**/android/build/
+*.jks
+*.keystore
+
+# OS Files
+.DS_Store
+Thumbs.db

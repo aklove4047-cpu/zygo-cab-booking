@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zygo Admin - Fleet Dispatch &amp; Operations Center</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/logo_with_name.png" alt="Zygo" class="sidebar-logo" onerror="this.style.display='none'; document.getElementById('adminLogoFallback').style.display='block';">
+      <div id="adminLogoFallback" class="sidebar-title" style="display: none;">ZYGO <span>ADMIN</span></div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-category">Operations</div>
+      <li>
+        <a class="menu-item active" data-tab="dashboard">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="dispatch">
+          <i class="fa-solid fa-map-location-dot"></i> Live Dispatch
+          <span class="badge">Live</span>
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="trips">
+          <i class="fa-solid fa-taxi"></i> Bookings / Trips
+        </a>
+      </li>
+
+      <div class="menu-category">Fleet &amp; Users</div>
+      <li>
+        <a class="menu-item" data-tab="drivers">
+          <i class="fa-solid fa-id-card"></i> Driver Partners
+          <span class="badge" style="background: #F59E0B;">1 New</span>
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="customers">
+          <i class="fa-solid fa-users"></i> Customers
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="fares">
+          <i class="fa-solid fa-tags"></i> Fleet &amp; Fares
+        </a>
+      </li>
+
+      <div class="menu-category">Marketing &amp; Finance</div>
+      <li>
+        <a class="menu-item" data-tab="coupons">
+          <i class="fa-solid fa-ticket"></i> Coupons &amp; Promos
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="reports">
+          <i class="fa-solid fa-file-invoice-dollar"></i> Finance &amp; Payouts
+        </a>
+      </li>
+      <li>
+        <a class="menu-item" data-tab="settings">
+          <i class="fa-solid fa-sliders"></i> System &amp; APIs
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="admin-avatar">ZA</div>
+      <div class="admin-info">
+        <h5>Zygo Super Admin</h5>
+        <p>admin@zygocab.in</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN WRAPPER ================= -->
+  <div class="main-wrapper">
+    
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="globalSearchInput" class="search-input" placeholder="Search trips, customer name, driver...">
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="status-indicator">
+          <span class="status-dot"></span> Socket API Live
+        </div>
+        <a href="../zygo-website/index.html" class="btn-visit-site" target="_blank">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> View Website
+        </a>
+        <div style="font-size: 18px; color: #64748B; cursor: pointer; position: relative;">
+          <i class="fa-regular fa-bell"></i>
+          <span style="position: absolute; top: -4px; right: -4px; width: 8px; height: 8px; background: #EF4444; border-radius: 50%;"></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Content Area -->
+    <main class="admin-content">
+
+      <!-- ================= 1. TAB: DASHBOARD ================= -->
+      <section class="tab-pane active" id="tab-dashboard">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Operational Overview</h2>
+            <p class="page-subtitle">Real-time performance, fleet occupancy, and platform revenue metrics.</p>
+          </div>
+          <div>
+            <span style="font-size: 13px; font-weight: 600; color: #475569; background: #fff; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border-color);">
+              📅 Today: <strong>07 Nov 2026</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Today's Revenue</div>
+              <div class="kpi-value">₹1,42,850</div>
+              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +18.4% vs last week</div>
+            </div>
+            <div class="kpi-icon-wrap icon-teal"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Completed Trips</div>
+              <div class="kpi-value">1,248</div>
+              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12.1% this week</div>
+            </div>
+            <div class="kpi-icon-wrap icon-blue"><i class="fa-solid fa-taxi"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Active Captains On-Road</div>
+              <div class="kpi-value">86</div>
+              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> 5 new onboarded</div>
+            </div>
+            <div class="kpi-icon-wrap icon-yellow"><i class="fa-solid fa-id-card"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Live Active Trips</div>
+              <div class="kpi-value">24</div>
+              <div class="kpi-trend up" style="color: #3B82F6;"><i class="fa-solid fa-route"></i> 18 in city, 6 outstation</div>
+            </div>
+            <div class="kpi-icon-wrap icon-purple"><i class="fa-solid fa-clock"></i></div>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="analytics-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Weekly Revenue &amp; Trips Analytics</div>
+              <small style="color: var(--text-muted); font-weight: 600;">Last 7 Days</small>
+            </div>
+            <div style="height: 280px; position: relative;">
+              <canvas id="revenueChartCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Ride Share by Vehicle</div>
+            </div>
+            <div style="padding: 10px 0;">
+              <div style="margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px;">
+                  <span>Zygo Sedan Prime</span>
+                  <span>42%</span>
+                </div>
+                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                  <div style="width: 42%; height: 100%; background: var(--primary);"></div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px;">
+                  <span>Zygo Mini (AC)</span>
+                  <span>28%</span>
+                </div>
+                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                  <div style="width: 28%; height: 100%; background: #0E5CAD;"></div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px;">
+                  <span>Zygo Auto</span>
+                  <span>18%</span>
+                </div>
+                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                  <div style="width: 18%; height: 100%; background: #F59E0B;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 4px;">
+                  <span>Zygo SUV XL</span>
+                  <span>12%</span>
+                </div>
+                <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                  <div style="width: 12%; height: 100%; background: #9333EA;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Trips Table Preview -->
+        <div class="card-table-wrapper">
+          <div class="table-toolbar">
+            <h3 style="font-size: 16px; font-weight: 700;">Recent Live Bookings</h3>
+            <div class="table-filters">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="ongoing">Ongoing</button>
+              <button class="filter-btn" data-filter="completed">Completed</button>
+              <button class="filter-btn" data-filter="pending">Pending</button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Captain / Vehicle</th>
+                <th>Pickup &amp; Drop</th>
+                <th>Fare</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tripsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 2. TAB: LIVE DISPATCH ================= -->
+      <section class="tab-pane" id="tab-dispatch">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Live Dispatch &amp; Radar Center</h2>
+            <p class="page-subtitle">Monitor real-time driver locations, active routes, and manual dispatch requests.</p>
+          </div>
+        </div>
+
+        <div class="dispatch-container">
+          <div class="dispatch-map-wrap">
+            <div id="dispatchMap"></div>
+          </div>
+
+          <div class="dispatch-feed">
+            <div class="dispatch-feed-header">
+              <span>Pending Ride Queue</span>
+              <span style="color: var(--primary); font-size: 12px;"><i class="fa-solid fa-arrows-rotate"></i> Auto-Refresh</span>
+            </div>
+            <div class="dispatch-feed-list">
+              <div class="dispatch-card">
+                <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
+                  <span>ZYG-10889</span>
+                  <span style="color: #2563EB;">₹140 &bull; Auto</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                  <strong>Customer:</strong> Kavita Joshi (+91 9765432109)<br>
+                  <strong>From:</strong> Lajpat Nagar<br>
+                  <strong>To:</strong> South Extension
+                </div>
+                <button class="btn-table-action primary" style="width: 100%;" onclick="alert('Trip ZYG-10889 assigned to nearest driver Mohammad Arshad!')">
+                  <i class="fa-solid fa-paper-plane"></i> Quick Dispatch to Nearest Driver
+                </button>
+              </div>
+
+              <div class="dispatch-card">
+                <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
+                  <span>ZYG-10893</span>
+                  <span style="color: #10B981;">₹520 &bull; Sedan</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                  <strong>Customer:</strong> Sneha Roy (+91 9898989898)<br>
+                  <strong>From:</strong> Noida Sec 18 Metro<br>
+                  <strong>To:</strong> Saket DLF Promenade
+                </div>
+                <button class="btn-table-action primary" style="width: 100%;" onclick="alert('Trip ZYG-10893 assigned to Rajesh Sharma!')">
+                  <i class="fa-solid fa-paper-plane"></i> Quick Dispatch to Nearest Driver
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. TAB: TRIPS ================= -->
+      <section class="tab-pane" id="tab-trips">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Bookings &amp; Trips Management</h2>
+            <p class="page-subtitle">Inspect complete ride history, passenger invoices, driver assignments, and dispute audits.</p>
+          </div>
+          <div>
+            <button class="btn-table-action" onclick="alert('Exporting trips to CSV...')">
+              <i class="fa-solid fa-download"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="card-table-wrapper">
+          <div class="table-toolbar">
+            <div class="table-filters">
+              <button class="filter-btn active" data-filter="all">All Trips</button>
+              <button class="filter-btn" data-filter="ongoing">Ongoing</button>
+              <button class="filter-btn" data-filter="completed">Completed</button>
+              <button class="filter-btn" data-filter="pending">Pending</button>
+              <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Captain / Vehicle</th>
+                <th>Route Details</th>
+                <th>Fare</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tripsTableBodyFull">
+              <!-- Reuses same data -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 4. TAB: DRIVERS ================= -->
+      <section class="tab-pane" id="tab-drivers">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Driver Partners &amp; KYC Verification</h2>
+            <p class="page-subtitle">Verify driver driving licenses, vehicle RC documents, track earnings, and suspend/activate accounts.</p>
+          </div>
+        </div>
+
+        <div class="card-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Driver ID</th>
+                <th>Captain Name &amp; Phone</th>
+                <th>Vehicle &amp; Number</th>
+                <th>Rating &amp; Trips</th>
+                <th>Online Status</th>
+                <th>KYC Verification</th>
+                <th>Total Earnings</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="driversTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 5. TAB: CUSTOMERS ================= -->
+      <section class="tab-pane" id="tab-customers">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Customer Database</h2>
+            <p class="page-subtitle">Manage registered users, review wallet balances, and track passenger lifetime value.</p>
+          </div>
+        </div>
+
+        <div class="card-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Full Name &amp; Email</th>
+                <th>Mobile Number</th>
+                <th>Total Rides</th>
+                <th>Wallet Balance</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="customersTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 6. TAB: FLEET & FARES ================= -->
+      <section class="tab-pane" id="tab-fares">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Fleet &amp; Fare Pricing Configuration</h2>
+            <p class="page-subtitle">Configure base fares, per kilometer charges, minute waiting fees, and commission percentages for each vehicle class.</p>
+          </div>
+          <button class="btn-table-action primary" onclick="alert('Pricing rules saved successfully!')">
+            <i class="fa-solid fa-floppy-disk"></i> Save Pricing Rules
+          </button>
+        </div>
+
+        <div class="card-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Vehicle Class</th>
+                <th>Base Fare (₹)</th>
+                <th>Included Base KM</th>
+                <th>Per KM Rate (₹)</th>
+                <th>Per Min Waiting (₹)</th>
+                <th>Zygo Commission (%)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Zygo Bike (Moto)</strong></td>
+                <td><input type="number" class="form-input-admin" value="25" style="width: 90px;"></td>
+                <td><input type="number" class="form-input-admin" value="2" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="8" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="1.0" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="10" style="width: 80px;">%</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Zygo Auto</strong></td>
+                <td><input type="number" class="form-input-admin" value="45" style="width: 90px;"></td>
+                <td><input type="number" class="form-input-admin" value="2" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="12" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="1.5" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="10" style="width: 80px;">%</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Zygo Mini (AC)</strong></td>
+                <td><input type="number" class="form-input-admin" value="60" style="width: 90px;"></td>
+                <td><input type="number" class="form-input-admin" value="3" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="14" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="2.0" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="12" style="width: 80px;">%</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Zygo Sedan Prime</strong></td>
+                <td><input type="number" class="form-input-admin" value="90" style="width: 90px;"></td>
+                <td><input type="number" class="form-input-admin" value="4" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="17" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="2.5" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="15" style="width: 80px;">%</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+              </tr>
+              <tr>
+                <td><strong>Zygo SUV XL</strong></td>
+                <td><input type="number" class="form-input-admin" value="140" style="width: 90px;"></td>
+                <td><input type="number" class="form-input-admin" value="5" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="22" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="3.0" style="width: 80px;"></td>
+                <td><input type="number" class="form-input-admin" value="15" style="width: 80px;">%</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 7. TAB: COUPONS ================= -->
+      <section class="tab-pane" id="tab-coupons">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Coupons &amp; Promotional Discounts</h2>
+            <p class="page-subtitle">Create discount coupons to boost user retention and acquire new riders.</p>
+          </div>
+          <button class="btn-table-action primary" onclick="alert('Creating new coupon...')">
+            <i class="fa-solid fa-plus"></i> Create New Coupon
+          </button>
+        </div>
+
+        <div class="card-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Coupon Code</th>
+                <th>Discount Value</th>
+                <th>Minimum Ride Value</th>
+                <th>Expiry Date</th>
+                <th>Times Used</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="couponsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= 8. TAB: FINANCE & REPORTS ================= -->
+      <section class="tab-pane" id="tab-reports">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">Finance &amp; Platform Earnings</h2>
+            <p class="page-subtitle">Review commission cash flow, driver settlement payouts, and tax reports.</p>
+          </div>
+          <button class="btn-table-action primary" onclick="alert('Driver payouts processed for today.')">
+            <i class="fa-solid fa-money-bill-transfer"></i> Process Driver Payouts
+          </button>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Gross Bookings Volume</div>
+              <div class="kpi-value">₹14,28,500</div>
+              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> This Month</div>
+            </div>
+            <div class="kpi-icon-wrap icon-teal"><i class="fa-solid fa-vault"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Zygo Platform Commission (12%)</div>
+              <div class="kpi-value">₹1,71,420</div>
+              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> Net Revenue</div>
+            </div>
+            <div class="kpi-icon-wrap icon-blue"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Driver Payouts Paid</div>
+              <div class="kpi-value">₹12,12,080</div>
+              <div class="kpi-trend" style="color: #64748B;">Settled via UPI</div>
+            </div>
+            <div class="kpi-icon-wrap icon-yellow"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+          </div>
+
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Pending Payout Claims</div>
+              <div class="kpi-value">₹45,000</div>
+              <div class="kpi-trend down"><i class="fa-solid fa-triangle-exclamation"></i> 8 Captains</div>
+            </div>
+            <div class="kpi-icon-wrap icon-purple"><i class="fa-solid fa-hourglass-half"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 9. TAB: SETTINGS & APIS ================= -->
+      <section class="tab-pane" id="tab-settings">
+        <div class="page-head">
+          <div>
+            <h2 class="page-title">API &amp; System Integration Manager</h2>
+            <p class="page-subtitle">Configure backend endpoints, Google Maps, SMS gateways, and payment keys directly from this panel.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="exportConfigBtn" class="btn-table-action">
+              <i class="fa-solid fa-file-export"></i> Export JSON
+            </button>
+            <label class="btn-table-action" style="cursor: pointer; margin: 0;">
+              <i class="fa-solid fa-file-import"></i> Import JSON
+              <input type="file" id="importConfigFile" accept=".json" style="display: none;">
+            </label>
+          </div>
+        </div>
+
+        <form id="settingsForm">
+          
+          <!-- Mode Switch Banner -->
+          <div style="background: #ffffff; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h4 style="font-size: 15px; font-weight: 800; color: #0F172A; margin-bottom: 4px;">Operational API Mode</h4>
+              <p style="font-size: 13px; color: var(--text-muted);">Choose whether the website &amp; admin panel use simulated safe mock data or connect live to your Laravel server.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <label style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 700;" id="labelMockMode">
+                <input type="radio" name="apiMode" value="mock" id="radioMockMode" checked>
+                <span>🧪 Mock Demo Mode (Offline Safe)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 700;" id="labelLiveMode">
+                <input type="radio" name="apiMode" value="live" id="radioLiveMode">
+                <span>🚀 Live Server API Mode</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            
+            <!-- Card 1: Backend Server -->
+            <div class="settings-card">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fa-solid fa-server" style="color: var(--primary);"></i> Central Backend Server</span>
+                <span id="connectionBadge" class="badge-status badge-offline">Not Tested</span>
+              </h3>
+
+              <div class="form-group-admin">
+                <label>Backend API Base URL (Drivemond / HexaRide Laravel)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="url" id="settingBaseUrl" class="form-input-admin" value="https://login.zygocab.in" required style="flex: 1;">
+                  <button type="button" id="pingServerBtn" class="btn-table-action primary" style="white-space: nowrap;">
+                    <i class="fa-solid fa-bolt"></i> Ping / Test
+                  </button>
+                </div>
+                <small style="color: var(--text-muted); font-size: 12px; margin-top: 4px; display: block;">Points to your hosted PHP/Laravel backend hosting.</small>
+              </div>
+
+              <div class="form-group-admin">
+                <label>Application Brand Name</label>
+                <input type="text" id="settingAppName" class="form-input-admin" value="Zygo Cabs">
+              </div>
+
+              <div class="form-group-admin">
+                <label>Default Currency Symbol</label>
+                <input type="text" id="settingCurrency" class="form-input-admin" value="₹ (INR)">
+              </div>
+
+              <div class="form-group-admin">
+                <label>Platform Commission Percentage (%)</label>
+                <input type="number" id="settingCommission" class="form-input-admin" value="12" min="1" max="50">
+              </div>
+            </div>
+
+            <!-- Card 2: Maps & Geocoding -->
+            <div class="settings-card">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <i class="fa-solid fa-map-location-dot" style="color: var(--info);"></i> Google Maps &amp; Navigation
+              </h3>
+
+              <div class="form-group-admin">
+                <label>Google Maps Directions &amp; Places API Key</label>
+                <input type="text" id="settingGoogleMapsKey" class="form-input-admin" value="AIzaSyAsaQDm6B4mPeDn4g-PgkWnsZmajrvtU-8">
+                <small style="color: var(--text-muted); font-size: 12px; margin-top: 4px; display: block;">From Google Cloud Console (Directions, Places, Geocoding).</small>
+              </div>
+
+              <div class="form-group-admin">
+                <label>Map Provider for Web Experience</label>
+                <select id="settingMapProvider" class="form-input-admin">
+                  <option value="leaflet" selected>OpenStreetMap + Leaflet (Free &amp; No API Key needed)</option>
+                  <option value="google">Google Maps JavaScript SDK</option>
+                </select>
+              </div>
+
+              <div class="form-group-admin">
+                <label>Default Nearby Captain Search Radius (KM)</label>
+                <input type="number" id="settingSearchRadius" class="form-input-admin" value="5" min="1" max="25">
+              </div>
+            </div>
+
+            <!-- Card 3: SMS & Phone OTP Authentication -->
+            <div class="settings-card">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <i class="fa-solid fa-mobile-screen-button" style="color: #D97706;"></i> Phone OTP &amp; SMS Authentication
+              </h3>
+
+              <div class="form-group-admin">
+                <label>Primary OTP SMS Provider</label>
+                <select id="settingAuthProvider" class="form-input-admin">
+                  <option value="firebase" selected>Firebase Phone Authentication (10,000 Free SMS/month)</option>
+                  <option value="msg91">Msg91 (India Route)</option>
+                  <option value="fast2sms">Fast2SMS (India Quick SMS)</option>
+                  <option value="twilio">Twilio Global SMS</option>
+                </select>
+              </div>
+
+              <div class="form-group-admin">
+                <label>Firebase Project ID / SMS Sender ID</label>
+                <input type="text" id="settingFirebaseProject" class="form-input-admin" value="zygo-cab-prod">
+              </div>
+
+              <div class="form-group-admin">
+                <label>SMS Gateway Auth Token / Secret</label>
+                <input type="password" id="settingSmsKey" class="form-input-admin" placeholder="Enter gateway secret auth key...">
+              </div>
+            </div>
+
+            <!-- Card 4: Payment Gateways -->
+            <div class="settings-card">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <i class="fa-solid fa-credit-card" style="color: var(--success);"></i> Payment Gateway Integration
+              </h3>
+
+              <div class="form-group-admin">
+                <label>Primary Online Payment Gateway</label>
+                <select id="settingPaymentGateway" class="form-input-admin">
+                  <option value="razorpay" selected>Razorpay (UPI, GPay, Paytm, Cards, Netbanking)</option>
+                  <option value="cashfree">Cashfree Payments &amp; Instant Driver Payouts</option>
+                  <option value="stripe">Stripe International</option>
+                </select>
+              </div>
+
+              <div class="form-group-admin">
+                <label>Razorpay / Gateway Key ID</label>
+                <input type="text" id="settingRazorpayKeyId" class="form-input-admin" value="rzp_test_sampleKey123">
+              </div>
+
+              <div class="form-group-admin">
+                <label>Razorpay / Gateway Key Secret</label>
+                <input type="password" id="settingRazorpaySecret" class="form-input-admin" value="sample_secret_xyz">
+              </div>
+
+              <div class="form-group-admin">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                  <input type="checkbox" id="settingCashOnTrip" checked>
+                  <span>Enable Cash on Trip (Pay Driver directly at end of ride)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Card 5: Real-time WebSockets -->
+            <div class="settings-card" style="grid-column: span 2;">
+              <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                <i class="fa-solid fa-tower-broadcast" style="color: #9333EA;"></i> Pusher WebSockets (Live GPS Radar)
+              </h3>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group-admin">
+                  <label>Pusher App Key</label>
+                  <input type="text" id="settingPusherKey" class="form-input-admin" value="sample_pusher_key">
+                </div>
+                <div class="form-group-admin">
+                  <label>Pusher Cluster</label>
+                  <input type="text" id="settingPusherCluster" class="form-input-admin" value="ap2 (India / Asia)">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Sticky Action Bar -->
+          <div style="margin-top: 24px; display: flex; align-items: center; justify-content: space-between; background: #ffffff; padding: 18px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+            <div style="font-size: 13px; color: var(--text-muted);">
+              <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Settings are automatically saved to storage and synchronized with the public booking website.
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" id="resetConfigBtn" class="btn-table-action danger">
+                <i class="fa-solid fa-rotate-left"></i> Reset Defaults
+              </button>
+              <button type="submit" class="btn-table-action primary" style="padding: 10px 24px; font-size: 14px; font-weight: 700;">
+                <i class="fa-solid fa-floppy-disk"></i> Save &amp; Apply API Configuration
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= ADMIN MODALS ================= -->
+
+  <!-- 1. Trip Details Modal -->
+  <div id="tripDetailsModal" class="admin-modal">
+    <div class="admin-modal-content">
+      <div class="modal-header-admin">
+        <h3>Trip Audit: <span id="modalTripId" style="color: var(--primary);">ZYG-10892</span></h3>
+        <button class="btn-table-action close-modal-btn">&times;</button>
+      </div>
+
+      <div style="font-size: 14px; line-height: 1.8;">
+        <div><strong>Customer:</strong> <span id="modalCustomer">Rahul Kumar (+91 9876543210)</span></div>
+        <div><strong>Assigned Captain:</strong> <span id="modalDriver">Rajesh Sharma</span></div>
+        <div><strong>Vehicle:</strong> <span id="modalVehicle">White Maruti Dzire</span></div>
+        <hr style="margin: 12px 0; border: none; border-top: 1px solid var(--border-color);">
+        <div><strong style="color: #10B981;">● Pickup:</strong> <span id="modalPickup">Sector 62, Noida</span></div>
+        <div><strong style="color: #EF4444;">● Destination:</strong> <span id="modalDrop">IGI Airport T3, Delhi</span></div>
+        <hr style="margin: 12px 0; border: none; border-top: 1px solid var(--border-color);">
+        <div style="display: flex; justify-content: space-between;">
+          <span><strong>Total Fare:</strong> <span id="modalFare" style="color: var(--primary); font-size: 16px; font-weight: 800;">₹489</span></span>
+          <span><strong>Payment:</strong> <span id="modalPayment">Cash</span></span>
+          <span><strong>Status:</strong> <span id="modalStatus" class="badge-status badge-ongoing">Ongoing</span></span>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-table-action close-modal-btn">Close</button>
+        <button class="btn-table-action" onclick="alert('Invoice PDF generated.')"><i class="fa-solid fa-file-pdf"></i> Download Invoice</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Driver KYC Modal -->
+  <div id="kycModal" class="admin-modal">
+    <div class="admin-modal-content">
+      <div class="modal-header-admin">
+        <h3>Driver KYC Review</h3>
+        <button class="btn-table-action close-modal-btn">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <h4 id="kycDriverName" style="font-size: 16px; font-weight: 800;">Rameshwar Lal</h4>
+        <p style="font-size: 13px; color: var(--text-muted);"><span id="kycDriverPhone">+91 9874567890</span> &bull; <span id="kycVehicle">Hyundai Aura (DL 03 GH 9012)</span></p>
+      </div>
+
+      <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+        <h5 style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">Submitted Documents Verification:</h5>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="border: 1px dashed var(--border-color); padding: 12px; border-radius: 6px; text-align: center; background: #fff;">
+            <i class="fa-solid fa-id-card" style="font-size: 28px; color: var(--primary); margin-bottom: 6px;"></i>
+            <div style="font-size: 12px; font-weight: 700;">Commercial Driving License</div>
+            <small style="color: #10B981; font-weight: 600;">Valid till 2031</small>
+          </div>
+          <div style="border: 1px dashed var(--border-color); padding: 12px; border-radius: 6px; text-align: center; background: #fff;">
+            <i class="fa-solid fa-car" style="font-size: 28px; color: var(--info); margin-bottom: 6px;"></i>
+            <div style="font-size: 12px; font-weight: 700;">Vehicle Registration (RC)</div>
+            <small style="color: #10B981; font-weight: 600;">Fitness &amp; Insurance Active</small>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-table-action danger close-modal-btn">Reject Documents</button>
+        <button id="approveKycActionBtn" class="btn-table-action primary">
+          <i class="fa-solid fa-check"></i> Approve KYC &amp; Activate Driver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js & Leaflet JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Admin Scripts -->
+  <script src="assets/js/admin-api.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
+

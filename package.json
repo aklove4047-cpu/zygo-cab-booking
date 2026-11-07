@@ -1,0 +1,26 @@
+{
+  "name": "zygo-cab-booking",
+  "version": "1.0.0",
+  "description": "Zygo Cabs - Complete On-Demand Taxi Booking Website & Fleet Admin Panel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "zygo",
+    "taxi-booking",
+    "cab-booking",
+    "admin-panel",
+    "fleet-management"
+  ],
+  "author": "Zygo Mobility Technologies",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
