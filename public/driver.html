@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Zygo Captain - Driver Partner Portal</title>
-  <meta name="description" content="Zygo Captain App - Live on-duty taxi booking dispatch and navigation for driver partners.">
+  <title>Zygo Captain - Partner App</title>
+  <meta name="description" content="Zygo Captain App - Professional ride dispatch and navigation for driver partners.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
@@ -17,18 +17,16 @@
 
   <style>
     :root {
-      --primary: #1FB6A6;
-      --primary-hover: #179b8d;
-      --primary-dark: #0E5CAD;
-      --accent: #F4C430;
-      --bg-dark: #0F172A;
-      --bg-card: #1E293B;
+      --ola-green: #00D26A;
+      --ola-green-hover: #00B85C;
+      --ola-dark: #0D131F;
+      --ola-card: #172133;
+      --ola-card-light: #22304A;
+      --ola-gold: #FFC000;
+      --ola-red: #FF3B30;
       --text-white: #FFFFFF;
-      --text-gray: #94A3B8;
-      --success: #10B981;
-      --danger: #EF4444;
-      --warning: #F59E0B;
-      --border: rgba(255, 255, 255, 0.1);
+      --text-muted: #8E9BAE;
+      --border-dark: rgba(255, 255, 255, 0.12);
     }
 
     * {
@@ -36,11 +34,12 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg-dark);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--ola-dark);
       color: var(--text-white);
       height: 100vh;
       display: flex;
@@ -48,110 +47,161 @@
       overflow: hidden;
     }
 
-    /* Top Bar */
+    /* ================= DRIVER HEADER ================= */
     .driver-header {
-      background: #0B1120;
-      border-bottom: 1px solid var(--border);
-      padding: 12px 18px;
+      background: #090E17;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid var(--border-dark);
       z-index: 1000;
     }
 
-    .brand-section {
+    .driver-profile {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .driver-logo {
-      height: 34px;
-      object-fit: contain;
+    .avatar-wrapper {
+      position: relative;
+    }
+
+    .driver-avatar-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--ola-card-light);
+      border: 2px solid var(--ola-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--ola-gold);
+      font-size: 18px;
+    }
+
+    .online-indicator-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--ola-green);
+      border: 2px solid #090E17;
+    }
+
+    .driver-meta h3 {
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .captain-badge {
-      background: rgba(31, 182, 166, 0.2);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11px;
+      font-size: 10px;
+      background: rgba(255, 192, 0, 0.15);
+      color: var(--ola-gold);
+      padding: 2px 6px;
+      border-radius: 4px;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* Duty Switch */
-    .duty-toggle-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .driver-rating {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
-    .duty-btn {
-      padding: 8px 18px;
+    .driver-rating i {
+      color: var(--ola-gold);
+    }
+
+    /* GO ONLINE / OFFLINE TOGGLE (Ola Style) */
+    .duty-switch-btn {
+      padding: 10px 22px;
       border-radius: 999px;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 13px;
+      border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.25s;
-      border: none;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
 
-    .duty-btn.offline {
-      background: #334155;
-      color: #CBD5E1;
+    .duty-switch-btn.online {
+      background: var(--ola-green);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 210, 106, 0.45);
+      animation: pulse-glow 2s infinite;
     }
 
-    .duty-btn.online {
-      background: var(--success);
-      color: #FFFFFF;
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-      animation: pulse-green 2s infinite;
+    .duty-switch-btn.offline {
+      background: #2A364F;
+      color: #8E9BAE;
     }
 
-    @keyframes pulse-green {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-      50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 106, 0.6); }
+      50% { box-shadow: 0 0 0 12px rgba(0, 210, 106, 0); }
     }
 
-    /* Quick Stats Bar */
-    .stats-bar {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      padding: 10px 14px;
-      text-align: center;
+    /* ================= TOP EARNINGS & TARGET STRIP ================= */
+    .earnings-strip {
+      background: var(--ola-card);
+      border-bottom: 1px solid var(--border-dark);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       z-index: 999;
     }
 
-    .stat-box {
-      border-right: 1px solid var(--border);
-    }
-    .stat-box:last-child {
-      border-right: none;
+    .earning-val-box {
+      cursor: pointer;
     }
 
-    .stat-val {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--accent);
-    }
-
-    .stat-lbl {
-      font-size: 10px;
-      color: var(--text-gray);
+    .earning-label {
+      font-size: 11px;
+      color: var(--text-muted);
       text-transform: uppercase;
-      margin-top: 2px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
-    /* Main Content Area */
-    .map-container {
+    .earning-amount {
+      font-size: 22px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+    }
+
+    .target-progress-box {
+      text-align: right;
+    }
+
+    .target-pill {
+      background: rgba(0, 210, 106, 0.15);
+      border: 1px solid rgba(0, 210, 106, 0.3);
+      color: var(--ola-green);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ================= MAP CANVAS ================= */
+    .map-wrapper {
       flex: 1;
       position: relative;
       width: 100%;
@@ -160,69 +210,41 @@
     #driverMap {
       width: 100%;
       height: 100%;
+      background: #0D131F;
     }
 
-    /* Floating Status Pill */
-    .radar-indicator {
+    /* Surge Indicator Badges on Map */
+    .surge-pill-indicator {
       position: absolute;
       top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(15, 23, 42, 0.92);
+      left: 14px;
+      background: rgba(13, 19, 31, 0.95);
       backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      padding: 8px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
+      border: 1px solid var(--border-dark);
+      padding: 8px 14px;
+      border-radius: 12px;
+      z-index: 1000;
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 1000;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
-    .pulse-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--success);
-      display: inline-block;
+    .surge-flame {
+      color: #FF5722;
+      font-size: 14px;
     }
 
-    /* SOS Button */
-    .sos-floating-btn {
+    /* Floating Test Alert Button */
+    .test-alert-btn {
       position: absolute;
       bottom: 24px;
-      right: 18px;
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: var(--danger);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 900;
-      border: 3px solid #fff;
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
-      cursor: pointer;
-      z-index: 1000;
-      transition: transform 0.2s;
-    }
-    .sos-floating-btn:hover {
-      transform: scale(1.08);
-    }
-
-    /* Simulate New Ride Button for Demo/Testing */
-    .simulate-btn {
-      position: absolute;
-      bottom: 24px;
-      left: 18px;
-      background: rgba(31, 182, 166, 0.9);
-      color: #fff;
-      border: none;
+      left: 16px;
+      background: rgba(34, 48, 74, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
       padding: 10px 16px;
       border-radius: 999px;
       font-size: 12px;
@@ -232,210 +254,282 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
 
-    /* ================= INCOMING RIDE POPUP MODAL ================= */
-    .ride-popup-backdrop {
+    /* SOS Button */
+    .driver-sos-btn {
+      position: absolute;
+      bottom: 24px;
+      right: 16px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--ola-red);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 900;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 4px 20px rgba(255, 59, 48, 0.6);
+      cursor: pointer;
+      z-index: 1000;
+      text-decoration: none;
+    }
+
+    /* ================= OLA DRIVER INCOMING RIDE POPUP ================= */
+    .incoming-ride-backdrop {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(8px);
       z-index: 2000;
       align-items: flex-end;
       justify-content: center;
     }
 
-    .ride-popup-card {
-      background: #1E293B;
-      border-top: 3px solid var(--accent);
+    .incoming-ride-sheet {
+      background: var(--ola-card);
+      border-top: 4px solid var(--ola-green);
       border-radius: 24px 24px 0 0;
       width: 100%;
-      max-width: 500px;
-      padding: 24px;
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
-      animation: slide-up 0.3s ease-out;
+      max-width: 520px;
+      padding: 24px 20px 20px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+      animation: sheet-up 0.3s ease-out;
     }
 
-    @keyframes slide-up {
+    @keyframes sheet-up {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
 
-    .timer-bar-wrap {
+    /* Circular Timer / Progress Bar */
+    .countdown-bar-wrap {
       width: 100%;
       height: 6px;
-      background: #334155;
+      background: #22304A;
       border-radius: 999px;
       overflow: hidden;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    .timer-bar-fill {
+    .countdown-bar-fill {
       height: 100%;
       width: 100%;
-      background: var(--accent);
+      background: var(--ola-green);
       transition: width 1s linear;
     }
 
-    .fare-highlight-box {
-      background: rgba(244, 196, 48, 0.12);
-      border: 1px solid rgba(244, 196, 48, 0.3);
-      border-radius: 14px;
-      padding: 14px 18px;
+    .ride-main-info-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      justify-content: space-between;
+      margin-bottom: 16px;
     }
 
-    .fare-amount {
-      font-size: 28px;
+    .ride-fare-tag {
+      font-size: 32px;
       font-weight: 900;
-      color: var(--accent);
+      color: var(--ola-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .vehicle-tag {
-      background: #0F172A;
-      color: #94A3B8;
-      padding: 4px 10px;
-      border-radius: 6px;
+    .cash-pill {
       font-size: 11px;
+      background: rgba(255, 192, 0, 0.15);
+      color: var(--ola-gold);
+      padding: 3px 8px;
+      border-radius: 6px;
       font-weight: 700;
     }
 
-    .location-timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 22px;
-      padding-left: 6px;
-      position: relative;
+    .vehicle-category-pill {
+      background: #090E17;
+      border: 1px solid var(--border-dark);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .loc-row {
+    /* Pickup & Drop Route View */
+    .route-timeline-card {
+      background: #0D131F;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .route-step {
       display: flex;
       align-items: flex-start;
       gap: 12px;
     }
 
-    .loc-dot {
-      width: 14px;
-      height: 14px;
+    .route-icon-dot {
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      margin-top: 3px;
+      margin-top: 4px;
       flex-shrink: 0;
     }
 
-    .loc-dot.pickup { background: var(--success); }
-    .loc-dot.drop { background: var(--danger); }
+    .route-icon-dot.pickup { background: var(--ola-green); box-shadow: 0 0 10px var(--ola-green); }
+    .route-icon-dot.drop { background: var(--ola-red); box-shadow: 0 0 10px var(--ola-red); }
 
-    .loc-title {
-      font-size: 11px;
-      color: var(--text-gray);
-      text-transform: uppercase;
+    .route-step-text strong {
+      display: block;
+      font-size: 14px;
+      color: #FFFFFF;
       font-weight: 700;
     }
 
-    .loc-address {
-      font-size: 14px;
-      font-weight: 600;
-      color: #FFFFFF;
-      margin-top: 2px;
+    .route-step-text span {
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
-    .modal-actions {
+    /* Action Buttons */
+    .popup-action-grid {
       display: grid;
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: 1fr 2.2fr;
       gap: 12px;
     }
 
-    .btn-decline {
-      background: #334155;
+    .btn-decline-ride {
+      background: #2A364F;
       color: #CBD5E1;
       border: none;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .btn-accept {
-      background: var(--success);
-      color: #FFFFFF;
+    .btn-accept-ride {
+      background: var(--ola-green);
+      color: #000000;
       border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 800;
-      font-size: 15px;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(0, 210, 106, 0.4);
     }
 
-    /* ================= ACTIVE TRIP VIEW ================= */
-    .active-trip-panel {
+    /* ================= ACTIVE TRIP NAVIGATION SCREEN ================= */
+    .nav-instruction-banner {
+      display: none;
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      background: #008744;
+      color: #FFFFFF;
+      padding: 14px 18px;
+      border-radius: 14px;
+      z-index: 1500;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-turn-icon {
+      font-size: 26px;
+    }
+
+    .nav-instruction-text h4 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .nav-instruction-text p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .active-trip-sheet {
       display: none;
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #1E293B;
-      border-top: 2px solid var(--primary);
-      border-radius: 20px 20px 0 0;
+      background: var(--ola-card);
+      border-top: 2px solid var(--ola-green);
+      border-radius: 24px 24px 0 0;
       padding: 20px;
       z-index: 1500;
-      box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.6);
     }
 
-    .rider-card {
+    .passenger-meta-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-dark);
       margin-bottom: 14px;
     }
 
-    .rider-meta {
+    .passenger-info {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .rider-avatar {
+    .passenger-avatar {
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
+      background: var(--ola-green);
+      color: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
       font-size: 18px;
+      font-weight: 900;
     }
 
-    .call-btn {
-      background: #334155;
-      color: var(--primary);
-      width: 40px;
-      height: 40px;
+    .comm-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .comm-btn {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
+      background: #22304A;
+      color: var(--ola-green);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      cursor: pointer;
       text-decoration: none;
     }
 
-    .otp-box-wrapper {
-      background: #0F172A;
+    .otp-verification-card {
+      background: #090E17;
+      border: 1px solid rgba(0, 210, 106, 0.3);
       border-radius: 12px;
       padding: 12px 16px;
       margin-bottom: 16px;
@@ -444,176 +538,183 @@
       justify-content: space-between;
     }
 
-    .otp-input {
+    .otp-code-input {
       background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--accent);
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 4px;
+      border: 2px solid var(--ola-green);
+      color: var(--ola-gold);
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 6px;
       width: 140px;
       text-align: center;
       border-radius: 8px;
       padding: 6px;
     }
 
-    .trip-btn-action {
+    .btn-trip-flow {
       width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 800;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 900;
       font-size: 16px;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
+  <!-- ================= TOP HEADER ================= -->
   <header class="driver-header">
-    <div class="brand-section">
-      <a href="index.html" title="Back to Customer Website" style="color: #94A3B8; text-decoration: none; font-size: 16px;">
-        <i class="fa-solid fa-arrow-left"></i>
-      </a>
-      <img src="assets/images/logo_with_name.png" alt="Zygo" class="driver-logo" onerror="this.style.display='none'">
-      <span class="captain-badge"><i class="fa-solid fa-id-badge"></i> Captain</span>
+    <div class="driver-profile">
+      <div class="avatar-wrapper">
+        <div class="driver-avatar-img">R</div>
+        <div class="online-indicator-dot" id="onlineDot"></div>
+      </div>
+      <div class="driver-meta">
+        <h3>Rajesh Kumar <span class="captain-badge">Gold</span></h3>
+        <div class="driver-rating"><i class="fa-solid fa-star"></i> 4.95 • UP 16 AB 4047</div>
+      </div>
     </div>
 
-    <div class="duty-toggle-wrapper">
-      <button id="dutyToggleBtn" class="duty-btn online">
-        <span class="pulse-dot"></span>
-        <span id="dutyText">ON DUTY</span>
+    <div>
+      <button id="dutySwitchBtn" class="duty-switch-btn online">
+        <i class="fa-solid fa-power-off"></i>
+        <span id="dutyLabel">ONLINE</span>
       </button>
     </div>
   </header>
 
-  <!-- Real-time Stats Strip -->
-  <div class="stats-bar">
-    <div class="stat-box">
-      <div class="stat-val" id="todayEarnings">₹2,450</div>
-      <div class="stat-lbl">Today's Pay</div>
+  <!-- ================= EARNINGS STRIP ================= -->
+  <div class="earnings-strip">
+    <div class="earning-val-box">
+      <div class="earning-label">Today's Earnings</div>
+      <div class="earning-amount" id="todayEarningsText">₹2,840.00</div>
     </div>
-    <div class="stat-box">
-      <div class="stat-val" id="todayTrips">8</div>
-      <div class="stat-lbl">Trips Done</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-val">98%</div>
-      <div class="stat-lbl">Acceptance</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-val">4.9 ★</div>
-      <div class="stat-lbl">Rating</div>
+    <div class="target-progress-box">
+      <div class="target-pill">
+        <i class="fa-solid fa-trophy"></i> 8 / 10 Rides Done
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">2 more for ₹500 Bonus</div>
     </div>
   </div>
 
-  <!-- Map Radar Container -->
-  <div class="map-container">
+  <!-- ================= MAP AREA ================= -->
+  <div class="map-wrapper">
     <div id="driverMap"></div>
 
-    <!-- Floating Radar Status -->
-    <div class="radar-indicator" id="radarStatus">
-      <span class="pulse-dot"></span>
-      <span id="radarText">Radar Active • Searching for Rides in Noida Sector 62</span>
+    <!-- Surge Hotspot Indicator -->
+    <div class="surge-pill-indicator">
+      <i class="fa-solid fa-fire surge-flame"></i>
+      <span>Sector 62: <strong>1.5x Surge Active</strong></span>
     </div>
 
-    <!-- Test Ride Dispatch Simulator -->
-    <button class="simulate-btn" id="simulateRideBtn" title="Test New Ride Request Alert">
-      <i class="fa-solid fa-bell"></i> Test Ride Alert
+    <!-- Turn-by-Turn Instruction Banner (Active Trip) -->
+    <div class="nav-instruction-banner" id="navBanner">
+      <i class="fa-solid fa-arrow-turn-up nav-turn-icon"></i>
+      <div class="nav-instruction-text">
+        <h4 id="navInstructionTitle">In 200m, Turn Right</h4>
+        <p id="navInstructionSub">Head towards Sector 62 Main Road</p>
+      </div>
+    </div>
+
+    <!-- Test Ride Alert Trigger -->
+    <button class="test-alert-btn" id="triggerRideAlertBtn">
+      <i class="fa-solid fa-bell"></i> Test Incoming Ride
     </button>
 
-    <!-- SOS Safety Button -->
-    <a href="tel:112" class="sos-floating-btn" title="Emergency SOS (Police 112)">
+    <!-- Emergency SOS Button -->
+    <a href="tel:112" class="driver-sos-btn" title="Police SOS (112)">
       SOS
     </a>
 
-    <!-- Active Trip Progress Panel -->
-    <div class="active-trip-panel" id="activeTripPanel">
-      <div class="rider-card">
-        <div class="rider-meta">
-          <div class="rider-avatar">R</div>
+    <!-- Active Trip Floating Sheet -->
+    <div class="active-trip-sheet" id="activeTripSheet">
+      <div class="passenger-meta-row">
+        <div class="passenger-info">
+          <div class="passenger-avatar">A</div>
           <div>
-            <div style="font-weight: 700; font-size: 15px;" id="activeRiderName">Rahul Sharma</div>
-            <div style="font-size: 12px; color: var(--text-gray);"><i class="fa-solid fa-star" style="color: var(--accent);"></i> 4.9 • Cash Payment</div>
+            <div style="font-weight: 800; font-size: 16px;" id="passengerNameText">Amit Verma</div>
+            <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-solid fa-star" style="color: var(--ola-gold);"></i> 4.9 • Cash Ride</div>
           </div>
         </div>
-        <a href="tel:+919876543210" class="call-btn" title="Call Passenger">
-          <i class="fa-solid fa-phone"></i>
-        </a>
-      </div>
-
-      <div class="location-timeline" style="margin-bottom: 12px;">
-        <div class="loc-row">
-          <div class="loc-dot pickup"></div>
-          <div>
-            <div class="loc-title">Pickup</div>
-            <div class="loc-address" id="activePickup">Sector 62, Noida Electronic City</div>
-          </div>
-        </div>
-        <div class="loc-row">
-          <div class="loc-dot drop"></div>
-          <div>
-            <div class="loc-title">Drop Location</div>
-            <div class="loc-address" id="activeDrop">Terminal 3, IGI Airport, New Delhi</div>
-          </div>
+        <div class="comm-btns">
+          <a href="tel:+919876543210" class="comm-btn" title="Call Passenger"><i class="fa-solid fa-phone"></i></a>
+          <button class="comm-btn" onclick="alert('Rider message: Waiting near gate number 2.')" title="Message"><i class="fa-solid fa-message"></i></button>
         </div>
       </div>
 
-      <div class="otp-box-wrapper" id="otpBoxArea">
-        <span style="font-size: 13px; font-weight: 600; color: #CBD5E1;">Ask Rider for 4-Digit OTP:</span>
-        <input type="text" id="rideOtpInput" class="otp-input" maxlength="4" placeholder="4047" value="4047">
+      <div class="route-timeline-card">
+        <div class="route-step">
+          <div class="route-icon-dot pickup"></div>
+          <div class="route-step-text">
+            <span id="tripPickupSub">Pickup Location</span>
+            <strong id="tripPickupMain">Sector 62, Noida Electronic City</strong>
+          </div>
+        </div>
+        <div class="route-step">
+          <div class="route-icon-dot drop"></div>
+          <div class="route-step-text">
+            <span>Destination</span>
+            <strong id="tripDropMain">Terminal 3, IGI Airport, New Delhi</strong>
+          </div>
+        </div>
       </div>
 
-      <button id="tripMainActionBtn" class="trip-btn-action" style="background: var(--primary); color: #fff;">
-        <i class="fa-solid fa-play"></i> Start Ride (Verify OTP)
+      <!-- OTP Entry box -->
+      <div class="otp-verification-card" id="otpCard">
+        <span style="font-size: 13px; font-weight: 700; color: #CBD5E1;">Customer 4-Digit OTP:</span>
+        <input type="text" id="otpInput" class="otp-code-input" maxlength="4" value="4047" placeholder="4047">
+      </div>
+
+      <button id="tripActionBtn" class="btn-trip-flow" style="background: var(--ola-green); color: #000;">
+        <i class="fa-solid fa-play"></i> Start Trip (Verify OTP)
       </button>
     </div>
   </div>
 
-  <!-- ================= INCOMING RIDE MODAL ================= -->
-  <div class="ride-popup-backdrop" id="ridePopupModal">
-    <div class="ride-popup-card">
-      <div class="timer-bar-wrap">
-        <div class="timer-bar-fill" id="timerBarFill"></div>
+  <!-- ================= OLA DRIVER INCOMING RIDE MODAL ================= -->
+  <div class="incoming-ride-backdrop" id="incomingRideModal">
+    <div class="incoming-ride-sheet">
+      <div class="countdown-bar-wrap">
+        <div class="countdown-bar-fill" id="timerBar"></div>
       </div>
 
-      <div class="fare-highlight-box">
+      <div class="ride-main-info-row">
         <div>
-          <span style="font-size: 11px; font-weight: 700; color: var(--text-gray); text-transform: uppercase;">Estimated Fare</span>
-          <div class="fare-amount" id="popupFare">₹645</div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Guaranteed Fare</div>
+          <div class="ride-fare-tag">₹485 <span class="cash-pill">CASH</span></div>
         </div>
-        <div style="text-align: right;">
-          <span class="vehicle-tag" id="popupVehicle">Sedan Prime</span>
-          <div style="font-size: 12px; color: #10B981; font-weight: 700; margin-top: 4px;">~32.4 km</div>
-        </div>
-      </div>
-
-      <div class="location-timeline">
-        <div class="loc-row">
-          <div class="loc-dot pickup"></div>
-          <div>
-            <div class="loc-title">Pickup (1.2 km away)</div>
-            <div class="loc-address" id="popupPickup">Sector 62, Noida (Electronic City)</div>
-          </div>
-        </div>
-        <div class="loc-row">
-          <div class="loc-dot drop"></div>
-          <div>
-            <div class="loc-title">Destination Drop</div>
-            <div class="loc-address" id="popupDrop">IGI Airport Terminal 3, New Delhi</div>
-          </div>
+        <div class="vehicle-category-pill">
+          <i class="fa-solid fa-car-side"></i> Sedan Prime
         </div>
       </div>
 
-      <div class="modal-actions">
-        <button id="declineRideBtn" class="btn-decline">Decline</button>
-        <button id="acceptRideBtn" class="btn-accept">
-          <i class="fa-solid fa-check-circle"></i> ACCEPT RIDE (<span id="countdownSec">30</span>s)
+      <div class="route-timeline-card">
+        <div class="route-step">
+          <div class="route-icon-dot pickup"></div>
+          <div class="route-step-text">
+            <span>PICKUP • 1.1 km away (3 mins)</span>
+            <strong>Sector 62, Noida (Electronic City)</strong>
+          </div>
+        </div>
+        <div class="route-step">
+          <div class="route-icon-dot drop"></div>
+          <div class="route-step-text">
+            <span>DROP • 32.4 km trip</span>
+            <strong>IGI Airport Terminal 3, New Delhi</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup-action-grid">
+        <button id="declineBtn" class="btn-decline-ride">Decline</button>
+        <button id="acceptBtn" class="btn-accept-ride">
+          <i class="fa-solid fa-check-circle"></i> ACCEPT RIDE (<span id="timerSecText">30</span>s)
         </button>
       </div>
     </div>
@@ -623,180 +724,206 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <script>
-    // Audio Chime using Web Audio API for incoming ride notifications
-    function playBeepAlert() {
+    // Audio Chime synthesizer for Ola Driver-like loud bell notification
+    function playDriverAlertSound() {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(1200, audioCtx.currentTime + 0.15);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.45);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        
+        // Two-tone bell chime
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(659.25, now); // E5
+        osc1.frequency.setValueAtTime(880, now + 0.15); // A5
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(523.25, now); // C5
+        osc2.frequency.setValueAtTime(698.46, now + 0.15); // F5
+
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.5);
+        osc2.stop(now + 0.5);
       } catch(e) {}
     }
 
-    // Driver App State
+    // App State
     let isOnline = true;
-    let tripStep = 'idle'; // idle | accepted | started
-    let countdownInterval = null;
-    let remainingSec = 30;
+    let tripState = 'idle'; // idle | to_pickup | in_trip
+    let timerCountdown = null;
+    let secLeft = 30;
 
     // Elements
-    const dutyToggleBtn = document.getElementById('dutyToggleBtn');
-    const dutyText = document.getElementById('dutyText');
-    const radarStatus = document.getElementById('radarStatus');
-    const radarText = document.getElementById('radarText');
-    const ridePopupModal = document.getElementById('ridePopupModal');
-    const timerBarFill = document.getElementById('timerBarFill');
-    const countdownSec = document.getElementById('countdownSec');
-    const acceptRideBtn = document.getElementById('acceptRideBtn');
-    const declineRideBtn = document.getElementById('declineRideBtn');
-    const simulateRideBtn = document.getElementById('simulateRideBtn');
-    const activeTripPanel = document.getElementById('activeTripPanel');
-    const tripMainActionBtn = document.getElementById('tripMainActionBtn');
-    const otpBoxArea = document.getElementById('otpBoxArea');
-    const rideOtpInput = document.getElementById('rideOtpInput');
+    const dutySwitchBtn = document.getElementById('dutySwitchBtn');
+    const dutyLabel = document.getElementById('dutyLabel');
+    const onlineDot = document.getElementById('onlineDot');
+    const incomingRideModal = document.getElementById('incomingRideModal');
+    const timerBar = document.getElementById('timerBar');
+    const timerSecText = document.getElementById('timerSecText');
+    const acceptBtn = document.getElementById('acceptBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    const triggerRideAlertBtn = document.getElementById('triggerRideAlertBtn');
+    const activeTripSheet = document.getElementById('activeTripSheet');
+    const navBanner = document.getElementById('navBanner');
+    const tripActionBtn = document.getElementById('tripActionBtn');
+    const otpCard = document.getElementById('otpCard');
+    const otpInput = document.getElementById('otpInput');
+    const todayEarningsText = document.getElementById('todayEarningsText');
 
-    // Leaflet Map Initialization
+    // Leaflet Dark Map
     const defaultLat = 28.6280;
     const defaultLng = 77.3649;
-    const map = L.map('driverMap', { zoomControl: false }).setView([defaultLat, defaultLng], 14);
+    const map = L.map('driverMap', { zoomControl: false }).setView([defaultLat, defaultLng], 15);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Dark Map Tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
+      attribution: '&copy; CartoDB'
     }).addTo(map);
 
-    // Captain Vehicle Marker
+    // Driver Car Marker
+    const carMarkerHtml = `
+      <div style="background: #00D26A; border: 3px solid #000; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px #00D26A; color: #000;">
+        <i class="fa-solid fa-car-side" style="font-size: 18px;"></i>
+      </div>
+    `;
     const carIcon = L.divIcon({
-      html: '<div style="background: #1FB6A6; border: 3px solid #FFFFFF; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(31, 182, 166, 0.8); color: white;"><i class="fa-solid fa-car-side" style="font-size: 15px;"></i></div>',
+      html: carMarkerHtml,
       className: '',
-      iconSize: [32, 32],
-      iconAnchor: [16, 16]
+      iconSize: [36, 36],
+      iconAnchor: [18, 18]
     });
-
     const driverMarker = L.marker([defaultLat, defaultLng], { icon: carIcon }).addTo(map);
-    driverMarker.bindPopup("<b>Zygo Captain: You</b><br>UP 16 AB 4047").openPopup();
 
-    // Geolocation detection
+    // Hotspot Circles on Map
+    const surgeZone = L.circle([defaultLat + 0.005, defaultLng - 0.005], {
+      color: '#FF5722',
+      fillColor: '#FF5722',
+      fillOpacity: 0.15,
+      radius: 600
+    }).addTo(map);
+    surgeZone.bindPopup("🔥 1.5x Surge Area (High Demand)");
+
+    // Geolocation
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          map.setView([lat, lng], 15);
-          driverMarker.setLatLng([lat, lng]);
-        },
-        (err) => console.log('Geolocation note:', err.message),
-        { enableHighAccuracy: true, timeout: 5000 }
-      );
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        map.setView([lat, lng], 15);
+        driverMarker.setLatLng([lat, lng]);
+      }, null, { enableHighAccuracy: true });
     }
 
     // Duty Switch Handler
-    dutyToggleBtn.addEventListener('click', () => {
+    dutySwitchBtn.addEventListener('click', () => {
       isOnline = !isOnline;
       if (isOnline) {
-        dutyToggleBtn.className = 'duty-btn online';
-        dutyText.innerText = 'ON DUTY';
-        radarStatus.style.display = 'flex';
-        radarText.innerText = 'Radar Active • Ready to Accept Rides';
+        dutySwitchBtn.className = 'duty-switch-btn online';
+        dutyLabel.innerText = 'ONLINE';
+        onlineDot.style.background = 'var(--ola-green)';
       } else {
-        dutyToggleBtn.className = 'duty-btn offline';
-        dutyText.innerText = 'OFF DUTY';
-        radarStatus.style.display = 'none';
-        dismissPopup();
+        dutySwitchBtn.className = 'duty-switch-btn offline';
+        dutyLabel.innerText = 'OFFLINE';
+        onlineDot.style.background = '#64748B';
+        closeIncomingRide();
       }
     });
 
-    // Show Ride Request Function
-    function triggerIncomingRide() {
+    // Ride Alert Logic
+    function showRideAlert() {
       if (!isOnline) {
-        alert('Please go ON DUTY first to receive incoming rides!');
+        alert('Please GO ONLINE first to receive incoming rides!');
         return;
       }
-      playBeepAlert();
-      remainingSec = 30;
-      countdownSec.innerText = remainingSec;
-      timerBarFill.style.width = '100%';
-      ridePopupModal.style.display = 'flex';
+      playDriverAlertSound();
+      secLeft = 30;
+      timerSecText.innerText = secLeft;
+      timerBar.style.width = '100%';
+      incomingRideModal.style.display = 'flex';
 
-      if (countdownInterval) clearInterval(countdownInterval);
-      countdownInterval = setInterval(() => {
-        remainingSec--;
-        countdownSec.innerText = remainingSec;
-        timerBarFill.style.width = ((remainingSec / 30) * 100) + '%';
-        if (remainingSec <= 0) {
-          dismissPopup();
-        }
+      if (timerCountdown) clearInterval(timerCountdown);
+      timerCountdown = setInterval(() => {
+        secLeft--;
+        timerSecText.innerText = secLeft;
+        timerBar.style.width = ((secLeft / 30) * 100) + '%';
+        if (secLeft <= 0) closeIncomingRide();
       }, 1000);
     }
 
-    function dismissPopup() {
-      if (countdownInterval) clearInterval(countdownInterval);
-      ridePopupModal.style.display = 'none';
+    function closeIncomingRide() {
+      if (timerCountdown) clearInterval(timerCountdown);
+      incomingRideModal.style.display = 'none';
     }
 
-    simulateRideBtn.addEventListener('click', triggerIncomingRide);
-    declineRideBtn.addEventListener('click', dismissPopup);
+    triggerRideAlertBtn.addEventListener('click', showRideAlert);
+    declineBtn.addEventListener('click', closeIncomingRide);
 
     // Accept Ride Action
-    acceptRideBtn.addEventListener('click', () => {
-      dismissPopup();
-      tripStep = 'accepted';
-      radarStatus.style.display = 'none';
-      simulateRideBtn.style.display = 'none';
-      activeTripPanel.style.display = 'block';
+    let activeRoutePolyline = null;
+    acceptBtn.addEventListener('click', () => {
+      closeIncomingRide();
+      tripState = 'to_pickup';
+      triggerRideAlertBtn.style.display = 'none';
+      activeTripSheet.style.display = 'block';
+      navBanner.style.display = 'flex';
 
-      // Draw route on map
-      const pickupCoords = [28.6280, 77.3649];
-      const dropCoords = [28.5562, 77.1000];
-      const routeLine = L.polyline([pickupCoords, dropCoords], { color: '#1FB6A6', weight: 5, dashArray: '8, 8' }).addTo(map);
-      map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
+      // Draw Route
+      const pickup = [28.6280, 77.3649];
+      const drop = [28.5562, 77.1000];
+      if (activeRoutePolyline) map.removeLayer(activeRoutePolyline);
+      activeRoutePolyline = L.polyline([pickup, drop], { color: '#00D26A', weight: 6 }).addTo(map);
+      map.fitBounds(activeRoutePolyline.getBounds(), { padding: [60, 60] });
 
-      tripMainActionBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start Ride (Verify OTP)';
-      tripMainActionBtn.style.background = '#1FB6A6';
+      tripActionBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start Ride (Verify OTP)';
+      tripActionBtn.style.background = '#00D26A';
+      tripActionBtn.style.color = '#000';
     });
 
-    // Trip Progress Controls
-    tripMainActionBtn.addEventListener('click', () => {
-      if (tripStep === 'accepted') {
-        const otpVal = rideOtpInput.value.trim();
+    // Trip Progress Logic
+    tripActionBtn.addEventListener('click', () => {
+      if (tripState === 'to_pickup') {
+        const otpVal = otpInput.value.trim();
         if (otpVal.length !== 4) {
-          alert('Please enter a valid 4-digit security OTP provided by customer!');
+          alert('Please enter a valid 4-digit OTP provided by rider!');
           return;
         }
-        tripStep = 'started';
-        otpBoxArea.style.display = 'none';
-        tripMainActionBtn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> Complete Ride &amp; Collect Fare (₹645)';
-        tripMainActionBtn.style.background = '#10B981';
-        alert('✅ OTP Verified! Trip Started. Drive safely.');
-      } else if (tripStep === 'started') {
-        alert('🎉 Trip Completed Successfully!\nCollected: ₹645\nEarning credited to your Zygo Captain Wallet.');
-        // Update stats
-        document.getElementById('todayEarnings').innerText = '₹3,095';
-        document.getElementById('todayTrips').innerText = '9';
+        tripState = 'in_trip';
+        otpCard.style.display = 'none';
+        document.getElementById('navInstructionTitle').innerText = 'In 5km, Continue on Ring Road';
+        document.getElementById('navInstructionSub').innerText = 'Heading towards IGI Airport Terminal 3';
+        tripActionBtn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> End Trip &amp; Collect Fare (₹485)';
+        tripActionBtn.style.background = '#FFC000';
+        tripActionBtn.style.color = '#000';
+        alert('✅ OTP 4047 Verified! Trip Started. Drive safely.');
+      } else if (tripState === 'in_trip') {
+        alert('🎉 Trip Completed!\nTotal Fare: ₹485 (Cash Collected)\nEarnings added to wallet!');
+        todayEarningsText.innerText = '₹3,325.00';
         // Reset state
-        tripStep = 'idle';
-        activeTripPanel.style.display = 'none';
-        radarStatus.style.display = 'flex';
-        simulateRideBtn.style.display = 'flex';
-        otpBoxArea.style.display = 'flex';
+        tripState = 'idle';
+        activeTripSheet.style.display = 'none';
+        navBanner.style.display = 'none';
+        triggerRideAlertBtn.style.display = 'flex';
+        otpCard.style.display = 'flex';
+        if (activeRoutePolyline) map.removeLayer(activeRoutePolyline);
       }
     });
 
-    // Auto-prompt demo ride request after 4 seconds on first load
+    // Auto-prompt demo ride request after 3 seconds on launch
     setTimeout(() => {
-      if (isOnline && tripStep === 'idle') {
-        triggerIncomingRide();
+      if (isOnline && tripState === 'idle') {
+        showRideAlert();
       }
-    }, 4000);
+    }, 3000);
   </script>
 </body>
 </html>
-
