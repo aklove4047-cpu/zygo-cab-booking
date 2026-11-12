@@ -33,6 +33,32 @@ app.get('/api/health', (req, res) => {
 // Serve Admin Panel at /admin
 app.use('/admin', express.static(path.join(__dirname, 'zygo-admin')));
 
+// Serve APK Downloads directory
+app.use('/downloads', express.static(path.join(__dirname, 'zygo-website', 'downloads'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.apk')) {
+      res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+      res.setHeader('Content-Disposition', 'attachment');
+    }
+  }
+}));
+
+// Route for Captain / Driver Partner Portal
+app.get('/driver', (req, res) => {
+  res.sendFile(path.join(__dirname, 'zygo-website', 'driver.html'));
+});
+
+// App Downloads direct API endpoints
+app.get('/download/customer-apk', (req, res) => {
+  const file = path.join(__dirname, 'zygo-website', 'downloads', 'zygo-customer.apk');
+  res.download(file, 'Zygo_Customer_App.apk');
+});
+
+app.get('/download/driver-apk', (req, res) => {
+  const file = path.join(__dirname, 'zygo-website', 'downloads', 'zygo-driver.apk');
+  res.download(file, 'Zygo_Driver_App.apk');
+});
+
 // Serve Customer Booking Website at root /
 app.use(express.static(path.join(__dirname, 'zygo-website')));
 

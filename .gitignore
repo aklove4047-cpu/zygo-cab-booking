@@ -11,6 +11,8 @@ yarn-error.log*
 # Large Archives & Temporary
 zygo (1).zip
 *.zip
+android-apps/
+
 
 # Flutter / Android / iOS Build and Cache directories
 **/.gradle/
@@ -28,3 +30,9 @@ zygo (1).zip
 # OS Files
 .DS_Store
 Thumbs.db
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
