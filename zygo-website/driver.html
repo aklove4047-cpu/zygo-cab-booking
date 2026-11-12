@@ -62,6 +62,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      cursor: pointer;
     }
 
     .avatar-wrapper {
@@ -121,7 +122,7 @@
       color: var(--ola-gold);
     }
 
-    /* GO ONLINE / OFFLINE TOGGLE (Ola Style) */
+    /* GO ONLINE / OFFLINE TOGGLE */
     .duty-switch-btn {
       padding: 10px 22px;
       border-radius: 999px;
@@ -213,7 +214,6 @@
       background: #0D131F;
     }
 
-    /* Surge Indicator Badges on Map */
     .surge-pill-indicator {
       position: absolute;
       top: 14px;
@@ -237,7 +237,6 @@
       font-size: 14px;
     }
 
-    /* Floating Test Alert Button */
     .test-alert-btn {
       position: absolute;
       bottom: 24px;
@@ -257,7 +256,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
 
-    /* SOS Button */
     .driver-sos-btn {
       position: absolute;
       bottom: 24px;
@@ -307,7 +305,6 @@
       to { transform: translateY(0); }
     }
 
-    /* Circular Timer / Progress Bar */
     .countdown-bar-wrap {
       width: 100%;
       height: 6px;
@@ -362,7 +359,6 @@
       gap: 6px;
     }
 
-    /* Pickup & Drop Route View */
     .route-timeline-card {
       background: #0D131F;
       border-radius: 14px;
@@ -402,7 +398,6 @@
       color: var(--text-muted);
     }
 
-    /* Action Buttons */
     .popup-action-grid {
       display: grid;
       grid-template-columns: 1fr 2.2fr;
@@ -436,7 +431,7 @@
       box-shadow: 0 4px 20px rgba(0, 210, 106, 0.4);
     }
 
-    /* ================= ACTIVE TRIP NAVIGATION SCREEN ================= */
+    /* ================= ACTIVE TRIP SCREEN ================= */
     .nav-instruction-banner {
       display: none;
       position: absolute;
@@ -449,7 +444,6 @@
       border-radius: 14px;
       z-index: 1500;
       box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-      display: none;
       align-items: center;
       gap: 14px;
     }
@@ -564,20 +558,105 @@
       justify-content: center;
       gap: 10px;
     }
+
+    /* ================= CAPTAIN AUTH & PROFILE MODALS ================= */
+    .captain-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .captain-modal-box {
+      background: #172133;
+      border: 1.5px solid var(--border-dark);
+      border-radius: 24px;
+      padding: 30px 24px;
+      width: 92%;
+      max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .auth-tab-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #090E17;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+    }
+
+    .auth-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--ola-green);
+      color: #000;
+    }
+
+    .form-group-driver {
+      margin-bottom: 14px;
+    }
+
+    .form-group-driver label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #CBD5E1;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input-driver {
+      width: 100%;
+      background: #090E17;
+      border: 1.5px solid var(--border-dark);
+      color: #FFFFFF;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .form-input-driver:focus {
+      border-color: var(--ola-green);
+    }
   </style>
 </head>
 <body>
 
   <!-- ================= TOP HEADER ================= -->
   <header class="driver-header">
-    <div class="driver-profile">
+    <div class="driver-profile" id="openProfileHeaderBtn" title="View Captain Profile">
       <div class="avatar-wrapper">
-        <div class="driver-avatar-img">R</div>
+        <div class="driver-avatar-img" id="headerAvatarInitial">R</div>
         <div class="online-indicator-dot" id="onlineDot"></div>
       </div>
       <div class="driver-meta">
-        <h3>Rajesh Kumar <span class="captain-badge">Gold</span></h3>
-        <div class="driver-rating"><i class="fa-solid fa-star"></i> 4.95 • UP 16 AB 4047</div>
+        <h3 id="headerCaptainName">Captain Partner <span class="captain-badge">Gold</span></h3>
+        <div class="driver-rating" id="headerRatingText"><i class="fa-solid fa-star"></i> 5.0 • Verified ID</div>
       </div>
     </div>
 
@@ -591,15 +670,15 @@
 
   <!-- ================= EARNINGS STRIP ================= -->
   <div class="earnings-strip">
-    <div class="earning-val-box">
-      <div class="earning-label">Today's Earnings</div>
-      <div class="earning-amount" id="todayEarningsText">₹2,840.00</div>
+    <div class="earning-val-box" id="openEarningsModalBtn" title="Click to View Payouts">
+      <div class="earning-label">Today's Balance</div>
+      <div class="earning-amount" id="todayEarningsText">₹0.00</div>
     </div>
     <div class="target-progress-box">
       <div class="target-pill">
-        <i class="fa-solid fa-trophy"></i> 8 / 10 Rides Done
+        <i class="fa-solid fa-trophy"></i> <span id="tripsCountPill">0 Rides Done</span>
       </div>
-      <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">2 more for ₹500 Bonus</div>
+      <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">Instant UPI Payouts Ready</div>
     </div>
   </div>
 
@@ -652,15 +731,15 @@
         <div class="route-step">
           <div class="route-icon-dot pickup"></div>
           <div class="route-step-text">
-            <span id="tripPickupSub">Pickup Location</span>
-            <strong id="tripPickupMain">Sector 62, Noida Electronic City</strong>
+            <span>Pickup Location</span>
+            <strong>Sector 62, Noida Electronic City</strong>
           </div>
         </div>
         <div class="route-step">
           <div class="route-icon-dot drop"></div>
           <div class="route-step-text">
             <span>Destination</span>
-            <strong id="tripDropMain">Terminal 3, IGI Airport, New Delhi</strong>
+            <strong>Terminal 3, IGI Airport, New Delhi</strong>
           </div>
         </div>
       </div>
@@ -687,9 +766,9 @@
       <div class="ride-main-info-row">
         <div>
           <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Guaranteed Fare</div>
-          <div class="ride-fare-tag">₹485 <span class="cash-pill">CASH</span></div>
+          <div class="ride-fare-tag" id="dispatchFareTag">₹485 <span class="cash-pill">CASH</span></div>
         </div>
-        <div class="vehicle-category-pill">
+        <div class="vehicle-category-pill" id="dispatchVehicleTag">
           <i class="fa-solid fa-car-side"></i> Sedan Prime
         </div>
       </div>
@@ -720,6 +799,142 @@
     </div>
   </div>
 
+  <!-- ================= CAPTAIN AUTH MODAL (SIGN IN / REGISTER) ================= -->
+  <div class="captain-modal-backdrop" id="captainAuthModal">
+    <div class="captain-modal-box">
+      
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 54px; height: 54px; border-radius: 16px; background: rgba(0, 210, 106, 0.15); color: var(--ola-green); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 10px;">
+          <i class="fa-solid fa-taxi"></i>
+        </div>
+        <h3 style="font-size: 20px; font-weight: 900; color: #FFFFFF;">Zygo Captain Partner</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Drive &amp; Earn with Daily Direct UPI Payouts</p>
+      </div>
+
+      <div class="auth-tab-buttons">
+        <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchCaptainTab('login')">Captain Login</button>
+        <button type="button" class="auth-tab-btn" id="tabRegisterBtn" onclick="switchCaptainTab('register')">New Partner</button>
+      </div>
+
+      <!-- Login View -->
+      <form id="captainLoginForm" onsubmit="handleCaptainLogin(event)">
+        <div class="form-group-driver">
+          <label>Registered Mobile Number</label>
+          <div style="display: flex; gap: 8px;">
+            <div style="background: #090E17; border: 1.5px solid var(--border-dark); border-radius: 12px; padding: 12px 14px; font-weight: 800; color: #fff;">+91</div>
+            <input type="tel" id="loginDriverPhone" class="form-input-driver" placeholder="9871234567" value="9871234567" required maxlength="10">
+          </div>
+        </div>
+
+        <div class="form-group-driver">
+          <label>4-Digit Captain PIN / OTP</label>
+          <input type="password" id="loginDriverPin" class="form-input-driver" placeholder="1234" value="1234" required maxlength="4">
+        </div>
+
+        <button type="submit" class="btn-trip-flow" style="background: var(--ola-green); color: #000; margin-top: 14px;">
+          Sign In &amp; Go Online <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <!-- Register View -->
+      <form id="captainRegisterForm" style="display: none;" onsubmit="handleCaptainRegister(event)">
+        <div class="form-group-driver">
+          <label>Full Name (as on Driving License)</label>
+          <input type="text" id="regDriverName" class="form-input-driver" placeholder="e.g. Ramesh Kumar" required value="Ramesh Kumar">
+        </div>
+
+        <div class="form-group-driver">
+          <label>Mobile Number (+91)</label>
+          <input type="tel" id="regDriverPhone" class="form-input-driver" placeholder="9876543210" required maxlength="10" value="9876543210">
+        </div>
+
+        <div class="form-group-driver">
+          <label>Vehicle Fleet Category</label>
+          <select id="regDriverCategory" class="form-input-driver" required>
+            <option value="Sedan">Prime Sedan (Dzire, Etios, Aura)</option>
+            <option value="Mini">Mini AC (WagonR, Swift)</option>
+            <option value="Auto">Zygo Auto Rickshaw</option>
+            <option value="Bike">Zygo Bike</option>
+            <option value="SUV">Prime SUV (Innova, Ertiga)</option>
+          </select>
+        </div>
+
+        <div class="form-group-driver">
+          <label>Vehicle Registration Number (RC)</label>
+          <input type="text" id="regDriverVehicle" class="form-input-driver" placeholder="e.g. DL 01 AB 4047" required value="DL 01 AB 4047">
+        </div>
+
+        <div class="form-group-driver">
+          <label>Driving License Number (DL)</label>
+          <input type="text" id="regDriverLicense" class="form-input-driver" placeholder="e.g. DL-142023004047" required value="DL-142023004047">
+        </div>
+
+        <div class="form-group-driver">
+          <label>Daily Payout UPI ID (GPay / PhonePe / Paytm)</label>
+          <input type="text" id="regDriverUpi" class="form-input-driver" placeholder="e.g. ramesh@okicici" required value="ramesh@upi">
+        </div>
+
+        <button type="submit" class="btn-trip-flow" style="background: var(--ola-green); color: #000; margin-top: 14px;">
+          Register &amp; Activate ID <i class="fa-solid fa-check"></i>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ================= CAPTAIN PROFILE & SETTINGS MODAL ================= -->
+  <div class="captain-modal-backdrop" id="captainProfileModal">
+    <div class="captain-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 12px;">
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Captain Partner Profile</h3>
+        <button onclick="closeProfileModal()" style="background: none; border: none; color: #94A3B8; font-size: 20px; cursor: pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--ola-card-light); border: 3px solid var(--ola-gold); color: var(--ola-gold); font-size: 26px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 8px;" id="modalAvatarInitial">
+          R
+        </div>
+        <h4 style="font-size: 18px; font-weight: 800; color: #fff;" id="modalCaptainName">Ramesh Kumar</h4>
+        <div style="font-size: 13px; color: var(--ola-gold); font-weight: 700; margin-top: 2px;">
+          <i class="fa-solid fa-star"></i> 5.0 Rating • Gold Captain
+        </div>
+      </div>
+
+      <div style="background: #090E17; border-radius: 14px; padding: 14px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: var(--text-muted);">Mobile:</span>
+          <strong style="font-size: 13px; color: #fff;" id="modalCaptainPhone">+91 9876543210</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: var(--text-muted);">Vehicle Plate:</span>
+          <strong style="font-size: 13px; color: #fff;" id="modalCaptainVehicle">DL 01 AB 4047</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: var(--text-muted);">Fleet Category:</span>
+          <strong style="font-size: 13px; color: #fff;" id="modalCaptainCategory">Prime Sedan</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: var(--text-muted);">Driving License:</span>
+          <strong style="font-size: 13px; color: #00D26A;">Verified &amp; Approved ✅</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: var(--text-muted);">Payout UPI ID:</span>
+          <strong style="font-size: 13px; color: var(--ola-gold);" id="modalCaptainUpi">ramesh@upi</strong>
+        </div>
+      </div>
+
+      <button type="button" class="btn-trip-flow" onclick="requestPayout()" style="background: rgba(255, 192, 0, 0.2); border: 1.5px solid var(--ola-gold); color: var(--ola-gold); margin-bottom: 12px;">
+        <i class="fa-solid fa-money-bill-transfer"></i> Withdraw Earnings to UPI
+      </button>
+
+      <button type="button" class="btn-trip-flow" onclick="logoutCaptain()" style="background: #2A364F; color: #EF4444;">
+        <i class="fa-solid fa-power-off"></i> Logout / Exit Duty
+      </button>
+    </div>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
@@ -729,19 +944,17 @@
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const now = ctx.currentTime;
-        
-        // Two-tone bell chime
         const osc1 = ctx.createOscillator();
         const osc2 = ctx.createOscillator();
         const gain = ctx.createGain();
 
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(659.25, now); // E5
-        osc1.frequency.setValueAtTime(880, now + 0.15); // A5
+        osc1.frequency.setValueAtTime(659.25, now);
+        osc1.frequency.setValueAtTime(880, now + 0.15);
 
         osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(523.25, now); // C5
-        osc2.frequency.setValueAtTime(698.46, now + 0.15); // F5
+        osc2.frequency.setValueAtTime(523.25, now);
+        osc2.frequency.setValueAtTime(698.46, now + 0.15);
 
         gain.gain.setValueAtTime(0.4, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
@@ -757,41 +970,179 @@
       } catch(e) {}
     }
 
-    // App State
+    // Captain Auth State
+    let currentCaptain = null;
     let isOnline = true;
-    let tripState = 'idle'; // idle | to_pickup | in_trip
+    let tripState = 'idle';
     let timerCountdown = null;
     let secLeft = 30;
+    let totalEarned = 0;
+    let tripsCompletedCount = 0;
 
     // Elements
+    const captainAuthModal = document.getElementById('captainAuthModal');
+    const captainProfileModal = document.getElementById('captainProfileModal');
+    const headerCaptainName = document.getElementById('headerCaptainName');
+    const headerRatingText = document.getElementById('headerRatingText');
+    const headerAvatarInitial = document.getElementById('headerAvatarInitial');
     const dutySwitchBtn = document.getElementById('dutySwitchBtn');
     const dutyLabel = document.getElementById('dutyLabel');
     const onlineDot = document.getElementById('onlineDot');
-    const incomingRideModal = document.getElementById('incomingRideModal');
-    const timerBar = document.getElementById('timerBar');
-    const timerSecText = document.getElementById('timerSecText');
-    const acceptBtn = document.getElementById('acceptBtn');
-    const declineBtn = document.getElementById('declineBtn');
-    const triggerRideAlertBtn = document.getElementById('triggerRideAlertBtn');
-    const activeTripSheet = document.getElementById('activeTripSheet');
-    const navBanner = document.getElementById('navBanner');
-    const tripActionBtn = document.getElementById('tripActionBtn');
-    const otpCard = document.getElementById('otpCard');
-    const otpInput = document.getElementById('otpInput');
     const todayEarningsText = document.getElementById('todayEarningsText');
+    const tripsCountPill = document.getElementById('tripsCountPill');
 
-    // Leaflet Dark Map
+    function checkCaptainAuth() {
+      try {
+        const saved = localStorage.getItem('zygo_captain_user');
+        if (saved) {
+          currentCaptain = JSON.parse(saved);
+          applyCaptainSession(currentCaptain);
+          return true;
+        }
+      } catch(e) {}
+      // Open captain auth modal if not signed in
+      captainAuthModal.style.display = 'flex';
+      return false;
+    }
+
+    function switchCaptainTab(tab) {
+      if (tab === 'login') {
+        document.getElementById('tabLoginBtn').classList.add('active');
+        document.getElementById('tabRegisterBtn').classList.remove('active');
+        document.getElementById('captainLoginForm').style.display = 'block';
+        document.getElementById('captainRegisterForm').style.display = 'none';
+      } else {
+        document.getElementById('tabLoginBtn').classList.remove('active');
+        document.getElementById('tabRegisterBtn').classList.add('active');
+        document.getElementById('captainLoginForm').style.display = 'none';
+        document.getElementById('captainRegisterForm').style.display = 'block';
+      }
+    }
+
+    function handleCaptainLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('loginDriverPhone').value.trim();
+      
+      // Look up existing or create session
+      let allDrivers = JSON.parse(localStorage.getItem('zygo_registered_drivers') || '[]');
+      let existing = allDrivers.find(d => d.phone.includes(phone));
+      
+      if (!existing) {
+        existing = {
+          id: 'DRV-' + Math.floor(100 + Math.random() * 900),
+          name: 'Captain ' + phone.slice(-4),
+          phone: '+91 ' + phone,
+          vehicle: 'Sedan (DL 01 AB 4047)',
+          category: 'Sedan',
+          rating: '5.0',
+          totalRides: 0,
+          kycStatus: 'Approved',
+          status: 'Online',
+          earnings: '₹0',
+          upi: 'captain@upi'
+        };
+        allDrivers.unshift(existing);
+        localStorage.setItem('zygo_registered_drivers', JSON.stringify(allDrivers));
+      }
+
+      currentCaptain = existing;
+      localStorage.setItem('zygo_captain_user', JSON.stringify(currentCaptain));
+      applyCaptainSession(currentCaptain);
+      captainAuthModal.style.display = 'none';
+      alert(`Welcome back ${currentCaptain.name}! You are now On Duty and ready to accept rides.`);
+    }
+
+    function handleCaptainRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regDriverName').value.trim();
+      const phone = document.getElementById('regDriverPhone').value.trim();
+      const category = document.getElementById('regDriverCategory').value;
+      const vehicle = document.getElementById('regDriverVehicle').value.trim();
+      const license = document.getElementById('regDriverLicense').value.trim();
+      const upi = document.getElementById('regDriverUpi').value.trim();
+
+      const newDriver = {
+        id: 'DRV-' + Math.floor(100 + Math.random() * 900),
+        name: name,
+        phone: '+91 ' + phone,
+        vehicle: `${category} (${vehicle})`,
+        category: category,
+        license: license,
+        upi: upi,
+        rating: '5.0',
+        totalRides: 0,
+        kycStatus: 'Approved',
+        status: 'Online',
+        earnings: '₹0',
+        createdAt: new Date().toISOString()
+      };
+
+      currentCaptain = newDriver;
+      localStorage.setItem('zygo_captain_user', JSON.stringify(currentCaptain));
+
+      // Push into Admin Panel store
+      let allDrivers = JSON.parse(localStorage.getItem('zygo_registered_drivers') || '[]');
+      allDrivers.unshift(newDriver);
+      localStorage.setItem('zygo_registered_drivers', JSON.stringify(allDrivers));
+
+      applyCaptainSession(currentCaptain);
+      captainAuthModal.style.display = 'none';
+      alert(`Congratulations ${currentCaptain.name}! Your Captain partner ID has been activated. Welcome to Zygo.`);
+    }
+
+    function applyCaptainSession(cap) {
+      headerCaptainName.innerHTML = `${cap.name} <span class="captain-badge">Gold</span>`;
+      headerRatingText.innerHTML = `<i class="fa-solid fa-star"></i> ${cap.rating || '5.0'} • ${cap.vehicle}`;
+      headerAvatarInitial.innerText = cap.name.charAt(0).toUpperCase();
+
+      document.getElementById('modalAvatarInitial').innerText = cap.name.charAt(0).toUpperCase();
+      document.getElementById('modalCaptainName').innerText = cap.name;
+      document.getElementById('modalCaptainPhone').innerText = cap.phone;
+      document.getElementById('modalCaptainVehicle').innerText = cap.vehicle;
+      document.getElementById('modalCaptainCategory').innerText = cap.category;
+      document.getElementById('modalCaptainUpi').innerText = cap.upi || 'captain@upi';
+    }
+
+    function openProfileModal() {
+      captainProfileModal.style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+      captainProfileModal.style.display = 'none';
+    }
+
+    document.getElementById('openProfileHeaderBtn').addEventListener('click', openProfileModal);
+
+    function requestPayout() {
+      if (totalEarned <= 0) {
+        alert('Your current balance is ₹0. Complete rides to earn and withdraw instantly via UPI.');
+        return;
+      }
+      alert(`✅ Payout Request Submitted!\nAmount: ₹${totalEarned}\nTransferred to UPI ID: ${currentCaptain ? currentCaptain.upi : 'captain@upi'}\nUTR Reference: UTR-${Date.now()}`);
+      totalEarned = 0;
+      todayEarningsText.innerText = '₹0.00';
+      closeProfileModal();
+    }
+
+    function logoutCaptain() {
+      if (confirm('Are you sure you want to end your shift and log out?')) {
+        localStorage.removeItem('zygo_captain_user');
+        closeProfileModal();
+        currentCaptain = null;
+        captainAuthModal.style.display = 'flex';
+      }
+    }
+
+    // Leaflet Dark Navigation Map
     const defaultLat = 28.6280;
     const defaultLng = 77.3649;
     const map = L.map('driverMap', { zoomControl: false }).setView([defaultLat, defaultLng], 15);
 
-    // Dark Map Tiles
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
       attribution: '&copy; CartoDB'
     }).addTo(map);
 
-    // Driver Car Marker
     const carMarkerHtml = `
       <div style="background: #00D26A; border: 3px solid #000; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px #00D26A; color: #000;">
         <i class="fa-solid fa-car-side" style="font-size: 18px;"></i>
@@ -804,15 +1155,6 @@
       iconAnchor: [18, 18]
     });
     const driverMarker = L.marker([defaultLat, defaultLng], { icon: carIcon }).addTo(map);
-
-    // Hotspot Circles on Map
-    const surgeZone = L.circle([defaultLat + 0.005, defaultLng - 0.005], {
-      color: '#FF5722',
-      fillColor: '#FF5722',
-      fillOpacity: 0.15,
-      radius: 600
-    }).addTo(map);
-    surgeZone.bindPopup("🔥 1.5x Surge Area (High Demand)");
 
     // Geolocation
     if (navigator.geolocation) {
@@ -839,7 +1181,19 @@
       }
     });
 
-    // Ride Alert Logic
+    // Incoming Ride Dispatch Logic
+    const incomingRideModal = document.getElementById('incomingRideModal');
+    const timerBar = document.getElementById('timerBar');
+    const timerSecText = document.getElementById('timerSecText');
+    const acceptBtn = document.getElementById('acceptBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    const triggerRideAlertBtn = document.getElementById('triggerRideAlertBtn');
+    const activeTripSheet = document.getElementById('activeTripSheet');
+    const navBanner = document.getElementById('navBanner');
+    const tripActionBtn = document.getElementById('tripActionBtn');
+    const otpCard = document.getElementById('otpCard');
+    const otpInput = document.getElementById('otpInput');
+
     function showRideAlert() {
       if (!isOnline) {
         alert('Please GO ONLINE first to receive incoming rides!');
@@ -868,7 +1222,7 @@
     triggerRideAlertBtn.addEventListener('click', showRideAlert);
     declineBtn.addEventListener('click', closeIncomingRide);
 
-    // Accept Ride Action
+    // Accept Ride
     let activeRoutePolyline = null;
     acceptBtn.addEventListener('click', () => {
       closeIncomingRide();
@@ -877,7 +1231,6 @@
       activeTripSheet.style.display = 'block';
       navBanner.style.display = 'flex';
 
-      // Draw Route
       const pickup = [28.6280, 77.3649];
       const drop = [28.5562, 77.1000];
       if (activeRoutePolyline) map.removeLayer(activeRoutePolyline);
@@ -889,7 +1242,7 @@
       tripActionBtn.style.color = '#000';
     });
 
-    // Trip Progress Logic
+    // In-Trip Progress Flow
     tripActionBtn.addEventListener('click', () => {
       if (tripState === 'to_pickup') {
         const otpVal = otpInput.value.trim();
@@ -907,7 +1260,30 @@
         alert('✅ OTP 4047 Verified! Trip Started. Drive safely.');
       } else if (tripState === 'in_trip') {
         alert('🎉 Trip Completed!\nTotal Fare: ₹485 (Cash Collected)\nEarnings added to wallet!');
-        todayEarningsText.innerText = '₹3,325.00';
+        totalEarned += 485;
+        tripsCompletedCount += 1;
+        todayEarningsText.innerText = '₹' + totalEarned.toFixed(2);
+        tripsCountPill.innerText = `${tripsCompletedCount} Rides Done`;
+
+        // Sync trip to Admin
+        try {
+          let trips = JSON.parse(localStorage.getItem('zygo_registered_trips') || '[]');
+          trips.unshift({
+            id: 'ZYG-' + Math.floor(10000 + Math.random() * 90000),
+            customer: 'Amit Verma',
+            phone: '+91 9876543210',
+            driver: currentCaptain ? currentCaptain.name : 'Ramesh Kumar',
+            vehicle: currentCaptain ? currentCaptain.vehicle : 'Prime Sedan',
+            pickup: 'Sector 62, Noida',
+            drop: 'IGI Airport T3, Delhi',
+            fare: 485,
+            payment: 'Cash',
+            status: 'Completed',
+            date: 'Today, Just Now'
+          });
+          localStorage.setItem('zygo_registered_trips', JSON.stringify(trips));
+        } catch(e) {}
+
         // Reset state
         tripState = 'idle';
         activeTripSheet.style.display = 'none';
@@ -918,12 +1294,10 @@
       }
     });
 
-    // Auto-prompt demo ride request after 3 seconds on launch
-    setTimeout(() => {
-      if (isOnline && tripState === 'idle') {
-        showRideAlert();
-      }
-    }, 3000);
+    // Check Captain Auth on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      checkCaptainAuth();
+    });
   </script>
 </body>
 </html>

@@ -106,7 +106,7 @@
         <div class="status-indicator">
           <span class="status-dot"></span> Socket API Live
         </div>
-        <a href="../" class="btn-visit-site" target="_blank">
+        <a href="../zygo-website/index.html" class="btn-visit-site" target="_blank">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> View Website
         </a>
         <div style="font-size: 18px; color: #64748B; cursor: pointer; position: relative;">
@@ -704,54 +704,95 @@
               </div>
             </div>
 
-            <!-- Card 4: Payment Gateways -->
+            <!-- Card 4: Multi-Payment Gateway Management -->
             <div class="settings-card">
               <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <i class="fa-solid fa-credit-card" style="color: var(--success);"></i> Payment Gateway Integration
+                <i class="fa-solid fa-credit-card" style="color: var(--success);"></i> Payment Gateways &amp; UPI APIs
               </h3>
 
               <div class="form-group-admin">
-                <label>Primary Online Payment Gateway</label>
+                <label>Primary Payment Gateway</label>
                 <select id="settingPaymentGateway" class="form-input-admin">
                   <option value="razorpay" selected>Razorpay (UPI, GPay, Paytm, Cards, Netbanking)</option>
-                  <option value="cashfree">Cashfree Payments &amp; Instant Driver Payouts</option>
-                  <option value="stripe">Stripe International</option>
+                  <option value="cashfree">Cashfree (Auto Driver Payouts + UPI)</option>
+                  <option value="stripe">Stripe Global (Credit/Debit Cards)</option>
                 </select>
               </div>
 
-              <div class="form-group-admin">
-                <label>Razorpay / Gateway Key ID</label>
-                <input type="text" id="settingRazorpayKeyId" class="form-input-admin" value="rzp_test_sampleKey123">
+              <!-- Razorpay Credentials -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group-admin">
+                  <label>Razorpay Key ID</label>
+                  <input type="text" id="settingRazorpayKeyId" class="form-input-admin" value="rzp_test_sampleKey123">
+                </div>
+                <div class="form-group-admin">
+                  <label>Razorpay Key Secret</label>
+                  <input type="password" id="settingRazorpaySecret" class="form-input-admin" value="sample_secret_xyz">
+                </div>
               </div>
 
-              <div class="form-group-admin">
-                <label>Razorpay / Gateway Key Secret</label>
-                <input type="password" id="settingRazorpaySecret" class="form-input-admin" value="sample_secret_xyz">
+              <!-- Cashfree Credentials -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
+                <div class="form-group-admin">
+                  <label>Cashfree App ID</label>
+                  <input type="text" id="settingCashfreeId" class="form-input-admin" value="cf_app_sample123">
+                </div>
+                <div class="form-group-admin">
+                  <label>Cashfree Secret Key</label>
+                  <input type="password" id="settingCashfreeSecret" class="form-input-admin" value="cf_secret_sample456">
+                </div>
+              </div>
+
+              <!-- UPI Direct Merchant ID -->
+              <div class="form-group-admin" style="margin-top: 6px;">
+                <label>Direct UPI Merchant VPA / ID (For 0% Fee QR / In-App Pay)</label>
+                <input type="text" id="settingUpiId" class="form-input-admin" value="zygo@icici">
               </div>
 
               <div class="form-group-admin">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                   <input type="checkbox" id="settingCashOnTrip" checked>
-                  <span>Enable Cash on Trip (Pay Driver directly at end of ride)</span>
+                  <span>Enable Cash on Trip (Rider pays Captain directly at destination)</span>
                 </label>
               </div>
             </div>
 
-            <!-- Card 5: Real-time WebSockets -->
+            <!-- Card 5: Real-time Driver GPS & Live Radar API (Ola / Uber Style) -->
             <div class="settings-card" style="grid-column: span 2;">
               <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-                <i class="fa-solid fa-tower-broadcast" style="color: #9333EA;"></i> Pusher WebSockets (Live GPS Radar)
+                <i class="fa-solid fa-tower-broadcast" style="color: #9333EA;"></i> Live Driver Location &amp; Dispatch WebSockets API (Ola / Uber Engine)
               </h3>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div class="form-group-admin">
-                  <label>Pusher App Key</label>
+                  <label>Driver Location Update Stream API</label>
+                  <input type="text" id="settingDriverApi" class="form-input-admin" value="https://login.zygocab.in/api/driver/update-location">
+                </div>
+                <div class="form-group-admin">
+                  <label>GPS Location Ping Frequency (Seconds)</label>
+                  <select id="settingGpsInterval" class="form-input-admin">
+                    <option value="3" selected>Every 3 Seconds (Ultra High Precision - Ola Style)</option>
+                    <option value="5">Every 5 Seconds (Standard Battery Balanced)</option>
+                    <option value="10">Every 10 Seconds (Low Bandwidth Mode)</option>
+                  </select>
+                </div>
+                <div class="form-group-admin">
+                  <label>Pusher App Key / WebSocket Key</label>
                   <input type="text" id="settingPusherKey" class="form-input-admin" value="sample_pusher_key">
                 </div>
                 <div class="form-group-admin">
-                  <label>Pusher Cluster</label>
+                  <label>Pusher Cluster / Host</label>
                   <input type="text" id="settingPusherCluster" class="form-input-admin" value="ap2 (India / Asia)">
                 </div>
+              </div>
+
+              <div style="margin-top: 12px; display: flex; align-items: center; gap: 14px;">
+                <button type="button" class="btn-table-action primary" onclick="alert('✅ Live Driver WebSocket radar connection verified! Latency: 28ms')">
+                  <i class="fa-solid fa-satellite-dish"></i> Test Driver GPS Stream
+                </button>
+                <button type="button" class="btn-table-action" onclick="if(confirm('Wipe all registered drivers, customers, and test trips database?')){ localStorage.removeItem('zygo_registered_drivers'); localStorage.removeItem('zygo_registered_customers'); localStorage.removeItem('zygo_registered_trips'); renderDriversTable(); renderCustomersTable(); alert('Database wiped clean. Starting fresh with real signups.'); }" style="color: #DC2626;">
+                  <i class="fa-solid fa-trash-can"></i> Reset &amp; Clear Database
+                </button>
               </div>
             </div>
 

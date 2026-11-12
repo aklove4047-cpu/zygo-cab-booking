@@ -172,9 +172,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.getElementById('driversTableBody');
     if (!tbody) return;
 
-    let filtered = AdminMockData.drivers;
+    if (typeof refreshAdminStats === 'function') refreshAdminStats();
+    let filtered = AdminMockData.drivers || [];
     if (kycFilter !== 'all') {
       filtered = filtered.filter(d => d.kycStatus === kycFilter);
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:35px; color:#94A3B8;"><i class="fa-solid fa-id-card" style="font-size:28px; margin-bottom:8px; display:block; color:#CBD5E1;"></i><strong>No Drivers Registered Yet</strong><div style="font-size:12px; margin-top:4px;">When captains register via the Zygo Driver App, their profile and KYC documents will appear here in real time.</div></td></tr>`;
+      return;
     }
 
     tbody.innerHTML = filtered.map(d => {
@@ -191,10 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="font-size: 11px; color: var(--text-muted);">${d.phone}</div>
           </td>
           <td>${d.vehicle}</td>
-          <td><strong>${d.rating} ★</strong> (${d.totalRides} trips)</td>
-          <td><span class="badge-status ${statusBadge}">${d.status}</span></td>
-          <td><span class="badge-status ${kycBadge}">${d.kycStatus}</span></td>
-          <td><strong>${d.earnings}</strong></td>
+          <td><strong>${d.rating || '5.0'} ★</strong> (${d.totalRides || 0} trips)</td>
+          <td><span class="badge-status ${statusBadge}">${d.status || 'Online'}</span></td>
+          <td><span class="badge-status ${kycBadge}">${d.kycStatus || 'Approved'}</span></td>
+          <td><strong>${d.earnings || '₹0'}</strong></td>
           <td>
             <div class="action-btn-group">
               ${d.kycStatus === 'Pending KYC' ? `
@@ -202,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <i class="fa-solid fa-check"></i> Review KYC
                 </button>
               ` : `
-                <button class="btn-table-action" onclick="alert('Viewing driver history for ${d.name}')">
+                <button class="btn-table-action" onclick="alert('Viewing driver profile: ${d.name}\\nVehicle: ${d.vehicle}\\nUPI ID: ${d.upi || 'captain@upi'}')">
                   <i class="fa-solid fa-id-badge"></i> Profile
                 </button>
               `}
@@ -233,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const approveBtn = document.getElementById('approveKycActionBtn');
     approveBtn.onclick = () => {
       driver.kycStatus = 'Approved';
+      if (typeof saveRegisteredDrivers === 'function') saveRegisteredDrivers(AdminMockData.drivers);
       modal.classList.remove('active');
       renderDriversTable();
       alert(`Driver ${driver.name} KYC has been approved! Driver is now activated on the Zygo Captain App.`);
@@ -246,19 +253,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbody = document.getElementById('customersTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = AdminMockData.customers.map(c => `
+    if (typeof refreshAdminStats === 'function') refreshAdminStats();
+    const customers = AdminMockData.customers || [];
+    if (customers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:35px; color:#94A3B8;"><i class="fa-solid fa-users" style="font-size:28px; margin-bottom:8px; display:block; color:#CBD5E1;"></i><strong>No Customers Registered Yet</strong><div style="font-size:12px; margin-top:4px;">When riders sign up on the Zygo Customer App, their accounts, rides, and wallet balances will automatically sync here.</div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = customers.map(c => `
       <tr>
         <td><strong>${c.id}</strong></td>
         <td>
           <div style="font-weight: 700;">${c.name}</div>
-          <div style="font-size: 11px; color: var(--text-muted);">${c.email}</div>
+          <div style="font-size: 11px; color: var(--text-muted);">${c.email || c.phone}</div>
         </td>
         <td>${c.phone}</td>
-        <td><strong>${c.totalTrips}</strong> rides</td>
-        <td><strong style="color: var(--primary);">${c.wallet}</strong></td>
-        <td><span class="badge-status badge-active">${c.status}</span></td>
+        <td><strong>${c.totalTrips || 0}</strong> rides</td>
+        <td><strong style="color: var(--primary);">${c.wallet || '₹450'}</strong></td>
+        <td><span class="badge-status badge-active">${c.status || 'Active'}</span></td>
         <td>
-          <button class="btn-table-action" onclick="alert('Customer ride history: ${c.name}')">
+          <button class="btn-table-action" onclick="alert('Customer ride history: ${c.name}\\nPhone: ${c.phone}\\nWallet Balance: ${c.wallet || '₹450'}')">
             <i class="fa-solid fa-clock-rotate-left"></i> History
           </button>
         </td>

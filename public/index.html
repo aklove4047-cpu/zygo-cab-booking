@@ -362,6 +362,7 @@
       <li><a href="#download-app" onclick="closeDrawer()"><i class="fa-solid fa-mobile-screen"></i> Download App APK</a></li>
       <li><a href="javascript:void(0)" onclick="alert('Refer code: ZYGO100\nShare with friends to get ₹100 free ride discount!')"><i class="fa-solid fa-gift"></i> Refer &amp; Earn ₹100</a></li>
       <li><a href="tel:112"><i class="fa-solid fa-phone-volume" style="color:#EF4444;"></i> 24x7 Safety Helpline</a></li>
+      <li><a href="javascript:void(0)" onclick="logoutCustomer()" style="color:#DC2626;"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#DC2626;"></i> Logout Account</a></li>
     </ul>
     <div style="padding: 16px; border-top: 1px solid #E5E7EB; font-size: 12px; color: #94A3B8; text-align: center;">
       Zygo Cabs Mobility v2.8.0 • 100% Verified
@@ -832,10 +833,184 @@
     </div>
   </footer>
 
+  <!-- ================= OLA-STYLE RIDER AUTH MODAL (LOGIN / SIGNUP) ================= -->
+  <div class="side-drawer-backdrop" id="authModalBackdrop" style="z-index: 5000; align-items: center; justify-content: center;">
+    <div style="background: #FFFFFF; border-radius: 24px; padding: 32px 26px; width: 92%; max-width: 420px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; animation: popIn 0.3s ease-out; margin: auto;">
+      
+      <div style="text-align: center; margin-bottom: 24px;">
+        <div style="width: 58px; height: 58px; border-radius: 16px; background: #E8FBF0; color: #00D26A; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px;">
+          <i class="fa-solid fa-car-side"></i>
+        </div>
+        <h3 style="font-size: 22px; font-weight: 900; color: #111827;" id="authModalTitle">Welcome to Zygo Cabs</h3>
+        <p style="font-size: 13px; color: #64748B; margin-top: 4px;" id="authModalSub">Enter your mobile number to sign in or create an account</p>
+      </div>
+
+      <!-- Step 1: Phone Input -->
+      <div id="authStepPhone">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 6px; display: block;">Mobile Number</label>
+          <div style="display: flex; gap: 8px;">
+            <div style="background: #F3F4F6; border: 1.5px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; font-weight: 800; color: #111827; font-size: 14px;">+91</div>
+            <input type="tel" id="authPhoneInput" class="form-control" placeholder="98765 43210" maxlength="10" value="9876543210" style="flex: 1; font-weight: 700;">
+          </div>
+        </div>
+
+        <button type="button" id="authGetOtpBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; font-weight: 900; background: #00D26A; border-color: #00D26A; color: #000; border-radius: 14px; margin-top: 6px;">
+          Continue with OTP <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- Step 2: OTP & Name -->
+      <div id="authStepOtp" style="display: none;">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 6px; display: block;">Your Full Name</label>
+          <input type="text" id="authNameInput" class="form-control" placeholder="e.g. Rahul Sharma" value="Rahul Sharma" style="font-weight: 700;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 12px; font-weight: 700; color: #374151; margin: 0;">4-Digit OTP Code</label>
+            <span style="font-size: 11px; color: #059669; font-weight: 700; cursor: pointer;" onclick="document.getElementById('authOtpInput').value='1234'">Auto-Fill (1234)</span>
+          </div>
+          <input type="text" id="authOtpInput" class="form-control" placeholder="1234" maxlength="4" value="1234" style="text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 900; color: #00D26A;">
+        </div>
+
+        <button type="button" id="authVerifyBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; font-weight: 900; background: #00D26A; border-color: #00D26A; color: #000; border-radius: 14px;">
+          Verify &amp; Start Riding <i class="fa-solid fa-check"></i>
+        </button>
+
+        <div style="text-align: center; margin-top: 14px;">
+          <a href="javascript:void(0)" onclick="resetAuthFlow()" style="font-size: 12px; color: #64748B; text-decoration: underline;">Change Phone Number</a>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #94A3B8;">
+        By continuing, you agree to Zygo's Terms of Service &amp; Privacy Policy
+      </div>
+
+    </div>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <script>
+    // ================= RIDER AUTH & PROFILE SYSTEM =================
+    const authModalBackdrop = document.getElementById('authModalBackdrop');
+    const authStepPhone = document.getElementById('authStepPhone');
+    const authStepOtp = document.getElementById('authStepOtp');
+    const authPhoneInput = document.getElementById('authPhoneInput');
+    const authNameInput = document.getElementById('authNameInput');
+    const authOtpInput = document.getElementById('authOtpInput');
+    const authGetOtpBtn = document.getElementById('authGetOtpBtn');
+    const authVerifyBtn = document.getElementById('authVerifyBtn');
+
+    function checkCustomerAuth() {
+      try {
+        const saved = localStorage.getItem('zygo_customer_user');
+        if (saved) {
+          const user = JSON.parse(saved);
+          applyCustomerSession(user);
+          return true;
+        }
+      } catch(e) {}
+      // Open auth modal if not logged in
+      openAuthModal();
+      return false;
+    }
+
+    function openAuthModal() {
+      authModalBackdrop.style.display = 'flex';
+      resetAuthFlow();
+    }
+
+    function closeAuthModal() {
+      authModalBackdrop.style.display = 'none';
+    }
+
+    function resetAuthFlow() {
+      authStepPhone.style.display = 'block';
+      authStepOtp.style.display = 'none';
+      document.getElementById('authModalTitle').innerText = 'Welcome to Zygo Cabs';
+      document.getElementById('authModalSub').innerText = 'Enter your mobile number to sign in or create an account';
+    }
+
+    authGetOtpBtn.addEventListener('click', () => {
+      const phone = authPhoneInput.value.trim();
+      if (phone.length < 10) {
+        alert('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      authStepPhone.style.display = 'none';
+      authStepOtp.style.display = 'block';
+      document.getElementById('authModalTitle').innerText = 'Verify Your Mobile';
+      document.getElementById('authModalSub').innerText = `Enter the 4-digit OTP sent to +91 ${phone}`;
+    });
+
+    authVerifyBtn.addEventListener('click', () => {
+      const otp = authOtpInput.value.trim();
+      const name = authNameInput.value.trim() || 'Zygo Rider';
+      const phone = authPhoneInput.value.trim();
+
+      if (otp.length !== 4) {
+        alert('Please enter the 4-digit OTP.');
+        return;
+      }
+
+      const user = {
+        id: 'CUST-' + Math.floor(100 + Math.random() * 900),
+        name: name,
+        phone: '+91 ' + phone,
+        wallet: '₹450',
+        totalTrips: 0,
+        status: 'Active',
+        createdAt: new Date().toISOString()
+      };
+
+      // Save customer session
+      localStorage.setItem('zygo_customer_user', JSON.stringify(user));
+
+      // Sync into registered customers store for Admin Panel
+      try {
+        let allCustomers = JSON.parse(localStorage.getItem('zygo_registered_customers') || '[]');
+        if (!allCustomers.some(c => c.phone === user.phone)) {
+          allCustomers.unshift(user);
+          localStorage.setItem('zygo_registered_customers', JSON.stringify(allCustomers));
+        }
+      } catch(e) {}
+
+      applyCustomerSession(user);
+      closeAuthModal();
+      alert(`Welcome ${user.name}! You are now logged in. ₹450 joining bonus added to your Zygo Wallet.`);
+    });
+
+    function applyCustomerSession(user) {
+      document.getElementById('drawerUserName').innerText = user.name;
+      const loginBtn = document.getElementById('openLoginBtn');
+      if (loginBtn) {
+        loginBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> ${user.name.split(' ')[0]}`;
+        loginBtn.onclick = () => {
+          sideDrawer.classList.add('open');
+          drawerBackdrop.style.display = 'block';
+        };
+      }
+    }
+
+    function logoutCustomer() {
+      if (confirm('Are you sure you want to log out of your Zygo account?')) {
+        localStorage.removeItem('zygo_customer_user');
+        closeDrawer();
+        document.getElementById('openLoginBtn').innerHTML = `<i class="fa-regular fa-user"></i> Login`;
+        document.getElementById('openLoginBtn').onclick = openAuthModal;
+        openAuthModal();
+      }
+    }
+
+    // Auto check auth on load
+    window.addEventListener('DOMContentLoaded', () => {
+      checkCustomerAuth();
+    });
+
     // State
     let selectedCategory = 'sedan';
     let currentFare = 275;
