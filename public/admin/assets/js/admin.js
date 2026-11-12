@@ -503,6 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Init all tables and views
+  if (typeof refreshAdminStats === 'function') refreshAdminStats();
   renderTripsTable();
   renderDriversTable();
   renderCustomersTable();

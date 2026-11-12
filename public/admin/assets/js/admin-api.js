@@ -144,6 +144,27 @@ function refreshAdminStats() {
   AdminMockData.stats.totalRevenue = '₹' + revenue.toLocaleString('en-IN');
   AdminMockData.stats.activeDrivers = AdminMockData.drivers.filter(d => d.status === 'Online').length;
   AdminMockData.stats.activeTrips = AdminMockData.trips.filter(t => t.status === 'Ongoing' || t.status === 'Accepted').length;
+
+  // Update DOM KPI elements if present
+  const elRev = document.getElementById('kpiRevenue');
+  const elTrips = document.getElementById('kpiTrips');
+  const elCaptains = document.getElementById('kpiCaptains');
+  const elActiveTrips = document.getElementById('kpiActiveTrips');
+
+  if (elRev) elRev.textContent = AdminMockData.stats.totalRevenue;
+  if (elTrips) elTrips.textContent = AdminMockData.stats.totalTrips.toString();
+  if (elCaptains) elCaptains.textContent = AdminMockData.stats.activeDrivers.toString();
+  if (elActiveTrips) elActiveTrips.textContent = AdminMockData.stats.activeTrips.toString();
+
+  const elGross = document.getElementById('kpiGrossVolume');
+  const elComm = document.getElementById('kpiNetCommission');
+  const elPaid = document.getElementById('kpiPayoutsPaid');
+  const elPending = document.getElementById('kpiPendingClaims');
+
+  if (elGross) elGross.textContent = '₹' + revenue.toLocaleString('en-IN');
+  if (elComm) elComm.textContent = '₹' + Math.round(revenue * 0.12).toLocaleString('en-IN');
+  if (elPaid) elPaid.textContent = '₹' + Math.round(revenue * 0.88).toLocaleString('en-IN');
+  if (elPending) elPending.textContent = '₹0';
 }
 
 refreshAdminStats();

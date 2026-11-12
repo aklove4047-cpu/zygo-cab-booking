@@ -138,8 +138,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Today's Revenue</div>
-              <div class="kpi-value">₹1,42,850</div>
-              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +18.4% vs last week</div>
+              <div class="kpi-value" id="kpiRevenue">₹0</div>
+              <div class="kpi-trend" id="kpiRevenueTrend" style="color: var(--text-muted);"><i class="fa-solid fa-clock"></i> 0% vs last week</div>
             </div>
             <div class="kpi-icon-wrap icon-teal"><i class="fa-solid fa-indian-rupee-sign"></i></div>
           </div>
@@ -147,8 +147,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Completed Trips</div>
-              <div class="kpi-value">1,248</div>
-              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12.1% this week</div>
+              <div class="kpi-value" id="kpiTrips">0</div>
+              <div class="kpi-trend" id="kpiTripsTrend" style="color: var(--text-muted);"><i class="fa-solid fa-route"></i> 0 trips today</div>
             </div>
             <div class="kpi-icon-wrap icon-blue"><i class="fa-solid fa-taxi"></i></div>
           </div>
@@ -156,8 +156,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Active Captains On-Road</div>
-              <div class="kpi-value">86</div>
-              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> 5 new onboarded</div>
+              <div class="kpi-value" id="kpiCaptains">0</div>
+              <div class="kpi-trend" id="kpiCaptainsTrend" style="color: var(--text-muted);"><i class="fa-solid fa-id-card"></i> 0 captains online</div>
             </div>
             <div class="kpi-icon-wrap icon-yellow"><i class="fa-solid fa-id-card"></i></div>
           </div>
@@ -165,8 +165,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Live Active Trips</div>
-              <div class="kpi-value">24</div>
-              <div class="kpi-trend up" style="color: #3B82F6;"><i class="fa-solid fa-route"></i> 18 in city, 6 outstation</div>
+              <div class="kpi-value" id="kpiActiveTrips">0</div>
+              <div class="kpi-trend" id="kpiActiveTripsTrend" style="color: var(--text-muted);"><i class="fa-solid fa-circle-dot"></i> 0 active in progress</div>
             </div>
             <div class="kpi-icon-wrap icon-purple"><i class="fa-solid fa-clock"></i></div>
           </div>
@@ -281,35 +281,10 @@
               <span>Pending Ride Queue</span>
               <span style="color: var(--primary); font-size: 12px;"><i class="fa-solid fa-arrows-rotate"></i> Auto-Refresh</span>
             </div>
-            <div class="dispatch-feed-list">
-              <div class="dispatch-card">
-                <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
-                  <span>ZYG-10889</span>
-                  <span style="color: #2563EB;">₹140 &bull; Auto</span>
-                </div>
-                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-                  <strong>Customer:</strong> Kavita Joshi (+91 9765432109)<br>
-                  <strong>From:</strong> Lajpat Nagar<br>
-                  <strong>To:</strong> South Extension
-                </div>
-                <button class="btn-table-action primary" style="width: 100%;" onclick="alert('Trip ZYG-10889 assigned to nearest driver Mohammad Arshad!')">
-                  <i class="fa-solid fa-paper-plane"></i> Quick Dispatch to Nearest Driver
-                </button>
-              </div>
-
-              <div class="dispatch-card">
-                <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
-                  <span>ZYG-10893</span>
-                  <span style="color: #10B981;">₹520 &bull; Sedan</span>
-                </div>
-                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
-                  <strong>Customer:</strong> Sneha Roy (+91 9898989898)<br>
-                  <strong>From:</strong> Noida Sec 18 Metro<br>
-                  <strong>To:</strong> Saket DLF Promenade
-                </div>
-                <button class="btn-table-action primary" style="width: 100%;" onclick="alert('Trip ZYG-10893 assigned to Rajesh Sharma!')">
-                  <i class="fa-solid fa-paper-plane"></i> Quick Dispatch to Nearest Driver
-                </button>
+            <div class="dispatch-feed-list" id="dispatchQueueList">
+              <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                <i class="fa-solid fa-car-side" style="font-size: 28px; color: #CBD5E1; margin-bottom: 8px; display: block;"></i>
+                No pending rides in queue. New customer bookings will appear here instantly.
               </div>
             </div>
           </div>
@@ -542,8 +517,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Gross Bookings Volume</div>
-              <div class="kpi-value">₹14,28,500</div>
-              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> This Month</div>
+              <div class="kpi-value" id="kpiGrossVolume">₹0</div>
+              <div class="kpi-trend" style="color: var(--text-muted);"><i class="fa-solid fa-clock"></i> This Month</div>
             </div>
             <div class="kpi-icon-wrap icon-teal"><i class="fa-solid fa-vault"></i></div>
           </div>
@@ -551,8 +526,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Zygo Platform Commission (12%)</div>
-              <div class="kpi-value">₹1,71,420</div>
-              <div class="kpi-trend up"><i class="fa-solid fa-arrow-trend-up"></i> Net Revenue</div>
+              <div class="kpi-value" id="kpiNetCommission">₹0</div>
+              <div class="kpi-trend" style="color: var(--text-muted);"><i class="fa-solid fa-clock"></i> Net Revenue</div>
             </div>
             <div class="kpi-icon-wrap icon-blue"><i class="fa-solid fa-sack-dollar"></i></div>
           </div>
@@ -560,7 +535,7 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Driver Payouts Paid</div>
-              <div class="kpi-value">₹12,12,080</div>
+              <div class="kpi-value" id="kpiPayoutsPaid">₹0</div>
               <div class="kpi-trend" style="color: #64748B;">Settled via UPI</div>
             </div>
             <div class="kpi-icon-wrap icon-yellow"><i class="fa-solid fa-hand-holding-dollar"></i></div>
@@ -569,8 +544,8 @@
           <div class="kpi-card">
             <div>
               <div class="kpi-label">Pending Payout Claims</div>
-              <div class="kpi-value">₹45,000</div>
-              <div class="kpi-trend down"><i class="fa-solid fa-triangle-exclamation"></i> 8 Captains</div>
+              <div class="kpi-value" id="kpiPendingClaims">₹0</div>
+              <div class="kpi-trend" style="color: var(--text-muted);"><i class="fa-solid fa-circle-check"></i> 0 Captains</div>
             </div>
             <div class="kpi-icon-wrap icon-purple"><i class="fa-solid fa-hourglass-half"></i></div>
           </div>
