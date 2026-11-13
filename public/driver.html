@@ -1316,35 +1316,67 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <script>
-    // Audio Chime synthesizer for Ola Driver-like loud bell notification
-    function playDriverAlertSound() {
+    // Robust Web Audio Ringing Engine for Driver Incoming Ride
+    let ringInterval = null;
+    let audioCtx = null;
+
+    function startDriverRingtone() {
+      stopDriverRingtone(); // ensure clean state
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = ctx.currentTime;
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch(e) {}
+
+      // Ring immediately once
+      playSingleChime();
+
+      // Repeat tone every 1.5 seconds while alert is open
+      ringInterval = setInterval(() => {
+        playSingleChime();
+      }, 1500);
+    }
+
+    function playSingleChime() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const now = audioCtx.currentTime;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(659.25, now);
-        osc1.frequency.setValueAtTime(880, now + 0.15);
+        osc1.frequency.setValueAtTime(659.25, now); // E5
+        osc1.frequency.setValueAtTime(880.00, now + 0.16); // A5
 
         osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(523.25, now);
-        osc2.frequency.setValueAtTime(698.46, now + 0.15);
+        osc2.frequency.setValueAtTime(523.25, now); // C5
+        osc2.frequency.setValueAtTime(698.46, now + 0.16); // F5
 
-        gain.gain.setValueAtTime(0.4, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
 
         osc1.connect(gain);
         osc2.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(audioCtx.destination);
 
         osc1.start(now);
         osc2.start(now);
-        osc1.stop(now + 0.5);
-        osc2.stop(now + 0.5);
+        osc1.stop(now + 0.56);
+        osc2.stop(now + 0.56);
       } catch(e) {}
+    }
+
+    function stopDriverRingtone() {
+      if (ringInterval) {
+        clearInterval(ringInterval);
+        ringInterval = null;
+      }
     }
 
     // Captain Auth State
@@ -1576,7 +1608,7 @@
         alert('Please GO ONLINE first to receive incoming rides!');
         return;
       }
-      playDriverAlertSound();
+      startDriverRingtone();
       secLeft = 30;
       timerSecText.innerText = secLeft;
       timerBar.style.width = '100%';
@@ -1592,6 +1624,7 @@
     }
 
     function closeIncomingRide() {
+      stopDriverRingtone();
       if (timerCountdown) clearInterval(timerCountdown);
       incomingRideModal.style.display = 'none';
     }
