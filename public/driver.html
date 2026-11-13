@@ -682,6 +682,22 @@
     </div>
   </div>
 
+  <!-- Captain Shift Gauge & Activity Strip (DriveMond & Ola Style) -->
+  <div style="background: rgba(13, 19, 31, 0.95); border-bottom: 1px solid var(--border-dark); padding: 8px 14px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 8px;">
+    <div style="background: #172133; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="font-size: 10px; color: var(--ola-green); font-weight: 800; text-transform: uppercase;">Driving Time</div>
+      <div style="font-size: 13px; font-weight: 900; color: #FFF; margin-top: 2px;" id="gaugeDrivingTime">0h 0m</div>
+    </div>
+    <div style="background: #172133; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="font-size: 10px; color: #38BDF8; font-weight: 800; text-transform: uppercase;">Duty Status</div>
+      <div style="font-size: 13px; font-weight: 900; color: #FFF; margin-top: 2px;" id="gaugeOnlineStatus">Online</div>
+    </div>
+    <div style="background: #172133; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="font-size: 10px; color: #F59E0B; font-weight: 800; text-transform: uppercase;">Services Active</div>
+      <div style="font-size: 13px; font-weight: 900; color: #FFF; margin-top: 2px;" id="gaugeServices">Ride + Parcel</div>
+    </div>
+  </div>
+
   <!-- ================= MAP AREA ================= -->
   <div class="map-wrapper">
     <div id="driverMap"></div>

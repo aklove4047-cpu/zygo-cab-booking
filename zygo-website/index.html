@@ -418,16 +418,19 @@
           <p class="hero-subtitle">Affordable city commutes, outstation getaways, and instant airport pickups with live GPS tracking and 4-digit security OTP.</p>
 
           <div class="booking-card" style="box-shadow: var(--ola-card-shadow); border-radius: 20px;">
-            <!-- Ride Type Tabs -->
-            <div class="ride-tabs">
+            <!-- Ride & Service Type Tabs (Ola + Parcel Delivery + Schedule) -->
+            <div class="ride-tabs" style="grid-template-columns: repeat(4, 1fr); gap: 6px;">
               <button class="ride-tab active" data-type="daily">
-                <i class="fa-solid fa-car"></i> Daily City
+                <i class="fa-solid fa-car"></i> Daily
               </button>
-              <button class="ride-tab" data-type="outstation">
-                <i class="fa-solid fa-road"></i> Outstation
+              <button class="ride-tab" data-type="parcel">
+                <i class="fa-solid fa-box"></i> Parcel
+              </button>
+              <button class="ride-tab" data-type="schedule">
+                <i class="fa-solid fa-calendar-days"></i> Schedule
               </button>
               <button class="ride-tab" data-type="rental">
-                <i class="fa-solid fa-clock"></i> Hourly Rental
+                <i class="fa-solid fa-clock"></i> Rental
               </button>
             </div>
 
@@ -462,6 +465,50 @@
                   <span class="chip" data-type="drop" data-location="New Delhi Railway Station (NDLS)">🚆 New Delhi Rly</span>
                   <span class="chip" data-type="drop" data-location="Noida Electronic City Metro">🚇 Electronic City</span>
                   <span class="chip" data-type="drop" data-location="Select CITYWALK Mall, Saket">🛍️ Saket Mall</span>
+                </div>
+              </div>
+
+              <!-- Parcel Delivery Container (Dynamically Shown for Parcel Tab) -->
+              <div id="parcelConfigBox" style="display: none; background: #F8FAFC; border: 1.5px dashed #00D26A; border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 13px; font-weight: 800; color: #0F172A;"><i class="fa-solid fa-box-open" style="color: #00D26A;"></i> Instant Parcel Details</span>
+                  <span style="font-size: 11px; font-weight: 700; background: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 6px;">Secure Delivery</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                  <div>
+                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Sender Name/Phone</label>
+                    <input type="text" id="senderContact" class="form-control" placeholder="e.g. Rahul (+91...)" style="font-size: 12px; padding: 8px 10px; height: auto;">
+                  </div>
+                  <div>
+                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Receiver Name/Phone</label>
+                    <input type="text" id="receiverContact" class="form-control" placeholder="e.g. Priya (+91...)" style="font-size: 12px; padding: 8px 10px; height: auto;">
+                  </div>
+                </div>
+                <div>
+                  <label style="font-size: 11px; font-weight: 700; color: #64748B;">Parcel Category &amp; Weight</label>
+                  <select id="parcelWeightSelect" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
+                    <option value="up_to_5kg">📦 Up to 5 KG (Documents, Food, Clothes) - Standard Rate</option>
+                    <option value="up_to_15kg">📦 5 KG - 15 KG (Box, Electronics) - Heavy Rate (+₹30)</option>
+                    <option value="up_to_30kg">📦 15 KG - 30 KG (Large Cartons) - Cargo Auto (+₹70)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Schedule Ride Box (Dynamically Shown for Schedule Tab) -->
+              <div id="scheduleConfigBox" style="display: none; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 13px; font-weight: 800; color: #0F172A;"><i class="fa-solid fa-clock" style="color: #2563EB;"></i> Schedule Future Pickup</span>
+                  <span style="font-size: 11px; font-weight: 700; background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 6px;">Guaranteed Cab</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                  <div>
+                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Select Date</label>
+                    <input type="date" id="scheduleDate" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
+                  </div>
+                  <div>
+                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Select Time</label>
+                    <input type="time" id="scheduleTime" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
+                  </div>
                 </div>
               </div>
 
@@ -1102,6 +1149,33 @@
           document.getElementById('pickupInput').value = `Current Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
         }, () => alert('Please allow location permission in your browser or phone settings.'));
       }
+    });
+
+    // Ride Type Tab Switching (Daily, Parcel, Schedule, Rental)
+    document.querySelectorAll('.ride-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.ride-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const type = tab.dataset.type;
+
+        const parcelBox = document.getElementById('parcelConfigBox');
+        const scheduleBox = document.getElementById('scheduleConfigBox');
+
+        if (parcelBox) parcelBox.style.display = (type === 'parcel') ? 'block' : 'none';
+        if (scheduleBox) scheduleBox.style.display = (type === 'schedule') ? 'block' : 'none';
+
+        if (type === 'parcel') {
+          document.getElementById('pickupInput').placeholder = 'Sender Pickup Address';
+          document.getElementById('dropInput').placeholder = 'Receiver Delivery Address';
+          document.getElementById('bookRideBtn').querySelector('span').innerText = 'BOOK PARCEL DELIVERY';
+        } else if (type === 'schedule') {
+          document.getElementById('bookRideBtn').querySelector('span').innerText = 'SCHEDULE ADVANCE RIDE';
+        } else {
+          document.getElementById('pickupInput').placeholder = 'Enter Pickup Location';
+          document.getElementById('dropInput').placeholder = 'Where do you want to go?';
+          document.getElementById('bookRideBtn').querySelector('span').innerText = 'BOOK ZYGO RIDE';
+        }
+      });
     });
 
     // Fleet Selection Function
