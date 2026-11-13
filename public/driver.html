@@ -643,24 +643,121 @@
     .form-input-driver:focus {
       border-color: var(--ola-green);
     }
+
+    /* ================= DRIVER SIDE DRAWER (DriveMond & Ola Style) ================= */
+    .driver-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 2500;
+    }
+
+    .driver-side-drawer {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      height: 100%;
+      background: #090E17;
+      border-right: 1.5px solid var(--border-dark);
+      z-index: 2600;
+      display: flex;
+      flex-direction: column;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 10px 0 30px rgba(0,0,0,0.7);
+    }
+
+    .driver-side-drawer.open {
+      left: 0;
+    }
+
+    .drawer-profile-header {
+      background: #172133;
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .drawer-menu-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0;
+    }
+
+    .drawer-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 22px;
+      color: #CBD5E1;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .drawer-menu-item:hover, .drawer-menu-item.active {
+      background: rgba(0, 210, 106, 0.1);
+      color: var(--ola-green);
+    }
+
+    .drawer-menu-item i {
+      font-size: 16px;
+      width: 22px;
+      color: #94A3B8;
+      text-align: center;
+    }
+
+    .drawer-menu-item:hover i {
+      color: var(--ola-green);
+    }
+
+    .drawer-menu-badge {
+      margin-left: auto;
+      background: #22304A;
+      color: #38BDF8;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
 
   <!-- ================= TOP HEADER ================= -->
   <header class="driver-header">
-    <div class="driver-profile" id="openProfileHeaderBtn" title="View Captain Profile">
-      <div class="avatar-wrapper">
-        <div class="driver-avatar-img" id="headerAvatarInitial">R</div>
-        <div class="online-indicator-dot" id="onlineDot"></div>
-      </div>
-      <div class="driver-meta">
-        <h3 id="headerCaptainName">Captain Partner <span class="captain-badge">Gold</span></h3>
-        <div class="driver-rating" id="headerRatingText"><i class="fa-solid fa-star"></i> 5.0 • Verified ID</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <!-- Hamburger Menu for Captain Drawer -->
+      <button id="openDriverDrawerBtn" style="background: var(--ola-card-light); border: 1px solid var(--border-dark); color: #fff; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div class="driver-profile" id="openProfileHeaderBtn" title="View Captain Profile">
+        <div class="avatar-wrapper">
+          <div class="driver-avatar-img" id="headerAvatarInitial">R</div>
+          <div class="online-indicator-dot" id="onlineDot"></div>
+        </div>
+        <div class="driver-meta">
+          <h3 id="headerCaptainName">Captain Partner <span class="captain-badge">Gold</span></h3>
+          <div class="driver-rating" id="headerRatingText"><i class="fa-solid fa-star"></i> 5.0 • Verified ID</div>
+        </div>
       </div>
     </div>
 
-    <div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <!-- Direct Driver APK Download Button -->
+      <a href="downloads/zygo-driver.apk" download="Zygo_Captain_Driver.apk" style="background: rgba(255, 192, 0, 0.15); border: 1.5px solid var(--ola-gold); color: var(--ola-gold); padding: 8px 14px; border-radius: 999px; font-weight: 800; font-size: 12px; text-decoration: none; display: flex; align-items: center; gap: 6px;" title="Download Official Driver Partner APK">
+        <i class="fa-brands fa-android" style="font-size: 14px;"></i>
+        <span>APK (10MB)</span>
+      </a>
+
       <button id="dutySwitchBtn" class="duty-switch-btn online">
         <i class="fa-solid fa-power-off"></i>
         <span id="dutyLabel">ONLINE</span>
@@ -864,14 +961,51 @@
           <input type="tel" id="regDriverPhone" class="form-input-driver" placeholder="9876543210" required maxlength="10" value="9876543210">
         </div>
 
+        <!-- Multi-Service Choice (Screenshots Feature) -->
+        <div style="background: #090E17; border: 1.5px solid var(--border-dark); border-radius: 12px; padding: 12px; margin-bottom: 14px;">
+          <div style="font-size: 12px; font-weight: 800; color: #FFF; margin-bottom: 8px;">Choose Services Provided</div>
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #CBD5E1; margin-bottom: 6px; cursor: pointer;">
+            <input type="checkbox" id="regServiceRide" checked style="accent-color: var(--ola-green); width: 16px; height: 16px;">
+            <span><strong>Ride Share Service</strong> (Passanger Cab / Auto / Bike)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #CBD5E1; cursor: pointer;">
+            <input type="checkbox" id="regServiceParcel" checked style="accent-color: var(--ola-green); width: 16px; height: 16px;">
+            <span><strong>Parcel &amp; Courier Delivery</strong> (Box &amp; Documents)</span>
+          </label>
+        </div>
+
         <div class="form-group-driver">
           <label>Vehicle Fleet Category</label>
           <select id="regDriverCategory" class="form-input-driver" required>
             <option value="Sedan">Prime Sedan (Dzire, Etios, Aura)</option>
             <option value="Mini">Mini AC (WagonR, Swift)</option>
             <option value="Auto">Zygo Auto Rickshaw</option>
-            <option value="Bike">Zygo Bike</option>
+            <option value="Bike">Zygo Bike (Moto)</option>
             <option value="SUV">Prime SUV (Innova, Ertiga)</option>
+            <option value="ParcelVan">Parcel Delivery Van</option>
+          </select>
+        </div>
+
+        <div class="form-group-driver">
+          <label>Max Parcel Weight Capacity (kg)</label>
+          <input type="number" id="regDriverParcelCapacity" class="form-input-driver" placeholder="e.g. 50" value="30">
+        </div>
+
+        <div class="form-group-driver">
+          <label>Vehicle Brand &amp; Model</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <input type="text" id="regDriverBrand" class="form-input-driver" placeholder="Brand (e.g. Maruti)" value="Maruti Suzuki">
+            <input type="text" id="regDriverModel" class="form-input-driver" placeholder="Model (e.g. Dzire)" value="Dzire Tour">
+          </div>
+        </div>
+
+        <div class="form-group-driver">
+          <label>Fuel Type</label>
+          <select id="regDriverFuel" class="form-input-driver">
+            <option value="CNG">CNG / Green</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="EV">Electric (EV)</option>
           </select>
         </div>
 
@@ -895,6 +1029,233 @@
         </button>
       </form>
 
+    </div>
+  </div>
+
+  <!-- ================= CAPTAIN SIDE DRAWER MODAL (DriveMond & Ola Full Settings) ================= -->
+  <div class="driver-drawer-backdrop" id="driverDrawerBackdrop"></div>
+  <div class="driver-side-drawer" id="driverSideDrawer">
+    <div class="drawer-profile-header">
+      <div style="width: 50px; height: 50px; border-radius: 50%; background: #22304A; border: 2px solid var(--ola-gold); color: var(--ola-gold); font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center;" id="drawerAvatarInitial">
+        R
+      </div>
+      <div>
+        <h4 style="font-size: 16px; font-weight: 800; color: #fff;" id="drawerCaptainName">Captain Partner</h4>
+        <span style="font-size: 11px; background: rgba(0, 210, 106, 0.2); color: var(--ola-green); padding: 2px 8px; border-radius: 4px; font-weight: 700;">Level 1 &bull; Pro Driver</span>
+      </div>
+      <button onclick="closeDriverDrawer()" style="position: absolute; right: 16px; top: 16px; background: none; border: none; color: #94A3B8; font-size: 20px; cursor: pointer;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-menu-list">
+      <a class="drawer-menu-item" onclick="openProfileModal(); closeDriverDrawer();">
+        <i class="fa-regular fa-user"></i>
+        <span>My Profile</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="openEarningsModal(); closeDriverDrawer();">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Wallet &amp; Payouts</span>
+        <span class="drawer-menu-badge" id="drawerWalletBadge">₹0.00</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="openVehicleSetupModal(); closeDriverDrawer();">
+        <i class="fa-solid fa-car-side"></i>
+        <span>Vehicle Setup</span>
+        <span class="drawer-menu-badge" style="background:#15803D; color:#fff;">Active</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Driver Messages: All notifications and customer chats are cleared.')">
+        <i class="fa-regular fa-comment-dots"></i>
+        <span>Messages</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Captain Reviews: 5.0 Star Rating (100% Satisfaction)')">
+        <i class="fa-regular fa-star"></i>
+        <span>My Reviews</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Safety Protocol: 24x7 Emergency SOS + GPS Real-time Telemetry active.')">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Safety &amp; Emergency</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Driver Leaderboard: Ranked #1 in your city circle!')">
+        <i class="fa-solid fa-trophy"></i>
+        <span>Leaderboard</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Refer & Earn: Share your code ZYGOCAP100 and earn ₹500 on your friend first 10 rides!')">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Refer &amp; Earn</span>
+      </a>
+
+      <a class="drawer-menu-item" href="downloads/zygo-driver.apk" download="Zygo_Captain_Driver.apk" style="background: rgba(255, 192, 0, 0.12); border-left: 3px solid var(--ola-gold); color: #fff;">
+        <i class="fa-brands fa-android" style="color: var(--ola-gold);"></i>
+        <span>Download Captain APK</span>
+        <span class="drawer-menu-badge" style="background: var(--ola-gold); color: #000; font-weight: 800;">10 MB</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="openPayoutSettingsModal(); closeDriverDrawer();">
+        <i class="fa-solid fa-building-columns"></i>
+        <span>Add Withdraw Info (Bank / UPI)</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Help & Support: 24x7 Partner Toll-Free Helpline: 1800-ZYGO-HELP')">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Help &amp; Support</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="openSettingsModal(); closeDriverDrawer();">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Privacy Policy: All driver and passenger location data is 256-bit encrypted.')">
+        <i class="fa-solid fa-user-shield"></i>
+        <span>Privacy Policy</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="alert('Terms & Conditions: Standard Indian Motor Vehicle Aggregator Guidelines compliant.')">
+        <i class="fa-solid fa-file-contract"></i>
+        <span>Terms &amp; Conditions</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="logoutCaptain()" style="color: #EF4444; margin-top: 10px; border-top: 1px solid var(--border-dark);">
+        <i class="fa-solid fa-arrow-right-from-bracket" style="color: #EF4444;"></i>
+        <span>Logout</span>
+      </a>
+
+      <a class="drawer-menu-item" onclick="if(confirm('Are you sure you want to permanently delete your captain account and erase KYC records?')) { localStorage.clear(); location.reload(); }" style="color: #94A3B8; font-size: 12px;">
+        <i class="fa-solid fa-trash-can" style="color: #94A3B8;"></i>
+        <span>Permanently Delete Account</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= CAPTAIN VEHICLE SETUP MODAL (DriveMond & Ola Style) ================= -->
+  <div class="captain-modal-backdrop" id="vehicleSetupModal">
+    <div class="captain-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 12px;">
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;"><i class="fa-solid fa-car" style="color: var(--ola-green);"></i> Vehicle Setup &amp; Approval</h3>
+        <button onclick="document.getElementById('vehicleSetupModal').style.display='none'" style="background: none; border: none; color: #94A3B8; font-size: 20px; cursor: pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Add your vehicle specifications and documents to send for instant admin approval.</p>
+
+      <div class="form-group-driver">
+        <label>Vehicle Fleet Category</label>
+        <select id="vSetupCategory" class="form-input-driver">
+          <option value="Rental Car">Rental Car</option>
+          <option value="Sedan" selected>Sedan Prime (AC)</option>
+          <option value="Auto">Auto Rickshaw</option>
+          <option value="Premium Cab">Premium Cab (SUV / Innova)</option>
+          <option value="Bike">Bike (Moto)</option>
+          <option value="Economy Cab">Economy Cab (Mini)</option>
+        </select>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div class="form-group-driver">
+          <label>Vehicle Brand</label>
+          <input type="text" id="vSetupBrand" class="form-input-driver" value="Maruti Suzuki">
+        </div>
+        <div class="form-group-driver">
+          <label>Vehicle Model</label>
+          <input type="text" id="vSetupModel" class="form-input-driver" value="Dzire Tour">
+        </div>
+      </div>
+
+      <div class="form-group-driver">
+        <label>Parcel Weight Capacity (kg)</label>
+        <input type="number" id="vSetupWeight" class="form-input-driver" value="50">
+      </div>
+
+      <div class="form-group-driver">
+        <label>License Plate Number (RC)</label>
+        <input type="text" id="vSetupPlate" class="form-input-driver" value="DL 01 AB 4047">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div class="form-group-driver">
+          <label>License Expire Date</label>
+          <input type="date" id="vSetupExpiry" class="form-input-driver" value="2035-12-31">
+        </div>
+        <div class="form-group-driver">
+          <label>Fuel Type</label>
+          <select id="vSetupFuel" class="form-input-driver">
+            <option value="CNG" selected>CNG</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group-driver">
+        <label>Vehicle RC / Fitness Document Photo</label>
+        <div style="border: 2px dashed var(--border-dark); padding: 18px; text-align: center; border-radius: 12px; background: #090E17; cursor: pointer;" onclick="alert('Document photo selected & encrypted.')">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size: 24px; color: var(--ola-green); margin-bottom: 6px; display: block;"></i>
+          <span style="font-size: 12px; color: #CBD5E1;">Tap to upload RC &amp; Insurance Photo</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-trip-flow" onclick="saveVehicleSetup()" style="background: var(--ola-green); color: #000; margin-top: 10px;">
+        <i class="fa-solid fa-floppy-disk"></i> Save Vehicle Setup
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= CAPTAIN ADVANCED SETTINGS MODAL ================= -->
+  <div class="captain-modal-backdrop" id="driverSettingsModal">
+    <div class="captain-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-dark); padding-bottom: 12px;">
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;"><i class="fa-solid fa-gear" style="color: var(--ola-green);"></i> Captain Preferences</h3>
+        <button onclick="document.getElementById('driverSettingsModal').style.display='none'" style="background: none; border: none; color: #94A3B8; font-size: 20px; cursor: pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <label style="display: flex; align-items: center; justify-content: space-between; background: #090E17; padding: 12px; border-radius: 12px; border: 1px solid var(--border-dark);">
+          <div>
+            <div style="font-weight: 700; font-size: 13px; color: #fff;">Ride Auto-Accept</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Automatically accept rides matching high surge</div>
+          </div>
+          <input type="checkbox" checked style="accent-color: var(--ola-green); width: 20px; height: 20px;">
+        </label>
+
+        <label style="display: flex; align-items: center; justify-content: space-between; background: #090E17; padding: 12px; border-radius: 12px; border: 1px solid var(--border-dark);">
+          <div>
+            <div style="font-weight: 700; font-size: 13px; color: #fff;">Loud Ringtone for Rides</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Play high volume audio alert during incoming request</div>
+          </div>
+          <input type="checkbox" checked style="accent-color: var(--ola-green); width: 20px; height: 20px;">
+        </label>
+
+        <label style="display: flex; align-items: center; justify-content: space-between; background: #090E17; padding: 12px; border-radius: 12px; border: 1px solid var(--border-dark);">
+          <div>
+            <div style="font-weight: 700; font-size: 13px; color: #fff;">Parcel Delivery Orders</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Enable instant parcel pickup notifications</div>
+          </div>
+          <input type="checkbox" checked id="prefParcelToggle" onchange="toggleParcelPref(this)" style="accent-color: var(--ola-green); width: 20px; height: 20px;">
+        </label>
+
+        <label style="display: flex; align-items: center; justify-content: space-between; background: #090E17; padding: 12px; border-radius: 12px; border: 1px solid var(--border-dark);">
+          <div>
+            <div style="font-weight: 700; font-size: 13px; color: #fff;">Night Mode Map HUD</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Dark palette navigation to save battery</div>
+          </div>
+          <input type="checkbox" checked style="accent-color: var(--ola-green); width: 20px; height: 20px;">
+        </label>
+      </div>
+
+      <button type="button" class="btn-trip-flow" onclick="document.getElementById('driverSettingsModal').style.display='none'; alert('Settings preferences saved.')" style="background: var(--ola-green); color: #000; margin-top: 18px;">
+        Save Preferences
+      </button>
     </div>
   </div>
 
@@ -1309,6 +1670,64 @@
         if (activeRoutePolyline) map.removeLayer(activeRoutePolyline);
       }
     });
+
+    // Drawer and Modal Openers
+    const driverSideDrawer = document.getElementById('driverSideDrawer');
+    const driverDrawerBackdrop = document.getElementById('driverDrawerBackdrop');
+    const openDriverDrawerBtn = document.getElementById('openDriverDrawerBtn');
+
+    if (openDriverDrawerBtn) {
+      openDriverDrawerBtn.addEventListener('click', () => {
+        driverSideDrawer.classList.add('open');
+        driverDrawerBackdrop.style.display = 'block';
+      });
+    }
+
+    if (driverDrawerBackdrop) {
+      driverDrawerBackdrop.addEventListener('click', closeDriverDrawer);
+    }
+
+    function closeDriverDrawer() {
+      if (driverSideDrawer) driverSideDrawer.classList.remove('open');
+      if (driverDrawerBackdrop) driverDrawerBackdrop.style.display = 'none';
+    }
+
+    function openVehicleSetupModal() {
+      document.getElementById('vehicleSetupModal').style.display = 'flex';
+    }
+
+    function saveVehicleSetup() {
+      const cat = document.getElementById('vSetupCategory').value;
+      const brand = document.getElementById('vSetupBrand').value;
+      const model = document.getElementById('vSetupModel').value;
+      const plate = document.getElementById('vSetupPlate').value;
+      alert(`✅ Vehicle setup updated!\n${brand} ${model} (${plate})\nCategory: ${cat}\nStatus: Verified.`);
+      document.getElementById('vehicleSetupModal').style.display = 'none';
+    }
+
+    function openSettingsModal() {
+      document.getElementById('driverSettingsModal').style.display = 'flex';
+    }
+
+    function openPayoutSettingsModal() {
+      const currentUpi = (currentCaptain && currentCaptain.upi) ? currentCaptain.upi : 'ramesh@upi';
+      const newUpi = prompt('Enter your UPI VPA / Bank Account for instant daily payout settlement:', currentUpi);
+      if (newUpi && newUpi.trim()) {
+        if (currentCaptain) {
+          currentCaptain.upi = newUpi.trim();
+          localStorage.setItem('zygo_captain_user', JSON.stringify(currentCaptain));
+          document.getElementById('modalCaptainUpi').innerText = newUpi.trim();
+        }
+        alert('✅ Payout account updated to: ' + newUpi.trim());
+      }
+    }
+
+    function toggleParcelPref(cb) {
+      const g = document.getElementById('gaugeServices');
+      if (g) {
+        g.innerText = cb.checked ? 'Ride + Parcel' : 'Ride Only';
+      }
+    }
 
     // Check Captain Auth on Load
     window.addEventListener('DOMContentLoaded', () => {
