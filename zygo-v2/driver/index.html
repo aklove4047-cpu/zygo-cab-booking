@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ZYGO Captain — Partner App</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo_with_name.png">
+  
+  <!-- Font Awesome Pro Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root {
+      --driver-teal: #106674;
+      --driver-teal-dark: #0B4650;
+      --driver-teal-light: #E6F3F5;
+      --driver-gold: #FFC000;
+      --driver-gold-rich: #EFAF19;
+      --driver-green: #00D26A;
+      --driver-red: #FF3B30;
+      --driver-dark: #0D131F;
+      --driver-card: #172133;
+      --driver-card-light: #22304A;
+      --text-white: #FFFFFF;
+      --text-muted: #8E9BAE;
+      --border-dark: rgba(255, 255, 255, 0.12);
+      --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--driver-dark);
+      color: var(--text-white);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      background: var(--driver-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 50px rgba(0,0,0,0.5);
+      padding-bottom: 75px;
+    }
+
+    /* Sub-view base structure */
+    .view-screen {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Top Sub-page Header */
+    .subpage-header {
+      background: #090E17;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .subpage-back-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--driver-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .subpage-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    /* Cards */
+    .driver-card-dark {
+      background: var(--driver-card);
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid var(--border-dark);
+      margin-bottom: 16px;
+    }
+
+    .driver-card-teal {
+      background: linear-gradient(135deg, var(--driver-teal), var(--driver-teal-dark));
+      border-radius: 20px;
+      padding: 20px;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 16px;
+    }
+
+    /* Form Inputs */
+    .zygo-input-group {
+      margin-bottom: 14px;
+    }
+
+    .zygo-input-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .zygo-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #090E17;
+      border: 1.5px solid var(--border-dark);
+      border-radius: 12px;
+      font-size: 15px;
+      color: #fff;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .zygo-input:focus {
+      border-color: var(--driver-teal);
+      background: #111827;
+    }
+
+    .btn-teal {
+      width: 100%;
+      padding: 16px;
+      background: var(--driver-teal);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(16, 102, 116, 0.4);
+    }
+
+    .btn-gold {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--driver-gold), var(--driver-gold-rich));
+      color: #000;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(255, 192, 0, 0.35);
+    }
+
+    /* Driver Home Top Bar */
+    .driver-header {
+      background: #090E17;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-dark);
+      z-index: 1000;
+    }
+
+    .hamburger-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--driver-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .driver-profile-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .driver-avatar-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--driver-card-light);
+      border: 2px solid var(--driver-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: var(--driver-gold);
+      font-size: 18px;
+      position: relative;
+    }
+
+    .online-indicator-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--driver-green);
+      border: 2px solid #090E17;
+    }
+
+    .duty-switch-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+    }
+
+    .duty-switch-btn.online {
+      background: rgba(0, 210, 106, 0.2);
+      color: var(--driver-green);
+      border: 1.5px solid var(--driver-green);
+    }
+
+    .duty-switch-btn.offline {
+      background: rgba(255, 59, 48, 0.2);
+      color: var(--driver-red);
+      border: 1.5px solid var(--driver-red);
+    }
+
+    /* Shift Metric Strip */
+    .driver-stats-strip {
+      background: #111827;
+      padding: 12px 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      border-bottom: 1px solid var(--border-dark);
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    /* Map View */
+    #driverMap {
+      width: 100%;
+      height: calc(100vh - 210px);
+      z-index: 10;
+    }
+
+    /* Incoming Ride Modal */
+    .incoming-ride-modal {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 92%;
+      max-width: 420px;
+      background: #172133;
+      border: 2px solid var(--driver-gold);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      z-index: 2500;
+      display: none;
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: translate(-50%, 20px) scale(0.95); opacity: 0; }
+      to { transform: translate(-50%, 0) scale(1); opacity: 1; }
+    }
+
+    .dispatch-timer-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .dispatch-timer-fill {
+      height: 100%;
+      background: var(--driver-gold);
+      width: 100%;
+      transition: width 1s linear;
+    }
+
+    /* Three Lines Drawer (1:1 with user's uploaded image) */
+    .driver-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 3000;
+      display: none;
+    }
+
+    .driver-side-drawer {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 300px;
+      height: 100vh;
+      background: #106674;
+      z-index: 3100;
+      overflow-y: auto;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 10px 0 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .driver-side-drawer.open {
+      left: 0;
+    }
+
+    .drawer-profile-header {
+      padding: 30px 20px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .drawer-menu-list {
+      padding: 10px 0;
+      flex: 1;
+    }
+
+    .drawer-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 22px;
+      color: #E2E8F0;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .drawer-menu-item:active {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .drawer-menu-item i {
+      width: 22px;
+      font-size: 18px;
+      text-align: center;
+      color: #FFF;
+    }
+
+    /* Bottom Nav (4-Tabs matching image) */
+    .driver-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 440px;
+      background: #106674;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 16px 14px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+    }
+
+    .driver-tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .driver-tab-item.active {
+      color: #FFF;
+    }
+
+    .driver-tab-item i {
+      font-size: 20px;
+    }
+
+    /* Toast Indicator */
+    .zygo-toast {
+      position: fixed;
+      bottom: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #090E17;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 4000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--driver-gold);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+
+    <!-- Toast Notification Indicator -->
+    <div id="zygoToast" class="zygo-toast">
+      <i class="fa-solid fa-circle-check" style="color: var(--driver-gold);"></i>
+      <span id="zygoToastText">Action Completed</span>
+    </div>
+
+    <!-- ================= VIEW 1: DRIVER ONBOARDING (Step 1 to 3 matching screenshot) ================= -->
+    <div id="view-driver-auth" class="view-screen">
+      <!-- Step 1: Choose Services (matching media_1794565364405_5b1653a8.jpg) -->
+      <div id="onboardStep1">
+        <div class="subpage-header">
+          <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Signup As A Driver</div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--driver-teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900;">
+            1 of 3
+          </div>
+        </div>
+
+        <div style="padding: 24px 20px; text-align: center;">
+          <div style="width: 64px; height: 64px; border-radius: 16px; background: var(--driver-teal); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px;">
+            <i class="fa-solid fa-car"></i>
+          </div>
+          <h2 style="font-size: 22px; font-weight: 900;">Choose Services</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Choose the services you want to provide. You can change them anytime in your profile.</p>
+        </div>
+
+        <div style="padding: 0 20px;">
+          <!-- Checkbox 1: Ride Share -->
+          <div class="driver-card-dark" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1.5px solid var(--driver-teal);" onclick="toggleServiceCheck('chkRideShare')">
+            <div>
+              <h4 style="font-size: 16px; font-weight: 800;">Ride Share</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Click if you want to provide ride share service</p>
+            </div>
+            <input type="checkbox" id="chkRideShare" checked style="width: 22px; height: 22px; accent-color: var(--driver-teal); pointer-events: none;" />
+          </div>
+
+          <!-- Checkbox 2: Parcel Delivery -->
+          <div class="driver-card-dark" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1.5px solid var(--driver-teal);" onclick="toggleServiceCheck('chkParcel')">
+            <div>
+              <h4 style="font-size: 16px; font-weight: 800;">Parcel Delivery</h4>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Click if you want to provide parcel service</p>
+            </div>
+            <input type="checkbox" id="chkParcel" checked style="width: 22px; height: 22px; accent-color: var(--driver-teal); pointer-events: none;" />
+          </div>
+
+          <button class="btn-teal" style="margin-top: 20px;" onclick="goToOnboardStep(2)">
+            <span>Next</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <span style="font-size: 13px; color: var(--text-muted);">Already registered?</span>
+            <span style="font-size: 13px; font-weight: 800; color: var(--driver-gold); cursor: pointer; margin-left: 6px;" onclick="showDriverQuickLogin()">Login Here</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Personal Details -->
+      <div id="onboardStep2" style="display: none;">
+        <div class="subpage-header">
+          <div class="subpage-back-btn" onclick="goToOnboardStep(1)">
+            <i class="fa-solid fa-arrow-left"></i>
+          </div>
+          <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Personal Information</div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--driver-teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900;">
+            2 of 3
+          </div>
+        </div>
+
+        <div style="padding: 20px;">
+          <div class="driver-card-dark">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">FULL LEGAL NAME (AS PER DL) *</label>
+              <input type="text" id="obDriverName" class="zygo-input" placeholder="e.g. Ramesh Kumar Verma" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">10-DIGIT MOBILE NUMBER *</label>
+              <input type="tel" id="obDriverPhone" class="zygo-input" placeholder="e.g. 9871234567" maxlength="10" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">OPERATING CITY *</label>
+              <select id="obDriverCity" class="zygo-input">
+                <option value="Indore">Indore, Madhya Pradesh</option>
+                <option value="Bhopal">Bhopal, Madhya Pradesh</option>
+                <option value="Delhi NCR">Delhi NCR</option>
+                <option value="Mumbai">Mumbai, Maharashtra</option>
+              </select>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">UPI ID FOR INSTANT DAILY SETTLEMENT *</label>
+              <input type="text" id="obDriverUpi" class="zygo-input" value="captain@upi" required />
+            </div>
+
+            <button class="btn-teal" style="margin-top: 10px;" onclick="goToOnboardStep(3)">
+              <span>Next (Vehicle Setup)</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Vehicle Setup (matching media_1794565340332_6b75f1ac.jpg & media_1794565344701_feaeb334.jpg) -->
+      <div id="onboardStep3" style="display: none;">
+        <div class="subpage-header">
+          <div class="subpage-back-btn" onclick="goToOnboardStep(2)">
+            <i class="fa-solid fa-arrow-left"></i>
+          </div>
+          <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Vehicle Setup</div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--driver-teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900;">
+            3 of 3
+          </div>
+        </div>
+
+        <div style="padding: 20px;">
+          <div class="driver-card-dark">
+            <h4 style="font-size: 16px; font-weight: 800; color: #FFF; margin-bottom: 4px;">Vehicle Information</h4>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Add your info to send approval request to admin.</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="zygo-input-group">
+                <label class="zygo-input-label">Vehicle Brand*</label>
+                <select id="obVehicleBrand" class="zygo-input">
+                  <option value="Maruti Suzuki">Maruti Suzuki</option>
+                  <option value="Hyundai">Hyundai</option>
+                  <option value="Tata">Tata</option>
+                  <option value="Bajaj">Bajaj</option>
+                  <option value="Hero">Hero</option>
+                  <option value="Honda">Honda</option>
+                </select>
+              </div>
+
+              <div class="zygo-input-group">
+                <label class="zygo-input-label">Vehicle Model*</label>
+                <input type="text" id="obVehicleModel" class="zygo-input" value="Dzire" placeholder="e.g. Dzire" required />
+              </div>
+            </div>
+
+            <!-- Vehicle Category matching screenshot dropdown -->
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Vehicle Category*</label>
+              <select id="obVehicleCategory" class="zygo-input">
+                <option value="Rental Car">Rental Car</option>
+                <option value="Sedan" selected>Sedan</option>
+                <option value="Auto">Auto</option>
+                <option value="Premium Cab">Premium Cab</option>
+                <option value="Bike">Bike</option>
+                <option value="Economy Cab">Economy Cab</option>
+              </select>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Parcel Weight Capacity (kg)</label>
+              <input type="number" id="obParcelCapacity" class="zygo-input" value="30" placeholder="Enter max weight" />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Licence Plate Number*</label>
+              <input type="text" id="obLicensePlate" class="zygo-input" value="MP-09-AB-4047" placeholder="EX: DB-3212" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Licence Expire Date *</label>
+              <input type="date" id="obLicenseExpiry" class="zygo-input" value="2030-12-31" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Fuel Type*</label>
+              <select id="obFuelType" class="zygo-input">
+                <option value="CNG" selected>CNG</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+              </select>
+            </div>
+
+            <!-- Document upload dashed box matching screenshot -->
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Other Documents*</label>
+              <div style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer;" onclick="showToast('✅ Documents (DL, RC, Insurance) Verified.')">
+                <i class="fa-regular fa-file-lines" style="font-size: 28px; color: var(--driver-teal); margin-bottom: 8px; display: block;"></i>
+                <span style="font-size: 13px; font-weight: 700; color: #FFF;">Upload documents</span>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">RC, DL, Insurance, Aadhaar</div>
+              </div>
+            </div>
+
+            <button class="btn-teal" style="margin-top: 10px;" onclick="completeDriverOnboarding()">
+              <span>Save &amp; Go Online</span>
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 2: DRIVER HOME & DISPATCH RADAR ================= -->
+    <div id="view-driver-home" class="view-screen">
+      <!-- Top Driver Header -->
+      <header class="driver-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <!-- Three Lines Hamburger Button -->
+          <div class="hamburger-btn" onclick="openDriverDrawer()">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+
+          <div class="driver-profile-info" onclick="ZygoRouter.navigate('view-driver-profile')">
+            <div class="driver-avatar-circle" id="homeAvatarCircle">
+              D
+              <div class="online-indicator-dot" id="headerOnlineDot"></div>
+            </div>
+            <div>
+              <div style="font-size: 15px; font-weight: 800; color: #FFF;" id="homeCaptainNameDisplay">Captain</div>
+              <div style="font-size: 11px; color: var(--driver-gold); font-weight: 700;">Level 1 &bull; Verified</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="duty-switch-btn online" id="dutySwitchBtn" onclick="toggleDutyStatus()">
+          <i class="fa-solid fa-circle-dot"></i>
+          <span id="dutySwitchText">ONLINE</span>
+        </button>
+      </header>
+
+      <!-- Stats Summary Strip -->
+      <div class="driver-stats-strip">
+        <div>
+          <div class="stat-label">TODAY EARNED</div>
+          <div class="stat-value" id="statsTodayEarned" style="color: var(--driver-green);">₹0.00</div>
+        </div>
+        <div>
+          <div class="stat-label">COMPLETED</div>
+          <div class="stat-value" id="statsTripsCount">0 Rides</div>
+        </div>
+        <div>
+          <div class="stat-label">ACCEPTANCE</div>
+          <div class="stat-value" style="color: var(--driver-gold);">98%</div>
+        </div>
+      </div>
+
+      <!-- Real Interactive Map -->
+      <div id="driverMap"></div>
+
+      <!-- Test Dispatch Trigger Button (Floating) -->
+      <div style="position: absolute; bottom: 85px; right: 16px; z-index: 100;">
+        <button class="btn-gold" style="padding: 10px 16px; font-size: 12px; width: auto; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);" onclick="simulateIncomingRideAlert()">
+          <i class="fa-solid fa-bell"></i>
+          <span>Test Ride Alert</span>
+        </button>
+      </div>
+
+      <!-- In-Trip Active Floating Banner (if trip ongoing) -->
+      <div id="activeTripBar" style="position: absolute; top: 125px; left: 16px; right: 16px; background: #090E17; border: 1.5px solid var(--driver-green); border-radius: 14px; padding: 12px 16px; z-index: 200; display: none; align-items: center; justify-content: space-between; cursor: pointer;" onclick="ZygoRouter.navigate('view-driver-in-trip')">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-route" style="color: var(--driver-green); font-size: 20px;"></i>
+          <div>
+            <div style="font-size: 13px; font-weight: 800; color: #FFF;">Active Trip In Progress</div>
+            <div style="font-size: 11px; color: var(--text-muted);" id="activeTripSnippet">Driving to destination...</div>
+          </div>
+        </div>
+        <span style="font-size: 12px; font-weight: 800; color: var(--driver-green);">View &gt;</span>
+      </div>
+    </div>
+
+    <!-- ================= INCOMING RIDE DISPATCH MODAL WITH ADVANCED RINGING ================= -->
+    <div id="incomingRideModal" class="incoming-ride-modal">
+      <div class="dispatch-timer-bar">
+        <div class="dispatch-timer-fill" id="dispatchTimerFill"></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <div>
+          <span style="font-size: 11px; font-weight: 900; background: rgba(255, 192, 0, 0.2); color: var(--driver-gold); padding: 3px 8px; border-radius: 4px;">INCOMING RIDE REQUEST</span>
+          <h3 style="font-size: 18px; font-weight: 900; margin-top: 6px; color: #FFF;" id="alertPassengerName">Aman Verma</h3>
+          <div style="font-size: 12px; color: var(--text-muted);">4.9 ⭐ &bull; Prime Sedan &bull; 1.2 KM away</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 26px; font-weight: 900; color: var(--driver-green);">₹240.00</div>
+          <div style="font-size: 11px; color: var(--text-muted);">Guaranteed Fare</div>
+        </div>
+      </div>
+
+      <div style="background: #090E17; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <i class="fa-solid fa-circle-dot" style="color: var(--driver-green); font-size: 13px;"></i>
+          <span style="font-size: 13px; color: #E2E8F0;" id="alertPickupLoc">Vijay Nagar Square, Indore</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-location-dot" style="color: var(--driver-red); font-size: 13px;"></i>
+          <span style="font-size: 13px; color: #E2E8F0;" id="alertDropLoc">Palasia Square, Indore</span>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
+        <button class="btn-teal" style="background: #334155; padding: 14px;" onclick="declineIncomingRide()">
+          <span>Decline</span>
+        </button>
+        <button class="btn-gold" style="padding: 14px;" onclick="acceptIncomingRide()">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>ACCEPT RIDE</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 3: IN-TRIP NAVIGATION & SECRET OTP ================= -->
+    <div id="view-driver-in-trip" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-map"></i>
+        </div>
+        <div class="subpage-title">Trip Navigation</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <!-- Turn-by-Turn Instruction Banner -->
+        <div class="driver-card-teal" style="margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-diamond-turn-right" style="font-size: 26px; color: var(--driver-gold);"></i>
+            <div>
+              <div style="font-size: 16px; font-weight: 900;" id="inTripInstructionText">In 200m, Continue on Ring Road</div>
+              <div style="font-size: 12px; opacity: 0.9;">Heading towards Pickup Location</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passenger Card -->
+        <div class="driver-card-dark">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--driver-teal); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900;">
+                A
+              </div>
+              <div>
+                <strong style="font-size: 15px;">Aman Verma (Rider)</strong>
+                <div style="font-size: 12px; color: var(--text-muted);">Pickup: Vijay Nagar Square</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <a href="tel:9876543210" class="hamburger-btn" style="text-decoration: none;">
+                <i class="fa-solid fa-phone" style="color: var(--driver-green);"></i>
+              </a>
+              <div class="hamburger-btn" onclick="showToast('Messaging Rider: On the way!')">
+                <i class="fa-solid fa-message" style="color: #38BDF8;"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secret OTP Input (Step 1 before ride starts) -->
+          <div id="tripOtpSection" style="background: #090E17; border: 1.5px dashed var(--driver-teal); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 16px;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">ENTER 4-DIGIT RIDER SECRET OTP</div>
+            <input type="tel" id="inputVerifyOtp" class="zygo-input" placeholder="4047" maxlength="4" style="text-align: center; font-size: 24px; font-weight: 900; letter-spacing: 6px; width: 140px; margin: 0 auto 12px;" />
+            <button class="btn-teal" onclick="verifyRideOtpAndStart()">
+              <i class="fa-solid fa-play"></i>
+              <span>Verify OTP &amp; Start Ride</span>
+            </button>
+          </div>
+
+          <!-- End Ride Button (Visible after OTP verified) -->
+          <div id="tripEndSection" style="display: none;">
+            <button class="btn-gold" onclick="finishTripAndCollectFare()">
+              <i class="fa-solid fa-flag-checkered"></i>
+              <span>End Trip &amp; Collect Fare (₹240)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 4: DRIVER PROFILE ================= -->
+    <div id="view-driver-profile" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Captain Profile</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark" style="text-align: center; padding: 26px 20px;">
+          <div class="driver-avatar-circle" style="width: 72px; height: 72px; font-size: 28px; margin: 0 auto 10px;" id="profileAvatarBig">
+            D
+          </div>
+          <h3 style="font-size: 18px; font-weight: 900;" id="profileCaptainName">Captain</h3>
+          <div style="font-size: 13px; color: var(--text-muted);" id="profileCaptainPhone">+91 ...</div>
+          <div style="margin-top: 6px; display: inline-block; background: rgba(0, 210, 106, 0.15); color: var(--driver-green); font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;">
+            KYC Verified &bull; Active Partner
+          </div>
+        </div>
+
+        <div class="driver-card-dark">
+          <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 12px;">Assigned Vehicle Details</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Vehicle Model</span>
+              <strong id="profileVehicleText">Maruti Suzuki Dzire</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Category</span>
+              <strong id="profileCategoryText">Sedan</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Plate Number</span>
+              <strong id="profilePlateText">MP-09-AB-4047</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Fuel Type</span>
+              <strong id="profileFuelText">CNG</strong>
+            </div>
+          </div>
+
+          <button class="btn-teal" style="margin-top: 16px; padding: 12px; font-size: 13px;" onclick="ZygoRouter.navigate('view-driver-vehicle-setup')">
+            <i class="fa-solid fa-gear"></i>
+            <span>Update Vehicle Information</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 5: DRIVER MESSAGES & NOTICE BOARD ================= -->
+    <div id="view-driver-messages" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Messages &amp; Notices</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;" id="driverMessagesListContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 6: MY REVIEWS & RATINGS ================= -->
+    <div id="view-driver-reviews" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Captain Reviews</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark" style="text-align: center; padding: 24px 20px;">
+          <div style="font-size: 42px; font-weight: 900; color: var(--driver-gold);">5.0 ⭐</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Based on 100% rider satisfaction score</div>
+        </div>
+
+        <div class="driver-card-dark">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Recent Rider Feedback</h4>
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div style="display: flex; justify-content: space-between; font-size: 13px;">
+              <strong>Aman V.</strong>
+              <span style="color: var(--driver-gold);">⭐⭐⭐⭐⭐</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">"Very polite captain and car was extremely clean with AC on."</p>
+          </div>
+          <div style="padding: 10px 0;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px;">
+              <strong>Pooja S.</strong>
+              <span style="color: var(--driver-gold);">⭐⭐⭐⭐⭐</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">"On-time pickup at Vijay Nagar. Smooth driving."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 7: DRIVER SAFETY TOOLKIT ================= -->
+    <div id="view-driver-safety" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Safety Toolkit</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark" style="background: rgba(255, 59, 48, 0.15); border: 2px solid var(--driver-red); text-align: center; padding: 24px 16px;">
+          <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--driver-red); color: #fff; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; cursor: pointer;" onclick="showToast('🚨 EMERGENCY POLICE ALERT SENT WITH CURRENT GPS!')">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <h3 style="font-size: 18px; font-weight: 900; color: #FFF;">DRIVER EMERGENCY SOS (112)</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Tap in case of accident or physical emergency.</p>
+        </div>
+
+        <div class="driver-card-dark">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-dark);">
+            <div>
+              <strong>Speed Limit Warning (60 km/h)</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Audible beep if limit crossed</div>
+            </div>
+            <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--driver-teal);" onchange="showToast('Speed warning updated')" />
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+            <div>
+              <strong>Night Shift Safety Mode</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Real-time control room GPS ping</div>
+            </div>
+            <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--driver-teal);" onchange="showToast('Night safety mode active')" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 8: DRIVER LEADERBOARD ================= -->
+    <div id="view-driver-leaderboard" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">City Leaderboard</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-teal" style="text-align: center;">
+          <i class="fa-solid fa-trophy" style="font-size: 34px; color: var(--driver-gold); margin-bottom: 8px;"></i>
+          <h3 style="font-size: 18px; font-weight: 900;">You are Ranked #1 in Indore</h3>
+          <p style="font-size: 12px; opacity: 0.9;">Top performing captain of the week</p>
+        </div>
+
+        <div class="driver-card-dark">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px; font-weight: 900; color: var(--driver-gold);">#1</span>
+              <div>
+                <strong id="leaderboardYourName">You</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Sedan &bull; 100% Rating</div>
+              </div>
+            </div>
+            <span style="color: var(--driver-green); font-weight: 900;">₹8,450 Earned</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px; font-weight: 900; color: #94A3B8;">#2</span>
+              <div>
+                <strong>Vikram S.</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Auto &bull; 4.98 Rating</div>
+              </div>
+            </div>
+            <span style="color: var(--driver-green); font-weight: 900;">₹7,920 Earned</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 16px; font-weight: 900; color: #CD7F32;">#3</span>
+              <div>
+                <strong>Rajesh M.</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Prime Cab &bull; 4.95 Rating</div>
+              </div>
+            </div>
+            <span style="color: var(--driver-green); font-weight: 900;">₹7,110 Earned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 9: REFER & EARN ================= -->
+    <div id="view-driver-refer" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Refer &amp; Earn</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-teal" style="text-align: center;">
+          <i class="fa-solid fa-gift" style="font-size: 36px; color: var(--driver-gold); margin-bottom: 8px;"></i>
+          <h3 style="font-size: 20px; font-weight: 900;">Earn ₹500 Per Driver</h3>
+          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Invite fellow drivers to ZYGO and get ₹500 bonus after their first 10 trips.</p>
+
+          <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; margin: 16px 0; font-size: 18px; font-weight: 900; letter-spacing: 2px; color: var(--driver-gold);" id="referralCodeText">
+            ZYGOCAP4047
+          </div>
+
+          <button class="btn-gold" onclick="shareReferralCode()">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>Share via WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 10: ADD WITHDRAW INFO ================= -->
+    <div id="view-driver-payout-info" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Add Withdraw Info</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark">
+          <form onsubmit="handleSavePayoutInfo(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">BANK NAME *</label>
+              <input type="text" id="payoutBankName" class="zygo-input" value="State Bank of India" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">ACCOUNT NUMBER *</label>
+              <input type="text" id="payoutAccNum" class="zygo-input" value="384729104829" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">IFSC CODE *</label>
+              <input type="text" id="payoutIfsc" class="zygo-input" value="SBIN0001234" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">UPI ID (FOR INSTANT PAYOUTS) *</label>
+              <input type="text" id="payoutUpi" class="zygo-input" value="captain@upi" required />
+            </div>
+
+            <button type="submit" class="btn-teal">
+              <span>Save &amp; Verify Bank Account</span>
+              <i class="fa-solid fa-circle-check"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 11: DRIVER WALLET & PAYOUTS ================= -->
+    <div id="view-driver-wallet" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Wallet &amp; Payouts</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark" style="text-align: center; padding: 26px 20px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Withdrawable Balance</div>
+          <div style="font-size: 38px; font-weight: 900; color: var(--driver-green); margin: 6px 0;" id="walletPageBalanceText">₹0.00</div>
+          <div style="font-size: 12px; color: var(--text-muted);">Instant daily settlement via UPI &bull; 0% Commission</div>
+
+          <div style="margin-top: 18px;">
+            <button class="btn-gold" onclick="executeDriverWithdrawal()">
+              <i class="fa-solid fa-building-columns"></i>
+              <span>Instant Bank Transfer</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="driver-card-dark">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Payout History</h4>
+          <div id="driverWalletTxnList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 12: HELP & SUPPORT ================= -->
+    <div id="view-driver-support" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Captain Support</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-teal" style="text-align: center;">
+          <i class="fa-solid fa-headset" style="font-size: 34px; color: var(--driver-gold); margin-bottom: 10px;"></i>
+          <h3 style="font-size: 18px; font-weight: 900;">24x7 Driver Partner Helpline</h3>
+          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Direct call to ZYGO Captain Operations Center</p>
+          <div style="margin-top: 16px;">
+            <a href="tel:18002664047" class="btn-gold" style="text-decoration: none; display: inline-flex;">
+              <i class="fa-solid fa-phone"></i>
+              <span>Call Toll-Free: 1800-ZYGO-CAPTAIN</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 13: SETTINGS ================= -->
+    <div id="view-driver-settings" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">App Settings</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div>
+              <strong>Dispatch Ringtone Sound</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Audible chime for incoming rides</div>
+            </div>
+            <input type="checkbox" id="settingSoundToggle" checked style="width: 20px; height: 20px; accent-color: var(--driver-teal);" onchange="updateSoundSetting(this)" />
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div>
+              <strong>Auto-Accept Rides</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Automatically accept nearest requests</div>
+            </div>
+            <input type="checkbox" id="settingAutoAccept" style="width: 20px; height: 20px; accent-color: var(--driver-teal);" onchange="showToast('Auto-accept setting updated')" />
+          </div>
+
+          <div style="padding: 10px 0;">
+            <label class="zygo-input-label">PREFERRED NAVIGATION ENGINE</label>
+            <select class="zygo-input" onchange="showToast('Navigation engine updated')">
+              <option value="inapp" selected>ZYGO In-App Vector Map</option>
+              <option value="gmaps">Google Maps App</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 14: VEHICLE SETUP (matching user uploaded image) ================= -->
+    <div id="view-driver-vehicle-setup" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-profile')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Vehicle Setup</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark">
+          <h4 style="font-size: 16px; font-weight: 800; color: #FFF; margin-bottom: 4px;">Vehicle Information</h4>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Add your info to send approval request to admin.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Vehicle Brand*</label>
+              <select id="editVehicleBrand" class="zygo-input">
+                <option value="Maruti Suzuki" selected>Maruti Suzuki</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Tata">Tata</option>
+                <option value="Bajaj">Bajaj</option>
+              </select>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">Vehicle Model*</label>
+              <input type="text" id="editVehicleModel" class="zygo-input" value="Dzire" required />
+            </div>
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">Vehicle Category*</label>
+            <select id="editVehicleCategory" class="zygo-input">
+              <option value="Rental Car">Rental Car</option>
+              <option value="Sedan" selected>Sedan</option>
+              <option value="Auto">Auto</option>
+              <option value="Premium Cab">Premium Cab</option>
+              <option value="Bike">Bike</option>
+              <option value="Economy Cab">Economy Cab</option>
+            </select>
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">Parcel Weight Capacity (kg)</label>
+            <input type="number" id="editParcelCapacity" class="zygo-input" value="30" />
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">Licence Plate Number*</label>
+            <input type="text" id="editLicensePlate" class="zygo-input" value="MP-09-AB-4047" required />
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">Fuel Type*</label>
+            <select id="editFuelType" class="zygo-input">
+              <option value="CNG" selected>CNG</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Electric">Electric</option>
+            </select>
+          </div>
+
+          <button class="btn-teal" onclick="saveVehicleSetupForm()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 15: LEGAL, PRIVACY & TERMS ================= -->
+    <div id="view-driver-policy" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title" id="policyPageTitle">Terms &amp; Policies</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="driver-card-dark" id="policyPageContent">
+          <!-- Dynamically set -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 16: DRIVER ACTIVITY & SHIFT HISTORY ================= -->
+    <div id="view-driver-activity" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Shift Activity &amp; Trips</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;" id="driverTripsHistoryContainer"></div>
+    </div>
+
+    <!-- ================= THREE LINES DRAWER (1:1 with media_1794565328164_f37661d2.jpg) ================= -->
+    <div class="driver-drawer-backdrop" id="driverDrawerBackdrop" onclick="closeDriverDrawer()"></div>
+    <div class="driver-side-drawer" id="driverSideDrawer">
+      <div class="drawer-profile-header">
+        <div class="driver-avatar-circle" style="width: 48px; height: 48px; border-color: #FFF; color: #FFF; background: var(--driver-teal-dark);" id="drawerAvatarInitial">
+          D
+        </div>
+        <div>
+          <h4 style="font-size: 16px; font-weight: 900; color: #fff;" id="drawerCaptainName">Captain</h4>
+          <span style="font-size: 11px; background: rgba(0, 0, 0, 0.2); color: #FFF; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Level 1</span>
+        </div>
+        <button onclick="closeDriverDrawer()" style="position: absolute; right: 16px; top: 22px; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="drawer-menu-list">
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-profile')">
+          <i class="fa-regular fa-user"></i>
+          <span>Profile</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-messages')">
+          <i class="fa-regular fa-comment-dots"></i>
+          <span>Message</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-reviews')">
+          <i class="fa-regular fa-file-lines"></i>
+          <span>My Reviews</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-safety')">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Safety</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-leaderboard')">
+          <i class="fa-solid fa-chart-simple"></i>
+          <span>Leader Board</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-refer')">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Refer &amp; Earn</span>
+        </div>
+
+        <a class="drawer-menu-item" href="downloads/zygo-driver.apk" download="Zygo_Captain_Driver.apk" style="background: rgba(255, 192, 0, 0.15); border-left: 3px solid var(--driver-gold); color: #fff; text-decoration: none;">
+          <i class="fa-brands fa-android" style="color: var(--driver-gold);"></i>
+          <span>Download Driver APK</span>
+          <span style="margin-left: auto; background: var(--driver-gold); color: #000; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 4px;">10 MB</span>
+        </a>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-payout-info')">
+          <i class="fa-solid fa-building-columns"></i>
+          <span>Add withdraw info</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-support')">
+          <i class="fa-regular fa-circle-question"></i>
+          <span>Help &amp; Support</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-settings')">
+          <i class="fa-solid fa-gear"></i>
+          <span>Setting</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerPolicy('Privacy Policy')">
+          <i class="fa-solid fa-shield-cat"></i>
+          <span>Privacy Policy</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerPolicy('Terms & Condition')">
+          <i class="fa-regular fa-file-lines"></i>
+          <span>Terms &amp; Condition</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerPolicy('Refund Policy')">
+          <i class="fa-solid fa-arrow-rotate-left"></i>
+          <span>Refund Policy</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="openDrawerPolicy('Legal')">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span>Legal</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="confirmDriverLogout()" style="color: #FFC0CB;">
+          <i class="fa-solid fa-arrow-right-from-bracket" style="color: #FFC0CB;"></i>
+          <span>Logout</span>
+        </div>
+
+        <div class="drawer-menu-item" onclick="confirmDeleteDriverAccount()" style="color: #FF3B30;">
+          <i class="fa-solid fa-trash-can" style="color: #FF3B30;"></i>
+          <span>Permanently Delete Account</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= DOCKED BOTTOM NAVIGATION (4-Tabs matching image) ================= -->
+    <nav class="driver-bottom-nav">
+      <a class="driver-tab-item active" data-tab="home" onclick="ZygoRouter.navigate('view-driver-home')">
+        <i class="fa-solid fa-house"></i>
+      </a>
+
+      <a class="driver-tab-item" data-tab="activity" onclick="ZygoRouter.navigate('view-driver-activity')">
+        <i class="fa-solid fa-chart-line"></i>
+      </a>
+
+      <a class="driver-tab-item" data-tab="messages" onclick="ZygoRouter.navigate('view-driver-messages')">
+        <i class="fa-regular fa-bell"></i>
+      </a>
+
+      <a class="driver-tab-item" data-tab="wallet" onclick="ZygoRouter.navigate('view-driver-wallet')">
+        <i class="fa-solid fa-wallet"></i>
+        <span style="font-size: 10px;">Wallet</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Shared Modules -->
+  <script src="../shared/sound-engine.js"></script>
+  <script src="../shared/router.js"></script>
+  <script src="../shared/live-store.js"></script>
+
+  <script>
+    let isOnline = true;
+    let leafletMap = null;
+    let captainMarker = null;
+    let dispatchTimerInterval = null;
+    let activeIncomingTrip = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Register all views in router
+      ZygoRouter.register('view-driver-auth');
+      ZygoRouter.register('view-driver-home', initDriverHomeScreen);
+      ZygoRouter.register('view-driver-in-trip');
+      ZygoRouter.register('view-driver-profile', initDriverProfileScreen);
+      ZygoRouter.register('view-driver-messages', initDriverMessagesScreen);
+      ZygoRouter.register('view-driver-reviews');
+      ZygoRouter.register('view-driver-safety');
+      ZygoRouter.register('view-driver-leaderboard', initDriverLeaderboard);
+      ZygoRouter.register('view-driver-refer');
+      ZygoRouter.register('view-driver-payout-info', initPayoutInfoScreen);
+      ZygoRouter.register('view-driver-wallet', initDriverWalletScreen);
+      ZygoRouter.register('view-driver-support');
+      ZygoRouter.register('view-driver-settings');
+      ZygoRouter.register('view-driver-vehicle-setup', initVehicleSetupScreen);
+      ZygoRouter.register('view-driver-policy');
+      ZygoRouter.register('view-driver-activity', initDriverActivityScreen);
+
+      // Check real driver session
+      if (!window.ZygoLiveStore.driver) {
+        ZygoRouter.navigate('view-driver-auth');
+      } else {
+        ZygoRouter.navigate('view-driver-home');
+      }
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('zygoToast');
+      const text = document.getElementById('zygoToastText');
+      if (toast && text) {
+        text.innerText = msg;
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.display = 'none'; }, 2600);
+      }
+    }
+
+    // Onboarding Steps Navigation
+    function goToOnboardStep(step) {
+      document.getElementById('onboardStep1').style.display = (step === 1) ? 'block' : 'none';
+      document.getElementById('onboardStep2').style.display = (step === 2) ? 'block' : 'none';
+      document.getElementById('onboardStep3').style.display = (step === 3) ? 'block' : 'none';
+    }
+
+    function toggleServiceCheck(id) {
+      const cb = document.getElementById(id);
+      if (cb) cb.checked = !cb.checked;
+    }
+
+    function completeDriverOnboarding() {
+      const name = document.getElementById('obDriverName').value.trim();
+      const phone = document.getElementById('obDriverPhone').value.trim();
+      const city = document.getElementById('obDriverCity').value;
+      const upi = document.getElementById('obDriverUpi').value.trim();
+
+      const brand = document.getElementById('obVehicleBrand').value;
+      const model = document.getElementById('obVehicleModel').value.trim();
+      const category = document.getElementById('obVehicleCategory').value;
+      const plate = document.getElementById('obLicensePlate').value.trim();
+      const expiry = document.getElementById('obLicenseExpiry').value;
+      const fuel = document.getElementById('obFuelType').value;
+      const parcelWeight = document.getElementById('obParcelCapacity').value;
+
+      if (!name || phone.length !== 10) {
+        showToast('Please complete personal information (Full Name & 10-digit Phone).');
+        goToOnboardStep(2);
+        return;
+      }
+
+      window.ZygoLiveStore.registerDriver({
+        name,
+        phone,
+        city,
+        upiId: upi,
+        brand,
+        model,
+        category,
+        plate,
+        licenseExpiry: expiry,
+        fuelType: fuel,
+        parcelWeight
+      });
+
+      if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+      showToast(`Welcome Captain ${name}! Registration Approved.`);
+      ZygoRouter.navigate('view-driver-home');
+    }
+
+    function showDriverQuickLogin() {
+      const phone = prompt('Enter your registered 10-digit mobile number:');
+      if (phone && phone.trim().length === 10) {
+        window.ZygoLiveStore.registerDriver({
+          name: 'Captain ' + phone.slice(-4),
+          phone: phone.trim(),
+          city: 'Indore',
+          brand: 'Maruti Suzuki',
+          model: 'Dzire',
+          category: 'Sedan',
+          plate: 'MP-09-AB-4047'
+        });
+        showToast('Welcome back, Captain!');
+        ZygoRouter.navigate('view-driver-home');
+      }
+    }
+
+    // Driver Home & Map Initialization
+    function initDriverHomeScreen() {
+      const d = window.ZygoLiveStore.driver;
+      if (d) {
+        document.getElementById('homeCaptainNameDisplay').innerText = d.name;
+        document.getElementById('homeAvatarCircle').innerHTML = `${d.name.charAt(0).toUpperCase()}<div class="online-indicator-dot" id="headerOnlineDot"></div>`;
+        document.getElementById('drawerCaptainName').innerText = d.name;
+        document.getElementById('drawerAvatarInitial').innerText = d.name.charAt(0).toUpperCase();
+      }
+
+      document.getElementById('statsTodayEarned').innerText = `₹${window.ZygoLiveStore.driverWallet.todayEarned.toFixed(2)}`;
+      document.getElementById('statsTripsCount').innerText = `${window.ZygoLiveStore.driverWallet.todayTrips} Rides`;
+
+      setTimeout(setupLeafletMap, 150);
+    }
+
+    function setupLeafletMap() {
+      if (leafletMap) return;
+      const mapContainer = document.getElementById('driverMap');
+      if (!mapContainer) return;
+
+      const indoreLat = 22.7533;
+      const indoreLng = 75.8937;
+
+      leafletMap = L.map('driverMap', { zoomControl: false }).setView([indoreLat, indoreLng], 15);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19
+      }).addTo(leafletMap);
+
+      const carIconHtml = `
+        <div style="background: #106674; border: 3px solid #FFF; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px #106674; color: #FFF;">
+          <i class="fa-solid fa-car-side" style="font-size: 18px;"></i>
+        </div>
+      `;
+      const carIcon = L.divIcon({ html: carIconHtml, className: '', iconSize: [38, 38], iconAnchor: [19, 19] });
+      captainMarker = L.marker([indoreLat, indoreLng], { icon: carIcon }).addTo(leafletMap);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          leafletMap.setView([lat, lng], 15);
+          captainMarker.setLatLng([lat, lng]);
+        }, null, { enableHighAccuracy: true });
+      }
+    }
+
+    function toggleDutyStatus() {
+      isOnline = !isOnline;
+      const btn = document.getElementById('dutySwitchBtn');
+      const text = document.getElementById('dutySwitchText');
+      const dot = document.getElementById('headerOnlineDot');
+
+      if (isOnline) {
+        btn.className = 'duty-switch-btn online';
+        text.innerText = 'ONLINE';
+        if (dot) dot.style.background = 'var(--driver-green)';
+        showToast('You are On Duty. Ready for ride dispatches.');
+      } else {
+        btn.className = 'duty-switch-btn offline';
+        text.innerText = 'OFFLINE';
+        if (dot) dot.style.background = 'var(--driver-red)';
+        declineIncomingRide();
+        showToast('You are Off Duty. Dispatches paused.');
+      }
+    }
+
+    // Advanced Ringing System & Dispatch Flow
+    function simulateIncomingRideAlert() {
+      if (!isOnline) {
+        showToast('Please go ONLINE first to accept ride dispatches.');
+        return;
+      }
+
+      activeIncomingTrip = {
+        passenger: 'Aman Verma',
+        pickup: 'Vijay Nagar Square, Indore',
+        drop: 'Palasia Square, Indore',
+        fare: 240,
+        tier: 'Prime Sedan',
+        otp: 4047
+      };
+
+      document.getElementById('alertPassengerName').innerText = activeIncomingTrip.passenger;
+      document.getElementById('alertPickupLoc').innerText = activeIncomingTrip.pickup;
+      document.getElementById('alertDropLoc').innerText = activeIncomingTrip.drop;
+
+      const modal = document.getElementById('incomingRideModal');
+      modal.style.display = 'block';
+
+      // Start reliable ringing chime
+      if (window.ZygoSoundEngine) {
+        window.ZygoSoundEngine.startRinging();
+      }
+
+      // 30-second timer countdown
+      const fill = document.getElementById('dispatchTimerFill');
+      fill.style.width = '100%';
+      let timeLeft = 30;
+
+      if (dispatchTimerInterval) clearInterval(dispatchTimerInterval);
+      dispatchTimerInterval = setInterval(() => {
+        timeLeft -= 1;
+        fill.style.width = `${(timeLeft / 30) * 100}%`;
+        if (timeLeft <= 0) {
+          declineIncomingRide();
+        }
+      }, 1000);
+    }
+
+    function declineIncomingRide() {
+      if (window.ZygoSoundEngine) {
+        window.ZygoSoundEngine.stopRinging();
+      }
+      if (dispatchTimerInterval) {
+        clearInterval(dispatchTimerInterval);
+        dispatchTimerInterval = null;
+      }
+      document.getElementById('incomingRideModal').style.display = 'none';
+      activeIncomingTrip = null;
+    }
+
+    function acceptIncomingRide() {
+      if (window.ZygoSoundEngine) {
+        window.ZygoSoundEngine.stopRinging();
+        window.ZygoSoundEngine.playSuccessSound();
+      }
+      if (dispatchTimerInterval) {
+        clearInterval(dispatchTimerInterval);
+        dispatchTimerInterval = null;
+      }
+      document.getElementById('incomingRideModal').style.display = 'none';
+
+      // Switch to in-trip view
+      document.getElementById('activeTripBar').style.display = 'flex';
+      document.getElementById('tripOtpSection').style.display = 'block';
+      document.getElementById('tripEndSection').style.display = 'none';
+      document.getElementById('inTripInstructionText').innerText = 'Heading to Vijay Nagar Pickup';
+
+      showToast('Ride Accepted! Navigate to rider pickup.');
+      ZygoRouter.navigate('view-driver-in-trip');
+    }
+
+    function verifyRideOtpAndStart() {
+      const otp = document.getElementById('inputVerifyOtp').value.trim();
+      if (otp !== '4047') {
+        showToast('Invalid OTP! Please enter correct 4-digit code provided by rider (4047).');
+        return;
+      }
+
+      if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+      document.getElementById('tripOtpSection').style.display = 'none';
+      document.getElementById('tripEndSection').style.display = 'block';
+      document.getElementById('inTripInstructionText').innerText = 'In 500m, Turn Left towards Palasia';
+      document.getElementById('activeTripSnippet').innerText = 'In Transit to Palasia Square';
+      showToast('✅ OTP Verified! Trip Started. Drive safely.');
+    }
+
+    function finishTripAndCollectFare() {
+      const fare = activeIncomingTrip ? activeIncomingTrip.fare : 240;
+      window.ZygoLiveStore.driverCompleteRide(fare, 'Aman Verma', 'Vijay Nagar Square', 'Palasia Square');
+
+      if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+      document.getElementById('activeTripBar').style.display = 'none';
+      activeIncomingTrip = null;
+
+      showToast(`🎉 Trip Completed! ₹${fare} added to your wallet.`);
+      ZygoRouter.navigate('view-driver-wallet');
+    }
+
+    // Drawer Helpers
+    function openDriverDrawer() {
+      document.getElementById('driverSideDrawer').classList.add('open');
+      document.getElementById('driverDrawerBackdrop').style.display = 'block';
+    }
+
+    function closeDriverDrawer() {
+      document.getElementById('driverSideDrawer').classList.remove('open');
+      document.getElementById('driverDrawerBackdrop').style.display = 'none';
+    }
+
+    function openDrawerOption(viewId) {
+      closeDriverDrawer();
+      ZygoRouter.navigate(viewId);
+    }
+
+    function openDrawerPolicy(type) {
+      closeDriverDrawer();
+      document.getElementById('policyPageTitle').innerText = type;
+      let text = '';
+      if (type === 'Privacy Policy') {
+        text = '<h4>Driver Partner Privacy Policy</h4><p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">All telemetry, GPS coordinates, and vehicle details are encrypted with AES-256 standard. ZYGO never shares driver personal contact numbers with riders.</p>';
+      } else if (type === 'Terms & Condition') {
+        text = '<h4>Aggregator Terms & Guidelines</h4><p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">ZYGO operates strictly as a zero-commission digital intermediary under Ministry of Road Transport & Highways Motor Vehicle Aggregator Guidelines 2020.</p>';
+      } else if (type === 'Refund Policy') {
+        text = '<h4>Toll & Cancellation Policy</h4><p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Any toll charges incurred during active trips are reimbursed 100% to the driver wallet upon ride completion receipt submission.</p>';
+      } else {
+        text = '<h4>Legal & Compliance</h4><p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Licensed aggregator platform registered in Madhya Pradesh and compliant with all regional transport authority mandates.</p>';
+      }
+      document.getElementById('policyPageContent').innerHTML = text;
+      ZygoRouter.navigate('view-driver-policy');
+    }
+
+    function confirmDriverLogout() {
+      closeDriverDrawer();
+      if (confirm('Are you sure you want to go Off Duty and log out?')) {
+        window.ZygoLiveStore.logoutDriver();
+        showToast('Logged out successfully.');
+        ZygoRouter.navigate('view-driver-auth');
+      }
+    }
+
+    function confirmDeleteDriverAccount() {
+      closeDriverDrawer();
+      if (confirm('Permanently delete your Captain account and history? This cannot be undone.')) {
+        window.ZygoLiveStore.deleteDriverAccount();
+        showToast('Account permanently removed.');
+        ZygoRouter.navigate('view-driver-auth');
+      }
+    }
+
+    // Sub-Screen Loaders
+    function initDriverProfileScreen() {
+      const d = window.ZygoLiveStore.driver;
+      if (d) {
+        document.getElementById('profileCaptainName').innerText = d.name;
+        document.getElementById('profileCaptainPhone').innerText = `+91 ${d.phone} &bull; ${d.city}`;
+        document.getElementById('profileAvatarBig').innerText = d.name.charAt(0).toUpperCase();
+        document.getElementById('profileVehicleText').innerText = `${d.brand} ${d.model}`;
+        document.getElementById('profileCategoryText').innerText = d.category;
+        document.getElementById('profilePlateText').innerText = d.plate;
+        document.getElementById('profileFuelText').innerText = d.fuelType;
+      }
+    }
+
+    function initDriverMessagesScreen() {
+      const list = document.getElementById('driverMessagesListContainer');
+      const msgs = window.ZygoLiveStore.driverMessages;
+
+      let html = '';
+      msgs.forEach(m => {
+        html += `
+          <div class="driver-card-dark">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <strong style="font-size: 14px; color: #FFF;">${m.from}</strong>
+              <span style="font-size: 11px; color: var(--text-muted);">${m.time}</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted);">${m.text}</p>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function initDriverLeaderboard() {
+      const d = window.ZygoLiveStore.driver;
+      if (d) {
+        document.getElementById('leaderboardYourName').innerText = d.name;
+      }
+    }
+
+    function shareReferralCode() {
+      showToast('Referral code copied to clipboard! Share on WhatsApp.');
+    }
+
+    function initPayoutInfoScreen() {
+      const info = window.ZygoLiveStore.driverWithdrawInfo;
+      document.getElementById('payoutBankName').value = info.bankName || '';
+      document.getElementById('payoutAccNum').value = info.accountNumber || '';
+      document.getElementById('payoutIfsc').value = info.ifscCode || '';
+      document.getElementById('payoutUpi').value = info.upiId || '';
+    }
+
+    function handleSavePayoutInfo(e) {
+      e.preventDefault();
+      const b = document.getElementById('payoutBankName').value;
+      const a = document.getElementById('payoutAccNum').value;
+      const i = document.getElementById('payoutIfsc').value;
+      const u = document.getElementById('payoutUpi').value;
+
+      window.ZygoLiveStore.saveDriverWithdrawInfo({ bankName: b, accountNumber: a, ifscCode: i, upiId: u });
+      showToast('✅ Bank Account & UPI verified and saved.');
+      ZygoRouter.navigate('view-driver-wallet');
+    }
+
+    function initDriverWalletScreen() {
+      const w = window.ZygoLiveStore.driverWallet;
+      document.getElementById('walletPageBalanceText').innerText = `₹${w.balance.toFixed(2)}`;
+
+      const list = document.getElementById('driverWalletTxnList');
+      if (w.transactions.length === 0) {
+        list.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">No payout transactions yet. Complete trips to earn!</div>';
+        return;
+      }
+
+      let html = '';
+      w.transactions.forEach(t => {
+        const isCredit = t.type === 'credit';
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
+            <div>
+              <strong style="font-size: 13px;">${t.title}</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">${t.date}</div>
+            </div>
+            <div style="font-size: 15px; font-weight: 900; color: ${isCredit ? 'var(--driver-green)' : 'var(--text-white)'};">
+              ${isCredit ? '+' : '-'}₹${t.amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function executeDriverWithdrawal() {
+      const bal = window.ZygoLiveStore.driverWallet.balance;
+      if (bal <= 0) {
+        showToast('Your withdrawable balance is ₹0. Complete rides first.');
+        return;
+      }
+
+      if (window.ZygoLiveStore.driverRequestPayout(bal)) {
+        if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+        showToast(`✅ ₹${bal} transferred instantly to ${window.ZygoLiveStore.driverWithdrawInfo.upiId}!`);
+        initDriverWalletScreen();
+      }
+    }
+
+    function initVehicleSetupScreen() {
+      const d = window.ZygoLiveStore.driver;
+      if (d) {
+        document.getElementById('editVehicleBrand').value = d.brand || 'Maruti Suzuki';
+        document.getElementById('editVehicleModel').value = d.model || 'Dzire';
+        document.getElementById('editVehicleCategory').value = d.category || 'Sedan';
+        document.getElementById('editParcelCapacity').value = d.parcelWeight || 30;
+        document.getElementById('editLicensePlate').value = d.plate || 'MP-09-AB-4047';
+        document.getElementById('editFuelType').value = d.fuelType || 'CNG';
+      }
+    }
+
+    function saveVehicleSetupForm() {
+      const b = document.getElementById('editVehicleBrand').value;
+      const m = document.getElementById('editVehicleModel').value;
+      const c = document.getElementById('editVehicleCategory').value;
+      const p = document.getElementById('editLicensePlate').value;
+      const f = document.getElementById('editFuelType').value;
+      const pw = document.getElementById('editParcelCapacity').value;
+
+      window.ZygoLiveStore.saveDriverVehicle({ brand: b, model: m, category: c, plate: p, fuelType: f, parcelWeight: pw });
+      showToast('✅ Vehicle Setup updated and verified.');
+      ZygoRouter.navigate('view-driver-profile');
+    }
+
+    function initDriverActivityScreen() {
+      const list = document.getElementById('driverTripsHistoryContainer');
+      const trips = window.ZygoLiveStore.driverTrips;
+
+      if (trips.length === 0) {
+        list.innerHTML = `
+          <div class="driver-card-dark" style="text-align: center; color: var(--text-muted); padding: 40px 20px;">
+            <i class="fa-solid fa-clock-rotate-left" style="font-size: 38px; margin-bottom: 10px; display: block; color: var(--driver-gold);"></i>
+            No past rides recorded in this shift. Go Online to accept rides!
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      trips.forEach(tr => {
+        html += `
+          <div class="driver-card-dark">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <strong>${tr.customer} &bull; ₹${tr.fare}</strong>
+              <span style="color: var(--driver-green); font-size: 11px; font-weight: 800;">${tr.status}</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted);">From: ${tr.pickup}<br>To: ${tr.drop}</div>
+            <div style="font-size: 11px; color: #64748B; margin-top: 6px;">${tr.date} &bull; ${tr.id}</div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function updateSoundSetting(cb) {
+      window.ZygoLiveStore.saveDriverSettings({ soundEnabled: cb.checked });
+      showToast(cb.checked ? 'Ringtone Chime Enabled' : 'Ringtone Muted');
+    }
+  </script>
+</body>
+</html>

@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ZYGO — Super App</title>
-  <meta name="description" content="ZYGO Super App — Premium Experience. Affordable for Everyone. Mobility, Logistics, Rentals, Travel, and Payments.">
-  <link rel="icon" type="image/png" href="../assets/images/logo_with_name.png">
+  <title>ZYGO Super App</title>
+  <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
   
   <!-- Font Awesome Pro Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -13,7 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    /* ================= ZYGO MASTER DESIGN SYSTEM 2.0 ================= */
     :root {
       --bg-pearl: #EDEDEC;
       --bg-light: #F7F7F6;
@@ -58,7 +56,6 @@
       overflow-x: hidden;
     }
 
-    /* Mobile Container Wrapper (1:1 Smartphone UI) */
     .app-viewport {
       width: 100%;
       max-width: 440px;
@@ -68,42 +65,173 @@
       flex-direction: column;
       position: relative;
       box-shadow: 0 0 50px rgba(0,0,0,0.1);
-      padding-bottom: 95px; /* space for bottom nav */
+      padding-bottom: 95px;
     }
 
-    /* ================= 1. STATUS & TOP BAR ================= */
-    .top-status-bar {
-      padding: 14px 20px 8px;
+    /* Sub-view base structure */
+    .view-screen {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Top Sub-page Header */
+    .subpage-header {
+      background: var(--surface-white);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .subpage-back-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--deep-navy);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .subpage-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--deep-navy);
+      letter-spacing: -0.3px;
+    }
+
+    /* Clay Cards */
+    .clay-box-white {
+      background: var(--surface-white);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      box-shadow: var(--shadow-clay-card);
+      border: 1px solid rgba(255,255,255,0.7);
+      margin-bottom: 16px;
+    }
+
+    .clay-box-dark {
+      background: linear-gradient(145deg, #090D14, #040608);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      color: #fff;
+      box-shadow: var(--shadow-dark-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Form Inputs */
+    .zygo-input-group {
+      margin-bottom: 14px;
+    }
+
+    .zygo-input-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748B;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .zygo-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-light);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      color: var(--deep-navy);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .zygo-input:focus {
+      border-color: var(--gold-primary);
+      background: #FFF;
+    }
+
+    .zygo-btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: var(--deep-navy);
+      color: var(--gold-primary);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px rgba(4, 6, 8, 0.2);
+    }
+
+    .zygo-btn-gold {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-rich));
+      color: var(--deep-navy);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(252, 200, 44, 0.35);
+    }
+
+    /* Home Layout Components */
+    .home-top-bar {
+      padding: 18px 20px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .user-greeting-box {
+    .home-user-greeting {
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: pointer;
     }
 
-    .user-avatar-wrap {
+    .user-avatar-circle {
       width: 44px;
       height: 44px;
       border-radius: var(--radius-full);
-      background: #D1D5DB;
-      overflow: hidden;
-      border: 2px solid var(--surface-white);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: var(--deep-navy);
+      color: var(--gold-primary);
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .user-avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .greeting-text-sub {
-      font-size: 12px;
+    .greeting-sub {
+      font-size: 11px;
       font-weight: 600;
       color: #64748B;
       display: flex;
@@ -112,546 +240,358 @@
     }
 
     .greeting-name {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--deep-navy);
-      letter-spacing: -0.3px;
     }
 
-    .top-actions {
+    .home-action-icons {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .icon-circle-btn {
+    .icon-badge-btn {
       width: 40px;
       height: 40px;
       border-radius: var(--radius-full);
       background: var(--surface-white);
-      border: 1px solid rgba(167, 164, 161, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--deep-navy);
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    .icon-badge-dot {
+    .icon-badge-pill {
       position: absolute;
-      top: 9px;
-      right: 9px;
+      top: 6px;
+      right: 6px;
       width: 8px;
       height: 8px;
       background: var(--emergency-red);
-      border-radius: var(--radius-full);
-      border: 1.5px solid var(--surface-white);
+      border-radius: 50%;
+      border: 2px solid #FFF;
     }
 
-    .brand-pill-btn {
+    .zygo-brand-pill {
       background: var(--deep-navy);
-      color: var(--surface-white);
-      padding: 8px 16px;
-      border-radius: var(--radius-full);
+      color: var(--gold-primary);
       font-size: 14px;
       font-weight: 900;
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
       letter-spacing: 1px;
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 4px 14px rgba(4, 6, 8, 0.25);
     }
 
-    /* ================= 2. ZYGO WALLET CLAY-CARD ================= */
-    .wallet-card-container {
-      padding: 8px 20px 14px;
-    }
-
-    .zygo-wallet-clay {
-      background: linear-gradient(135deg, var(--navy-card) 0%, var(--navy-elevated) 100%);
-      border-radius: var(--radius-xl);
-      padding: 22px 20px;
-      color: var(--surface-white);
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-dark-card);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .wallet-header-row {
+    /* Wallet Card */
+    .wallet-card-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
-    .wallet-label {
+    .wallet-title {
       font-size: 12px;
-      color: #94A3B8;
       font-weight: 700;
-      text-transform: uppercase;
+      color: #94A3B8;
       letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
-    .wallet-balance-row {
+    .wallet-balance-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--gold-primary);
+      margin-top: 4px;
       display: flex;
       align-items: baseline;
-      gap: 4px;
-      margin-top: 4px;
+      gap: 2px;
     }
 
-    .wallet-currency {
-      font-size: 26px;
-      font-weight: 900;
-      color: var(--gold-primary);
-    }
-
-    .wallet-amount-main {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: -0.8px;
-      color: var(--surface-white);
-    }
-
-    .wallet-coins-badge {
-      background: rgba(252, 200, 44, 0.15);
-      border: 1px solid rgba(252, 200, 44, 0.35);
-      color: var(--gold-primary);
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .wallet-illustration {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-      width: 78px;
-      opacity: 0.88;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
-    }
-
-    .wallet-action-pills {
+    .wallet-chip-actions {
       display: flex;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 16px;
     }
 
-    .w-pill-btn {
+    .wallet-action-chip {
       flex: 1;
+      padding: 10px 8px;
+      border-radius: var(--radius-md);
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-full);
-      padding: 9px 12px;
+      color: #fff;
       font-size: 12px;
       font-weight: 700;
-      color: var(--surface-white);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       cursor: pointer;
-      backdrop-filter: blur(8px);
       transition: all 0.2s;
     }
 
-    .w-pill-btn:active {
-      transform: scale(0.97);
-      background: rgba(252, 200, 44, 0.2);
+    .wallet-action-chip:active {
+      transform: scale(0.96);
+      background: rgba(255,255,255,0.15);
     }
 
-    /* ================= 3. SEARCH & QUICK BOOKING BAR ================= */
-    .search-booking-wrapper {
-      padding: 0 20px 12px;
-    }
-
-    .search-bar-clay {
+    /* Search & Location */
+    .search-clay-card {
       background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 6px 8px 6px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow-clay-card);
-      border: 1px solid rgba(167, 164, 161, 0.25);
-    }
-
-    .search-input-mock {
+      border-radius: var(--radius-xl);
+      padding: 8px 12px 8px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
-      flex: 1;
-      color: #94A3B8;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
+      box-shadow: var(--shadow-clay-card);
+      border: 1.5px solid rgba(255,255,255,0.9);
+      margin-bottom: 14px;
     }
 
-    .btn-book-now {
+    .search-btn-cta {
       background: var(--deep-navy);
-      color: var(--surface-white);
+      color: var(--gold-primary);
       border: none;
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
+      padding: 12px 18px;
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(4, 6, 8, 0.25);
-      transition: transform 0.2s;
+      white-space: nowrap;
     }
 
-    .btn-book-now:active {
-      transform: scale(0.96);
-    }
-
-    /* ================= 4. CURRENT LOCATION STRIP (Indore Phase A) ================= */
-    .location-strip {
-      padding: 0 20px 16px;
-    }
-
-    .location-card {
-      background: var(--gold-champagne);
-      background: linear-gradient(135deg, #FFF9E6 0%, #F5ECCB 100%);
-      border: 1px solid rgba(239, 175, 25, 0.3);
-      border-radius: var(--radius-md);
+    .current-location-strip {
+      background: #FFF9E6;
+      border: 1px solid rgba(252, 200, 44, 0.4);
+      border-radius: var(--radius-lg);
       padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 22px;
       cursor: pointer;
     }
 
-    .loc-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .loc-pin-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: var(--radius-full);
-      background: rgba(252, 200, 44, 0.3);
-      color: var(--gold-bronze);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-    }
-
-    .loc-tag {
-      font-size: 10px;
-      font-weight: 800;
-      color: #8C6D23;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .loc-address {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--deep-navy);
-    }
-
-    /* ================= 5. MASTER SERVICES GRID ================= */
-    .section-container {
-      padding: 0 20px 20px;
-    }
-
-    .section-header-row {
+    /* Services Grid */
+    .section-headline {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      padding: 0 4px;
     }
 
     .section-title {
       font-size: 16px;
       font-weight: 800;
       color: var(--deep-navy);
-      letter-spacing: -0.3px;
     }
 
-    .section-link {
-      font-size: 12px;
+    .section-see-all {
+      font-size: 13px;
       font-weight: 700;
-      color: #64748B;
-      text-decoration: none;
+      color: var(--gold-bronze);
       cursor: pointer;
     }
 
-    .services-5col-grid {
+    .services-grid-row {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
+      gap: 8px;
+      margin-bottom: 24px;
     }
 
-    .service-clay-card {
+    .service-card-item {
       background: var(--surface-white);
       border-radius: var(--radius-lg);
-      padding: 14px 6px 12px;
-      text-align: center;
+      padding: 12px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      box-shadow: var(--shadow-clay-card);
-      border: 1px solid rgba(167, 164, 161, 0.2);
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
       cursor: pointer;
-      position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.7);
     }
 
-    .service-clay-card:active {
+    .service-card-item:active {
       transform: scale(0.94);
     }
 
-    .service-3d-img {
+    .service-icon-wrap {
       width: 44px;
-      height: 40px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 6px;
     }
 
-    .service-card-title {
-      font-size: 12px;
+    .service-card-label {
+      font-size: 11px;
       font-weight: 800;
       color: var(--deep-navy);
     }
 
-    /* ================= 6. QUICK ACTIONS & ZYGO PRIME ================= */
+    /* Quick Actions */
     .quick-actions-row {
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
     }
 
-    .actions-4box-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .action-square-btn {
-      background: var(--surface-white);
-      border-radius: var(--radius-md);
-      padding: 12px 6px;
+    .quick-action-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 6px;
-      box-shadow: var(--shadow-clay);
-      border: 1px solid rgba(167, 164, 161, 0.18);
       cursor: pointer;
-      text-align: center;
     }
 
-    .action-icon-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-full);
+    .quick-action-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--surface-white);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.04);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 18px;
     }
 
-    .action-label {
+    .quick-action-text {
       font-size: 11px;
       font-weight: 700;
       color: #475569;
     }
 
+    /* Prime Banner */
     .prime-banner-clay {
-      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy-card) 100%);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      color: var(--surface-white);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(252, 200, 44, 0.3);
-      box-shadow: 0 10px 24px rgba(4, 6, 8, 0.25);
+      background: linear-gradient(135deg, #0A0E17, #020406);
+      border-radius: var(--radius-xl);
+      padding: 18px 20px;
+      color: #fff;
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
+      align-items: center;
+      border: 1.5px solid rgba(252, 200, 44, 0.3);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+      margin-bottom: 24px;
     }
 
     .prime-badge-tag {
-      font-size: 11px;
-      font-weight: 900;
+      font-size: 10px;
+      font-weight: 800;
       color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+
+    .prime-title {
+      font-size: 15px;
+      font-weight: 900;
+      margin-bottom: 4px;
     }
 
     .prime-features-list {
-      list-style: none;
       font-size: 11px;
-      color: #CBD5E1;
-      margin: 8px 0;
-      line-height: 1.5;
+      color: #94A3B8;
+      line-height: 1.4;
     }
 
-    .prime-features-list li::before {
-      content: "✓ ";
-      color: var(--gold-primary);
-      font-weight: 900;
-    }
-
-    .btn-join-prime {
-      background: var(--gold-primary);
+    .prime-join-btn {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-rich));
       color: var(--deep-navy);
-      border: none;
-      padding: 7px 14px;
+      padding: 9px 16px;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 900;
-      width: fit-content;
+      border: none;
       cursor: pointer;
+      white-space: nowrap;
     }
 
-    .prime-crown-deco {
-      position: absolute;
-      right: -8px;
-      bottom: -6px;
-      font-size: 58px;
-      color: rgba(252, 200, 44, 0.15);
-      transform: rotate(-15deg);
-      pointer-events: none;
-    }
-
-    /* ================= 7. HORIZONTAL OFFERS CAROUSEL ================= */
-    .offers-carousel-row {
+    /* Offers Carousel */
+    .offers-scroll-row {
       display: flex;
       gap: 12px;
       overflow-x: auto;
-      padding-bottom: 6px;
+      padding-bottom: 8px;
+      margin-bottom: 22px;
       scrollbar-width: none;
     }
 
-    .offers-carousel-row::-webkit-scrollbar {
+    .offers-scroll-row::-webkit-scrollbar {
       display: none;
     }
 
     .offer-banner-card {
-      flex: 0 0 240px;
-      border-radius: var(--radius-lg);
+      min-width: 260px;
+      border-radius: var(--radius-xl);
       padding: 16px;
-      position: relative;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 110px;
       cursor: pointer;
+      position: relative;
     }
 
-    .offer-discount-badge {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .offer-title-text {
-      font-size: 19px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      margin-top: 2px;
-    }
-
-    .offer-code-pill {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      font-size: 10px;
-      font-weight: 800;
-      width: fit-content;
-      margin-top: 4px;
-    }
-
-    .offer-card-vehicle {
-      position: absolute;
-      right: 6px;
-      bottom: 6px;
-      width: 100px;
-      object-fit: contain;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
-    }
-
-    /* ================= 8. READY TO RIDE CALLOUT ================= */
-    .ready-ride-box {
-      background: #E8FBF0;
-      border: 1px solid #A7F3D0;
-      border-radius: var(--radius-lg);
+    /* Ready to Ride Bar */
+    .ready-ride-strip {
+      background: #E8F8EE;
+      border: 1.5px solid rgba(46, 204, 113, 0.4);
+      border-radius: var(--radius-xl);
       padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
-    .ready-ride-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .car-circle-green {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-full);
-      background: #FFFFFF;
-      color: #059669;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
-    }
-
-    /* ================= 9. SAFETY & RECENT TRIP SPLIT ================= */
-    .safety-recent-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .mini-info-clay {
-      background: var(--surface-white);
-      border-radius: var(--radius-md);
-      padding: 14px 12px;
-      box-shadow: var(--shadow-clay);
-      border: 1px solid rgba(167, 164, 161, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .ready-ride-btn {
+      background: #2ECC71;
+      color: #FFF;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: var(--radius-lg);
+      border: none;
       cursor: pointer;
     }
 
-    /* ================= 10. DOCKED BOTTOM NAVIGATION (Master UI Screenshot) ================= */
+    /* Docked Bottom Nav */
     .docked-bottom-nav {
       position: fixed;
       bottom: 0;
       width: 100%;
       max-width: 440px;
       background: var(--surface-white);
-      border-top: 1px solid rgba(167, 164, 161, 0.2);
-      padding: 8px 16px 14px;
+      border-top: 1px solid var(--border-subtle);
+      padding: 8px 16px 12px;
       display: flex;
+      justify-content: space-around;
       align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.05);
       z-index: 1000;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
     }
 
     .nav-tab-item {
@@ -660,371 +600,1339 @@
       align-items: center;
       gap: 4px;
       color: #94A3B8;
-      text-decoration: none;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      width: 54px;
-      transition: color 0.2s;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-tab-item i {
+      font-size: 18px;
     }
 
     .nav-tab-item.active {
       color: var(--deep-navy);
     }
 
-    .nav-tab-item i {
-      font-size: 19px;
-    }
-
-    /* Center Elevated Book Button */
     .center-book-btn-wrap {
-      position: relative;
-      top: -14px;
+      margin-top: -24px;
     }
 
     .center-book-circle {
       width: 58px;
       height: 58px;
-      border-radius: var(--radius-full);
+      border-radius: 50%;
       background: var(--deep-navy);
-      border: 4px solid var(--surface-white);
+      color: var(--gold-primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--gold-primary);
-      font-size: 20px;
-      box-shadow: 0 8px 20px rgba(4, 6, 8, 0.35);
+      font-size: 22px;
+      box-shadow: 0 8px 24px rgba(4, 6, 8, 0.35);
       cursor: pointer;
+      border: 3px solid var(--gold-primary);
       transition: transform 0.2s;
     }
 
     .center-book-circle:active {
-      transform: scale(0.94);
+      transform: scale(0.92);
     }
 
-    /* ================= FULL SCREEN MODAL / BOOKING RADAR ================= */
-    .modal-overlay {
+    /* Modal / Toast Notifications */
+    .zygo-toast {
       position: fixed;
-      inset: 0;
-      background: rgba(4, 6, 8, 0.7);
-      backdrop-filter: blur(8px);
+      bottom: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--deep-navy);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       z-index: 2000;
       display: none;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal-sheet-clay {
-      width: 100%;
-      max-width: 440px;
-      background: var(--surface-white);
-      border-radius: 26px 26px 0 0;
-      padding: 24px 20px 32px;
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
-      animation: slideUp 0.28s ease-out;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--gold-primary);
+      animation: fadeIn 0.2s;
     }
   </style>
 </head>
 <body>
 
-  <!-- Mobile Viewport -->
   <div class="app-viewport">
 
-    <!-- 1. TOP STATUS BAR -->
-    <header class="top-status-bar">
-      <div class="user-greeting-box" onclick="openProfile()">
-        <div class="user-avatar-wrap">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Kamlesh" id="headerAvatar">
+    <!-- Toast Notification Indicator -->
+    <div id="zygoToast" class="zygo-toast">
+      <i class="fa-solid fa-circle-check" style="color: var(--gold-primary);"></i>
+      <span id="zygoToastText">Action Completed</span>
+    </div>
+
+    <!-- ================= VIEW 1: REAL USER REGISTRATION & LOGIN ================= -->
+    <div id="view-auth" class="view-screen">
+      <div style="padding: 40px 24px 20px; text-align: center;">
+        <div style="width: 76px; height: 76px; border-radius: var(--radius-xl); background: var(--deep-navy); color: var(--gold-primary); font-size: 32px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); margin-bottom: 14px;">
+          <i class="fa-solid fa-bolt"></i>
         </div>
-        <div>
-          <div class="greeting-text-sub" id="greetingText">Good Morning 👋</div>
-          <div class="greeting-name" id="userName">Kamlesh</div>
-        </div>
+        <h1 style="font-size: 26px; font-weight: 900; color: var(--deep-navy); letter-spacing: -0.5px;">Welcome to ZYGO</h1>
+        <p style="font-size: 13px; color: #64748B; margin-top: 4px;">Premium Mobility &bull; Affordable for Everyone</p>
       </div>
 
-      <div class="top-actions">
-        <div class="icon-circle-btn" onclick="openNotifications()" title="Notifications">
-          <i class="fa-regular fa-bell"></i>
-          <span class="icon-badge-dot"></span>
+      <div style="padding: 0 20px;">
+        <div class="clay-box-white">
+          <div style="display: flex; gap: 8px; background: var(--bg-light); padding: 4px; border-radius: var(--radius-lg); margin-bottom: 20px;">
+            <button id="authTabSignup" class="zygo-btn-primary" style="padding: 10px; font-size: 13px; flex: 1;" onclick="switchAuthTab('signup')">New Rider Signup</button>
+            <button id="authTabLogin" class="zygo-btn-primary" style="padding: 10px; font-size: 13px; flex: 1; background: transparent; color: #64748B; box-shadow: none;" onclick="switchAuthTab('login')">Existing Login</button>
+          </div>
+
+          <!-- Signup Form -->
+          <form id="formCustomerSignup" onsubmit="handleCustomerSignup(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">YOUR FULL NAME *</label>
+              <input type="text" id="regUserName" class="zygo-input" placeholder="e.g. Rahul Sharma" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">MOBILE NUMBER *</label>
+              <div style="display: flex; gap: 8px;">
+                <span style="padding: 14px 12px; background: var(--bg-light); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-md); font-weight: 800; font-size: 14px;">+91</span>
+                <input type="tel" id="regUserPhone" class="zygo-input" placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" required />
+              </div>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">OPERATING CITY *</label>
+              <select id="regUserCity" class="zygo-input" style="cursor: pointer;">
+                <option value="Indore, Madhya Pradesh">Indore, Madhya Pradesh</option>
+                <option value="Bhopal, Madhya Pradesh">Bhopal, Madhya Pradesh</option>
+                <option value="Delhi NCR">Delhi NCR</option>
+                <option value="Mumbai, Maharashtra">Mumbai, Maharashtra</option>
+                <option value="Bengaluru, Karnataka">Bengaluru, Karnataka</option>
+                <option value="Pune, Maharashtra">Pune, Maharashtra</option>
+              </select>
+            </div>
+
+            <button type="submit" class="zygo-btn-gold" style="margin-top: 10px;">
+              <span>Complete Registration</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <!-- Login Form -->
+          <form id="formCustomerLogin" onsubmit="handleCustomerLogin(event)" style="display: none;">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">REGISTERED MOBILE NUMBER *</label>
+              <div style="display: flex; gap: 8px;">
+                <span style="padding: 14px 12px; background: var(--bg-light); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-md); font-weight: 800; font-size: 14px;">+91</span>
+                <input type="tel" id="loginUserPhone" class="zygo-input" placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" required />
+              </div>
+            </div>
+
+            <button type="submit" class="zygo-btn-primary" style="margin-top: 10px;">
+              <span>Verify &amp; Continue</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
         </div>
-        <div class="brand-pill-btn">
-          ZYGO
+
+        <div style="text-align: center; font-size: 12px; color: #94A3B8; margin-top: 20px;">
+          By continuing, you agree to ZYGO's <span style="text-decoration: underline; cursor: pointer;" onclick="ZygoRouter.navigate('view-terms')">Terms</span> &amp; <span style="text-decoration: underline; cursor: pointer;" onclick="ZygoRouter.navigate('view-privacy')">Privacy Policy</span>.
         </div>
       </div>
-    </header>
+    </div>
 
-    <!-- 2. ZYGO WALLET CLAY-CARD -->
-    <div class="wallet-card-container">
-      <div class="zygo-wallet-clay">
-        <div class="wallet-header-row">
+    <!-- ================= VIEW 2: MASTER 2.0 CUSTOMER HOME ================= -->
+    <div id="view-home" class="view-screen">
+      <!-- Top Status Header -->
+      <header class="home-top-bar">
+        <div class="home-user-greeting" onclick="ZygoRouter.navigate('view-profile')">
+          <div class="user-avatar-circle" id="homeAvatarInitial">U</div>
           <div>
-            <div class="wallet-label">ZYGO Wallet</div>
-            <div class="wallet-balance-row">
-              <span class="wallet-currency">₹</span>
-              <span class="wallet-amount-main" id="walletBalance">4,560<span style="font-size: 20px;">.75</span></span>
+            <div class="greeting-sub">Good Morning <i class="fa-solid fa-hand-wave" style="color: #FCC82C;"></i></div>
+            <div class="greeting-name" id="homeUserName">Rider</div>
+          </div>
+        </div>
+
+        <div class="home-action-icons">
+          <div class="icon-badge-btn" onclick="ZygoRouter.navigate('view-notifications')">
+            <i class="fa-regular fa-bell"></i>
+            <div class="icon-badge-pill" id="notificationBadge"></div>
+          </div>
+          <div class="zygo-brand-pill">
+            <i class="fa-solid fa-bolt" style="font-size: 12px;"></i>
+            <span>ZYGO</span>
+          </div>
+        </div>
+      </header>
+
+      <div style="padding: 10px 20px 20px;">
+        <!-- ZYGO Wallet Clay Dark Card -->
+        <div class="clay-box-dark">
+          <div class="wallet-card-header">
+            <div>
+              <div class="wallet-title">ZYGO Wallet</div>
+              <div class="wallet-balance-num">
+                <span style="font-size: 20px;">â‚¹</span>
+                <span id="homeWalletBalance">500.00</span>
+              </div>
+            </div>
+            <div style="font-size: 34px; color: var(--gold-primary); opacity: 0.9;">
+              <i class="fa-solid fa-credit-card"></i>
             </div>
           </div>
-          <div class="wallet-coins-badge">
-            <i class="fa-solid fa-coins"></i> 1,250 Pts
-          </div>
-        </div>
 
-        <img src="../assets/images/car.png" alt="Credit Card Deco" class="wallet-illustration" onerror="this.style.display='none'">
-
-        <div class="wallet-action-pills">
-          <div class="w-pill-btn" onclick="openWalletTopup()">
-            <i class="fa-solid fa-plus" style="color: var(--gold-primary);"></i> Add Money
-          </div>
-          <div class="w-pill-btn" onclick="openSendMoney()">
-            <i class="fa-solid fa-paper-plane" style="color: var(--gold-primary);"></i> Send Money
-          </div>
-          <div class="w-pill-btn" onclick="openHistory()">
-            <i class="fa-solid fa-clock-rotate-left" style="color: var(--gold-primary);"></i> History
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. SEARCH & QUICK BOOKING BAR -->
-    <div class="search-booking-wrapper">
-      <div class="search-bar-clay">
-        <div class="search-input-mock" onclick="openDestinationSearch()">
-          <i class="fa-solid fa-magnifying-glass" style="color: var(--deep-navy);"></i>
-          <span>Where are you going?</span>
-        </div>
-        <button class="btn-book-now" onclick="openDestinationSearch()">Book Now</button>
-      </div>
-    </div>
-
-    <!-- 4. CURRENT LOCATION STRIP (Indore - Phase A) -->
-    <div class="location-strip">
-      <div class="location-card" onclick="openLocationPicker()">
-        <div class="loc-left">
-          <div class="loc-pin-icon">
-            <i class="fa-solid fa-location-dot"></i>
-          </div>
-          <div>
-            <div class="loc-tag">Current Location</div>
-            <div class="loc-address" id="currentLocDisplay">Indore, Madhya Pradesh</div>
-          </div>
-        </div>
-        <i class="fa-solid fa-chevron-down" style="color: var(--gold-bronze); font-size: 13px;"></i>
-      </div>
-    </div>
-
-    <!-- 5. SERVICES GRID -->
-    <div class="section-container">
-      <div class="section-header-row">
-        <h3 class="section-title">Services</h3>
-        <span class="section-link" onclick="openAllServices()">See All</span>
-      </div>
-
-      <div class="services-5col-grid">
-        <!-- 1. Cab -->
-        <div class="service-clay-card" onclick="startBooking('cab', 'Cab')">
-          <img src="../assets/images/car.png" alt="Cab" class="service-3d-img">
-          <span class="service-card-title">Cab</span>
-        </div>
-
-        <!-- 2. Auto -->
-        <div class="service-clay-card" onclick="startBooking('auto', 'Auto')">
-          <img src="../assets/images/car.png" alt="Auto" class="service-3d-img">
-          <span class="service-card-title">Auto</span>
-        </div>
-
-        <!-- 3. Bike -->
-        <div class="service-clay-card" onclick="startBooking('bike', 'Bike')">
-          <img src="../assets/images/bike.png" alt="Bike" class="service-3d-img" onerror="this.src='../assets/images/car.png'">
-          <span class="service-card-title">Bike</span>
-        </div>
-
-        <!-- 4. Parcel -->
-        <div class="service-clay-card" onclick="startBooking('parcel', 'Parcel')">
-          <img src="../assets/images/car.png" alt="Parcel" class="service-3d-img">
-          <span class="service-card-title">Parcel</span>
-        </div>
-
-        <!-- 5. Rentals -->
-        <div class="service-clay-card" onclick="startBooking('rentals', 'Rentals')">
-          <img src="../assets/images/car.png" alt="Rentals" class="service-3d-img">
-          <span class="service-card-title">Rentals</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. QUICK ACTIONS & ZYGO PRIME -->
-    <div class="section-container">
-      <div class="quick-actions-row">
-        
-        <!-- Left: 4 Quick Action Square Buttons -->
-        <div class="actions-4box-grid">
-          <div class="action-square-btn" onclick="openScheduleTrip()">
-            <div class="action-icon-circle" style="background: rgba(52, 152, 219, 0.15); color: #3498DB;">
-              <i class="fa-solid fa-clock"></i>
+          <div class="wallet-chip-actions">
+            <div class="wallet-action-chip" onclick="ZygoRouter.navigate('view-wallet-topup')">
+              <i class="fa-solid fa-plus" style="color: var(--gold-primary);"></i>
+              <span>Add Money</span>
             </div>
-            <span class="action-label">Schedule</span>
-          </div>
-
-          <div class="action-square-btn" onclick="openFavorites()">
-            <div class="action-icon-circle" style="background: rgba(231, 76, 60, 0.15); color: #E74C3C;">
-              <i class="fa-solid fa-heart"></i>
+            <div class="wallet-action-chip" onclick="ZygoRouter.navigate('view-send-money')">
+              <i class="fa-solid fa-paper-plane" style="color: var(--gold-primary);"></i>
+              <span>Send Money</span>
             </div>
-            <span class="action-label">Favorites</span>
+            <div class="wallet-action-chip" onclick="ZygoRouter.navigate('view-wallet-history')">
+              <i class="fa-solid fa-clock-rotate-left" style="color: var(--gold-primary);"></i>
+              <span>History</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Bar with Clay Effect -->
+        <div class="search-clay-card" onclick="ZygoRouter.navigate('view-booking')">
+          <i class="fa-solid fa-magnifying-glass" style="color: #94A3B8; font-size: 18px;"></i>
+          <span style="flex: 1; font-size: 14px; font-weight: 600; color: #64748B;">Where are you going?</span>
+          <button class="search-btn-cta">Book Now</button>
+        </div>
+
+        <!-- Current Location Strip -->
+        <div class="current-location-strip" onclick="ZygoRouter.navigate('view-select-city')">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--gold-bronze); font-size: 16px;"></i>
+            <div>
+              <div style="font-size: 10px; font-weight: 700; color: #94A3B8; text-transform: uppercase;">Current Location</div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--deep-navy);" id="homeCityDisplay">Indore, Madhya Pradesh</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-down" style="color: #94A3B8; font-size: 12px;"></i>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="section-headline">
+          <div class="section-title">Services</div>
+          <div class="section-see-all" onclick="ZygoRouter.navigate('view-services')">See All</div>
+        </div>
+
+        <div class="services-grid-row">
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <div class="service-icon-wrap" style="background: #FEF3C7; color: #D97706;">
+              <i class="fa-solid fa-taxi"></i>
+            </div>
+            <span class="service-card-label">Cab</span>
           </div>
 
-          <div class="action-square-btn" onclick="openHistory()">
-            <div class="action-icon-circle" style="background: rgba(46, 204, 113, 0.15); color: #2ECC71;">
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
+            <div class="service-icon-wrap" style="background: #DCFCE7; color: #15803D;">
+              <i class="fa-solid fa-van-shuttle"></i>
+            </div>
+            <span class="service-card-label">Auto</span>
+          </div>
+
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <div class="service-icon-wrap" style="background: #E0E7FF; color: #4338CA;">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <span class="service-card-label">Bike</span>
+          </div>
+
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-parcel')">
+            <div class="service-icon-wrap" style="background: #FFEDD5; color: #C2410C;">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+            <span class="service-card-label">Parcel</span>
+          </div>
+
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-rentals')">
+            <div class="service-icon-wrap" style="background: #F1F5F9; color: #0F172A;">
+              <i class="fa-solid fa-car-side"></i>
+            </div>
+            <span class="service-card-label">Rentals</span>
+          </div>
+        </div>
+
+        <!-- Quick Actions Row -->
+        <div class="section-headline">
+          <div class="section-title">Quick Actions</div>
+        </div>
+
+        <div class="quick-actions-row">
+          <div class="quick-action-item" onclick="ZygoRouter.navigate('view-schedule')">
+            <div class="quick-action-circle" style="color: #3B82F6;">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <span class="quick-action-text">Schedule</span>
+          </div>
+
+          <div class="quick-action-item" onclick="ZygoRouter.navigate('view-favorites')">
+            <div class="quick-action-circle" style="color: #EC4899;">
+              <i class="fa-regular fa-heart"></i>
+            </div>
+            <span class="quick-action-text">Favorites</span>
+          </div>
+
+          <div class="quick-action-item" onclick="ZygoRouter.navigate('view-activity')">
+            <div class="quick-action-circle" style="color: #10B981;">
               <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
-            <span class="action-label">History</span>
+            <span class="quick-action-text">History</span>
           </div>
 
-          <div class="action-square-btn" onclick="openSupport()">
-            <div class="action-icon-circle" style="background: rgba(230, 126, 34, 0.15); color: #E67E22;">
+          <div class="quick-action-item" onclick="ZygoRouter.navigate('view-support')">
+            <div class="quick-action-circle" style="color: #F59E0B;">
               <i class="fa-solid fa-headset"></i>
             </div>
-            <span class="action-label">Support</span>
+            <span class="quick-action-text">Support</span>
           </div>
         </div>
 
-        <!-- Right: ZYGO PRIME Clay Card -->
-        <div class="prime-banner-clay">
-          <i class="fa-solid fa-crown prime-crown-deco"></i>
+        <!-- ZYGO PRIME Card -->
+        <div class="prime-banner-clay" onclick="ZygoRouter.navigate('view-prime')">
           <div>
-            <div class="prime-badge-tag"><i class="fa-solid fa-crown"></i> ZYGO PRIME</div>
-            <div style="font-size: 12px; font-weight: 700; color: #FFF; margin-top: 2px;">Now in Indore!</div>
-            <ul class="prime-features-list">
-              <li>Zero Commission</li>
-              <li>Priority Support</li>
-              <li>Exclusive Offers</li>
-            </ul>
+            <div class="prime-badge-tag">
+              <i class="fa-solid fa-crown"></i>
+              <span>ZYGO PRIME</span>
+            </div>
+            <div class="prime-title">Now in Your City!</div>
+            <div class="prime-features-list">
+              &bull; Zero Surge Fare &bull; VIP Captains<br>
+              &bull; Priority Booking &bull; Cashback
+            </div>
           </div>
-          <button class="btn-join-prime" onclick="openPrimePlan()">Join Now</button>
+          <button class="prime-join-btn">Join Now</button>
         </div>
 
-      </div>
-    </div>
-
-    <!-- 7. OFFERS FOR YOU (CAROUSEL) -->
-    <div class="section-container">
-      <div class="section-header-row">
-        <h3 class="section-title">Offers for you</h3>
-        <span class="section-link" onclick="openAllOffers()">View All</span>
-      </div>
-
-      <div class="offers-carousel-row">
-        <!-- Offer 1 -->
-        <div class="offer-banner-card" style="background: var(--navy-card); color: #FFF;" onclick="applyPromoCode('ZYGO20')">
-          <div>
-            <span class="offer-discount-badge" style="color: #94A3B8;">FLAT</span>
-            <div class="offer-title-text" style="color: var(--gold-primary);">20% OFF</div>
-            <div style="font-size: 11px; color: #CBD5E1;">On All Rides</div>
-            <span class="offer-code-pill">Code: ZYGO20</span>
-          </div>
-          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
+        <!-- Offers Carousel -->
+        <div class="section-headline">
+          <div class="section-title">Offers for you</div>
+          <div class="section-see-all" onclick="ZygoRouter.navigate('view-offers')">View All</div>
         </div>
 
-        <!-- Offer 2 -->
-        <div class="offer-banner-card" style="background: var(--gold-primary); color: var(--deep-navy);" onclick="applyPromoCode('RENT50')">
-          <div>
-            <span class="offer-discount-badge" style="color: #64748B;">UP TO</span>
-            <div class="offer-title-text" style="color: var(--deep-navy);">50% OFF</div>
-            <div style="font-size: 11px; color: #334155;">On Rentals</div>
-            <span class="offer-code-pill" style="background: rgba(0,0,0,0.15); color: #000;">Code: RENT50</span>
+        <div class="offers-scroll-row">
+          <div class="offer-banner-card" style="background: #090D14; color: #FFF; border: 1px solid rgba(255,255,255,0.1);" onclick="ZygoRouter.navigate('view-offers')">
+            <div>
+              <span style="font-size: 11px; font-weight: 800; color: var(--gold-primary);">FLAT 20% OFF</span>
+              <h4 style="font-size: 15px; font-weight: 900; margin-top: 4px;">On All Daily Rides</h4>
+              <p style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Use coupon at checkout</p>
+            </div>
+            <div style="margin-top: 14px; display: inline-block; background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
+              Code: ZYGO20
+            </div>
           </div>
-          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
-        </div>
 
-        <!-- Offer 3 -->
-        <div class="offer-banner-card" style="background: var(--navy-elevated); color: #FFF;" onclick="applyPromoCode('PARCEL15')">
-          <div>
-            <span class="offer-discount-badge" style="color: #94A3B8;">FLAT</span>
-            <div class="offer-title-text" style="color: var(--gold-rich);">15% OFF</div>
-            <div style="font-size: 11px; color: #CBD5E1;">On Parcel Courier</div>
-            <span class="offer-code-pill">Code: PARCEL15</span>
-          </div>
-          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
-        </div>
-      </div>
-    </div>
-
-    <!-- 8. READY TO RIDE CALLOUT STRIP -->
-    <div class="section-container" style="padding-bottom: 12px;">
-      <div class="ready-ride-box">
-        <div class="ready-ride-left">
-          <div class="car-circle-green">
-            <i class="fa-solid fa-car-side"></i>
-          </div>
-          <div>
-            <div style="font-size: 14px; font-weight: 800; color: #065F46;">Ready to Ride</div>
-            <div style="font-size: 11px; color: #047857; font-weight: 600;">Book Cab, Auto, Bike or Parcel &bull; ~2 Min</div>
-          </div>
-        </div>
-        <button class="btn-book-now" style="background: #059669; padding: 9px 18px;" onclick="startBooking('cab', 'Cab')">Book Now</button>
-      </div>
-    </div>
-
-    <!-- 9. SAFETY & RECENT TRIP SPLIT -->
-    <div class="section-container">
-      <div class="safety-recent-split">
-        <div class="mini-info-clay" onclick="openSafetyCenter()">
-          <div style="width: 34px; height: 34px; border-radius: var(--radius-full); background: rgba(231, 76, 60, 0.12); color: var(--emergency-red); display: flex; align-items: center; justify-content: center; font-size: 15px;">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <div>
-            <div style="font-size: 12px; font-weight: 800; color: var(--deep-navy);">Safety Center</div>
-            <div style="font-size: 10px; color: #64748B;">24x7 SOS Support</div>
+          <div class="offer-banner-card" style="background: linear-gradient(135deg, #FCC82C, #EFAF19); color: var(--deep-navy);" onclick="ZygoRouter.navigate('view-offers')">
+            <div>
+              <span style="font-size: 11px; font-weight: 900; color: #000;">UP TO 50% OFF</span>
+              <h4 style="font-size: 15px; font-weight: 900; margin-top: 4px;">On Hourly Rentals</h4>
+              <p style="font-size: 11px; color: #475569; margin-top: 2px;">Valid on Sedan &amp; SUV</p>
+            </div>
+            <div style="margin-top: 14px; display: inline-block; background: var(--deep-navy); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
+              Code: RENT50
+            </div>
           </div>
         </div>
 
-        <div class="mini-info-clay" onclick="openRecentTrip()">
-          <div style="width: 34px; height: 34px; border-radius: var(--radius-full); background: rgba(52, 152, 219, 0.12); color: #3498DB; display: flex; align-items: center; justify-content: center; font-size: 15px;">
-            <i class="fa-solid fa-clock-rotate-left"></i>
+        <!-- Ready to Ride Banner -->
+        <div class="ready-ride-strip">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: var(--radius-md); background: #2ECC71; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+              <i class="fa-solid fa-car"></i>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 900; color: #166534;">Ready to Ride</div>
+              <div style="font-size: 11px; color: #15803D;">Cabs available ~2 Min away</div>
+            </div>
           </div>
-          <div>
-            <div style="font-size: 12px; font-weight: 800; color: var(--deep-navy);">Recent Trip</div>
-            <div style="font-size: 10px; color: #64748B;">Home &rarr; Office &bull; ₹120</div>
+          <button class="ready-ride-btn" onclick="ZygoRouter.navigate('view-booking')">Book Now</button>
+        </div>
+
+        <!-- Safety Center Card -->
+        <div class="clay-box-white" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="ZygoRouter.navigate('view-safety')">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: #FEE2E2; color: var(--emergency-red); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--deep-navy);">Safety Center</div>
+              <div style="font-size: 12px; color: #64748B;">Your safety is our top priority</div>
+            </div>
           </div>
+          <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 13px;"></i>
+        </div>
+
+        <!-- Recent Trip Card -->
+        <div class="clay-box-white" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="ZygoRouter.navigate('view-recent-trip')">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+              <i class="fa-solid fa-route"></i>
+            </div>
+            <div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--deep-navy);">Recent Trip &bull; â‚¹120</div>
+              <div style="font-size: 12px; color: #64748B;">Home &rarr; Office &bull; Completed</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 13px;"></i>
         </div>
       </div>
     </div>
 
-    <!-- 10. DOCKED BOTTOM NAVIGATION (Master UI 5-Tabs) -->
+    <!-- ================= VIEW 3: NOTIFICATIONS CENTER ================= -->
+    <div id="view-notifications" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.goBack()">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Notifications</div>
+        <div style="font-size: 12px; font-weight: 700; color: var(--gold-bronze); cursor: pointer;" onclick="clearNotifications()">Clear</div>
+      </div>
+
+      <div style="padding: 20px;" id="notificationsListContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 4: WALLET & ADD MONEY ================= -->
+    <div id="view-wallet" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">ZYGO Wallet</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-dark" style="text-align: center; padding: 30px 20px;">
+          <div style="font-size: 12px; font-weight: 700; color: #94A3B8; text-transform: uppercase;">Total Available Balance</div>
+          <div style="font-size: 38px; font-weight: 900; color: var(--gold-primary); margin: 6px 0;" id="walletPageBalanceDisplay">â‚¹500.00</div>
+          <div style="font-size: 12px; color: #94A3B8;">Linked with Secure UPI &bull; 0% Fee</div>
+        </div>
+
+        <div class="clay-box-white">
+          <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 14px;">Quick Actions</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="zygo-btn-gold" style="padding: 12px; font-size: 14px;" onclick="ZygoRouter.navigate('view-wallet-topup')">
+              <i class="fa-solid fa-plus"></i> Add Money
+            </button>
+            <button class="zygo-btn-primary" style="padding: 12px; font-size: 14px;" onclick="ZygoRouter.navigate('view-send-money')">
+              <i class="fa-solid fa-paper-plane"></i> Send Money
+            </button>
+          </div>
+        </div>
+
+        <div class="clay-box-white">
+          <div class="section-headline">
+            <div class="section-title">Recent Transactions</div>
+            <div class="section-see-all" onclick="ZygoRouter.navigate('view-wallet-history')">Full Statement</div>
+          </div>
+          <div id="walletRecentTxnsContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 5: TOP-UP WALLET ================= -->
+    <div id="view-wallet-topup" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-wallet')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Add Money to Wallet</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">ENTER AMOUNT (â‚¹)</label>
+            <input type="number" id="inputTopupAmount" class="zygo-input" value="500" style="font-size: 26px; font-weight: 900;" />
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+            <button class="wallet-action-chip" style="background: var(--bg-light); color: var(--deep-navy); border: 1px solid var(--border-subtle);" onclick="setTopupChip(200)">+ â‚¹200</button>
+            <button class="wallet-action-chip" style="background: var(--bg-light); color: var(--deep-navy); border: 1px solid var(--border-subtle);" onclick="setTopupChip(500)">+ â‚¹500</button>
+            <button class="wallet-action-chip" style="background: var(--bg-light); color: var(--deep-navy); border: 1px solid var(--border-subtle);" onclick="setTopupChip(1000)">+ â‚¹1000</button>
+            <button class="wallet-action-chip" style="background: var(--bg-light); color: var(--deep-navy); border: 1px solid var(--border-subtle);" onclick="setTopupChip(2000)">+ â‚¹2000</button>
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">PAYMENT METHOD</label>
+            <div style="padding: 14px; background: var(--bg-light); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-building-columns" style="color: var(--deep-navy); font-size: 18px;"></i>
+                <span style="font-size: 14px; font-weight: 800;">UPI Instant (GPay / PhonePe / Paytm)</span>
+              </div>
+              <i class="fa-solid fa-circle-check" style="color: var(--success-green); font-size: 18px;"></i>
+            </div>
+          </div>
+
+          <button class="zygo-btn-gold" style="margin-top: 10px;" onclick="executeAddMoney()">
+            <span>Proceed to Recharge</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 6: SEND MONEY ================= -->
+    <div id="view-send-money" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-wallet')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Send Money</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <form onsubmit="handleSendMoneySubmit(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">RECEIVER MOBILE OR UPI ID *</label>
+              <input type="text" id="sendMoneyTarget" class="zygo-input" placeholder="e.g. 9876543210 or user@upi" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">AMOUNT TO SEND (â‚¹) *</label>
+              <input type="number" id="sendMoneyAmount" class="zygo-input" placeholder="â‚¹0.00" min="1" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">NOTE (OPTIONAL)</label>
+              <input type="text" id="sendMoneyNote" class="zygo-input" placeholder="e.g. Split cab fare" />
+            </div>
+
+            <div style="font-size: 12px; color: #64748B; margin-bottom: 16px;">
+              Current Wallet Balance: <strong id="sendMoneyCurrentBal" style="color: var(--deep-navy);">â‚¹0.00</strong>
+            </div>
+
+            <button type="submit" class="zygo-btn-primary">
+              <span>Send Instantly</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 7: WALLET STATEMENT HISTORY ================= -->
+    <div id="view-wallet-history" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-wallet')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Wallet Statement</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;" id="walletFullHistoryContainer"></div>
+    </div>
+
+    <!-- ================= VIEW 8: LOCATION & CITY PICKER ================= -->
+    <div id="view-select-city" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Select Your City</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white" style="padding: 8px 0;">
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="selectCity('Indore, Madhya Pradesh')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Indore, Madhya Pradesh</strong>
+            </div>
+            <i class="fa-solid fa-circle-check" style="color: var(--success-green);"></i>
+          </div>
+
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="selectCity('Bhopal, Madhya Pradesh')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Bhopal, Madhya Pradesh</strong>
+            </div>
+          </div>
+
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="selectCity('Delhi NCR')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Delhi NCR</strong>
+            </div>
+          </div>
+
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="selectCity('Mumbai, Maharashtra')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Mumbai, Maharashtra</strong>
+            </div>
+          </div>
+
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="selectCity('Bengaluru, Karnataka')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Bengaluru, Karnataka</strong>
+            </div>
+          </div>
+
+          <div style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="selectCity('Pune, Maharashtra')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-city" style="color: var(--gold-bronze);"></i>
+              <strong style="font-size: 14px;">Pune, Maharashtra</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 9: RIDE BOOKING SCREEN ================= -->
+    <div id="view-booking" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title" id="bookingScreenTitle">Book ZYGO Ride</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <!-- Pickup & Drop Input Card -->
+        <div class="clay-box-white">
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">PICKUP LOCATION</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-circle-dot" style="color: var(--success-green); font-size: 14px;"></i>
+              <input type="text" id="bookingPickupInput" class="zygo-input" value="Vijay Nagar Square, Indore" />
+            </div>
+          </div>
+
+          <div class="zygo-input-group" style="margin-bottom: 0;">
+            <label class="zygo-input-label">DESTINATION</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i class="fa-solid fa-location-dot" style="color: var(--emergency-red); font-size: 14px;"></i>
+              <input type="text" id="bookingDropInput" class="zygo-input" value="Palasia Square, Indore" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicle Selection Cards -->
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #475569;">SELECT VEHICLE TYPE</h4>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <!-- Bike -->
+          <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Bike Taxi', 45, '2 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-motorcycle"></i>
+              </div>
+              <div>
+                <div style="font-size: 15px; font-weight: 800;">Bike Taxi</div>
+                <div style="font-size: 12px; color: #64748B;">Fastest transit &bull; 2 min away</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: var(--deep-navy);">â‚¹45.00</div>
+              <div style="font-size: 11px; color: var(--success-green); font-weight: 700;">Save â‚¹15</div>
+            </div>
+          </div>
+
+          <!-- Auto -->
+          <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Auto', 75, '3 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #DCFCE7; color: #15803D; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-van-shuttle"></i>
+              </div>
+              <div>
+                <div style="font-size: 15px; font-weight: 800;">Auto</div>
+                <div style="font-size: 12px; color: #64748B;">No meter hassle &bull; 3 min away</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: var(--deep-navy);">â‚¹75.00</div>
+              <div style="font-size: 11px; color: #64748B;">Guaranteed Fare</div>
+            </div>
+          </div>
+
+          <!-- Sedan Cab (Selected default) -->
+          <div class="clay-box-white vehicle-option-item selected" onclick="selectBookingTier(this, 'Prime Sedan', 160, '1 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0; border: 2px solid var(--gold-primary);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-car-side"></i>
+              </div>
+              <div>
+                <div style="font-size: 15px; font-weight: 800;">Prime Sedan</div>
+                <div style="font-size: 12px; color: #64748B;">Air conditioned &bull; 1 min away</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: var(--deep-navy);">â‚¹160.00</div>
+              <div style="font-size: 11px; color: var(--gold-bronze); font-weight: 800;">Top Rated</div>
+            </div>
+          </div>
+
+          <!-- SUV Cab -->
+          <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Prime SUV', 240, '4 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #F1F5F9; color: #0F172A; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-truck-pickup"></i>
+              </div>
+              <div>
+                <div style="font-size: 15px; font-weight: 800;">Prime SUV</div>
+                <div style="font-size: 12px; color: #64748B;">6-Seater spacious &bull; 4 min away</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: var(--deep-navy);">â‚¹240.00</div>
+              <div style="font-size: 11px; color: #64748B;">Luggage Friendly</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Mode Toggle -->
+        <div class="clay-box-white" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="togglePaymentMode()">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-wallet" style="color: var(--deep-navy); font-size: 18px;"></i>
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: #94A3B8;">PAYMENT METHOD</div>
+              <div style="font-size: 14px; font-weight: 800;" id="selectedPaymentModeText">ZYGO Wallet (â‚¹500.00)</div>
+            </div>
+          </div>
+          <span style="font-size: 12px; font-weight: 800; color: var(--gold-bronze);">Change</span>
+        </div>
+
+        <button class="zygo-btn-gold" style="margin-top: 14px;" onclick="confirmRideBooking()">
+          <span>Confirm &amp; Request Captain</span>
+          <i class="fa-solid fa-circle-check"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 10: ACTIVE RIDE & OTP TRACKING ================= -->
+    <div id="view-active-ride" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-house"></i>
+        </div>
+        <div class="subpage-title">Trip In Progress</div>
+        <div style="font-size: 12px; font-weight: 800; color: var(--emergency-red); cursor: pointer;" onclick="cancelActiveTrip()">Cancel</div>
+      </div>
+
+      <div style="padding: 20px;">
+        <!-- Secret 4-digit OTP Box -->
+        <div class="clay-box-dark" style="text-align: center; padding: 22px 16px;">
+          <div style="font-size: 11px; font-weight: 800; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;">Start Ride 4-Digit Security OTP</div>
+          <div style="font-size: 42px; font-weight: 900; letter-spacing: 8px; color: #FFF; margin: 10px 0;" id="activeRideOtpDisplay">4047</div>
+          <div style="font-size: 12px; color: #94A3B8;">Share this secret OTP with your captain only after boarding.</div>
+        </div>
+
+        <!-- Captain Card -->
+        <div class="clay-box-white">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--deep-navy); color: var(--gold-primary); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; border: 2px solid var(--gold-primary);">
+                R
+              </div>
+              <div>
+                <div style="font-size: 16px; font-weight: 900;" id="activeRideCaptainName">Ramesh Verma</div>
+                <div style="font-size: 12px; color: #64748B;">4.95 â­ &bull; 1,480 Completed Trips</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <a href="tel:9876543210" class="icon-badge-btn" style="background: var(--bg-light); text-decoration: none;">
+                <i class="fa-solid fa-phone" style="color: var(--success-green);"></i>
+              </a>
+              <div class="icon-badge-btn" style="background: var(--bg-light);" onclick="showToast('Connecting in-app chat with Captain...')">
+                <i class="fa-solid fa-message" style="color: #3B82F6;"></i>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding: 12px; background: var(--bg-light); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: #64748B;">ASSIGNED VEHICLE</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--deep-navy);" id="activeRideVehicleText">Maruti Suzuki Dzire (MP 09 AB 4047)</div>
+            </div>
+            <div style="font-size: 18px; font-weight: 900; color: var(--gold-bronze);" id="activeRideFareText">â‚¹160.00</div>
+          </div>
+        </div>
+
+        <!-- Safety SOS in ride -->
+        <div class="clay-box-white" style="background: #FFF1F2; border: 1.5px solid #FECDD3; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="ZygoRouter.navigate('view-safety')">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fa-solid fa-shield-cat" style="color: var(--emergency-red); font-size: 22px;"></i>
+            <div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--emergency-red);">Live Emergency Safety Assistance</div>
+              <div style="font-size: 11px; color: #881337;">Tap to trigger instant police/family alert</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right" style="color: var(--emergency-red); font-size: 12px;"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 11: FULL SERVICES CATALOG ================= -->
+    <div id="view-services" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">All ZYGO Services</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px;">DAILY MOBILITY</h4>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px;">
+          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <i class="fa-solid fa-taxi" style="font-size: 24px; color: #D97706; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Cab Taxi</h4>
+            <p style="font-size: 11px; color: #64748B;">Mini, Sedan, SUV, EV</p>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
+            <i class="fa-solid fa-van-shuttle" style="font-size: 24px; color: #15803D; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Auto Rickshaw</h4>
+            <p style="font-size: 11px; color: #64748B;">Pocket-friendly daily commute</p>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <i class="fa-solid fa-motorcycle" style="font-size: 24px; color: #4338CA; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Bike Taxi</h4>
+            <p style="font-size: 11px; color: #64748B;">Beat the peak hour traffic</p>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-rentals')">
+            <i class="fa-solid fa-car-side" style="font-size: 24px; color: #0F172A; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Rentals</h4>
+            <p style="font-size: 11px; color: #64748B;">Hourly multi-stop packages</p>
+          </div>
+        </div>
+
+        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px;">LOGISTICS &amp; TRAVEL</h4>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-parcel')">
+            <i class="fa-solid fa-box-open" style="font-size: 24px; color: #C2410C; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Parcel Delivery</h4>
+            <p style="font-size: 11px; color: #64748B;">Fast doorstep city courier</p>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="showToast('Outstation intercity cabs booking opens soon!')">
+            <i class="fa-solid fa-road" style="font-size: 24px; color: #7C3AED; margin-bottom: 8px;"></i>
+            <h4 style="font-size: 14px; font-weight: 800;">Intercity Travel</h4>
+            <p style="font-size: 11px; color: #64748B;">One-way &amp; round trips</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 12: PARCEL COURIER DELIVERY ================= -->
+    <div id="view-parcel" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Send a Parcel</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">SENDER PICKUP ADDRESS *</label>
+            <input type="text" id="parcelSenderInput" class="zygo-input" value="Vijay Nagar Square, Indore" />
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">RECEIVER DELIVERY ADDRESS *</label>
+            <input type="text" id="parcelReceiverInput" class="zygo-input" placeholder="Enter recipient full address" />
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">SELECT PACKAGE WEIGHT TIER</label>
+            <select id="parcelWeightTier" class="zygo-input">
+              <option value="50">Documents / Small Packet (Up to 2 kg) â€” â‚¹50.00</option>
+              <option value="85" selected>Medium Box (Up to 5 kg) â€” â‚¹85.00</option>
+              <option value="140">Heavy Package (Up to 15 kg) â€” â‚¹140.00</option>
+            </select>
+          </div>
+
+          <div class="zygo-input-group">
+            <label class="zygo-input-label">PACKAGE CONTENTS DESCRIPTION</label>
+            <input type="text" id="parcelDescInput" class="zygo-input" placeholder="e.g. Clothes, Keys, Lunch box, Gift" />
+          </div>
+
+          <button class="zygo-btn-gold" style="margin-top: 10px;" onclick="scheduleParcelBooking()">
+            <span>Schedule Doorstep Pickup</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 13: CAR & BIKE RENTALS ================= -->
+    <div id="view-rentals" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Hourly Rentals</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <h4 style="font-size: 14px; font-weight: 800; color: #475569; margin-bottom: 12px;">SELECT RENTAL PACKAGE</h4>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+          <div class="clay-box-white" style="cursor: pointer; border: 2px solid var(--gold-primary);" onclick="confirmRentalBooking('2 Hours &bull; 20 KM', 399)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="font-size: 16px; font-weight: 900;">2 Hours &bull; 20 KM</h4>
+                <p style="font-size: 12px; color: #64748B;">Ideal for city errands &amp; shopping</p>
+              </div>
+              <div style="font-size: 20px; font-weight: 900; color: var(--deep-navy);">â‚¹399</div>
+            </div>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="confirmRentalBooking('4 Hours &bull; 40 KM', 799)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="font-size: 16px; font-weight: 900;">4 Hours &bull; 40 KM</h4>
+                <p style="font-size: 12px; color: #64748B;">Best for business meetings &amp; multi-stop</p>
+              </div>
+              <div style="font-size: 20px; font-weight: 900; color: var(--deep-navy);">â‚¹799</div>
+            </div>
+          </div>
+
+          <div class="clay-box-white" style="cursor: pointer;" onclick="confirmRentalBooking('8 Hours &bull; 80 KM', 1499)">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="font-size: 16px; font-weight: 900;">8 Hours &bull; 80 KM</h4>
+                <p style="font-size: 12px; color: #64748B;">Full day vehicle at your service</p>
+              </div>
+              <div style="font-size: 20px; font-weight: 900; color: var(--deep-navy);">â‚¹1,499</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 14: SCHEDULE FUTURE RIDES ================= -->
+    <div id="view-schedule" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Schedule a Ride</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <form onsubmit="handleScheduleSubmit(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">PICKUP DATE *</label>
+              <input type="date" id="scheduleDate" class="zygo-input" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">PICKUP TIME *</label>
+              <input type="time" id="scheduleTime" class="zygo-input" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">PICKUP LOCATION *</label>
+              <input type="text" id="schedulePickup" class="zygo-input" value="Vijay Nagar Square, Indore" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">DESTINATION *</label>
+              <input type="text" id="scheduleDrop" class="zygo-input" placeholder="e.g. Indore Airport Terminal" required />
+            </div>
+
+            <button type="submit" class="zygo-btn-gold">
+              <span>Schedule Advance Ride</span>
+              <i class="fa-solid fa-calendar-check"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="clay-box-white">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Your Scheduled Rides</h4>
+          <div id="scheduledRidesListContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 15: FAVORITES / SAVED PLACES ================= -->
+    <div id="view-favorites" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Saved Places</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white" id="favoritesListContainer">
+          <!-- Rendered via JS -->
+        </div>
+
+        <div class="clay-box-white">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Add New Favorite Place</h4>
+          <form onsubmit="handleAddFavorite(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">PLACE NAME (e.g. Gym, Parents Home) *</label>
+              <input type="text" id="favNameInput" class="zygo-input" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">FULL ADDRESS *</label>
+              <input type="text" id="favAddrInput" class="zygo-input" required />
+            </div>
+
+            <button type="submit" class="zygo-btn-primary">
+              <span>Save Favorite Address</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 16: 24X7 SUPPORT HELPDESK ================= -->
+    <div id="view-support" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">24x7 Customer Support</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-dark" style="text-align: center; padding: 26px 20px;">
+          <i class="fa-solid fa-headset" style="font-size: 34px; color: var(--gold-primary); margin-bottom: 10px;"></i>
+          <h3 style="font-size: 18px; font-weight: 800;">We are here to help you 24x7</h3>
+          <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Instant resolution for fares, lost items &amp; bookings</p>
+          <div style="margin-top: 18px;">
+            <a href="tel:18002664047" class="zygo-btn-gold" style="text-decoration: none; display: inline-flex;">
+              <i class="fa-solid fa-phone"></i>
+              <span>Call Toll-Free: 1800-ZYGO-HELP</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="clay-box-white">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Frequently Asked Questions</h4>
+          
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+            <strong style="font-size: 13px;">How does ZYGO Zero Surge work?</strong>
+            <p style="font-size: 12px; color: #64748B; margin-top: 4px;">ZYGO algorithm never inflates fares during rain or peak hours. You pay honest meter rates always.</p>
+          </div>
+
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+            <strong style="font-size: 13px;">What if I forget something in the cab?</strong>
+            <p style="font-size: 12px; color: #64748B; margin-top: 4px;">Go to Activity &gt; Select the ride &gt; Click 'Contact Captain' or call our 24x7 helpline.</p>
+          </div>
+
+          <div style="padding: 10px 0;">
+            <strong style="font-size: 13px;">How do refunds process?</strong>
+            <p style="font-size: 12px; color: #64748B; margin-top: 4px;">Cancelled ride refunds credit instantly to your ZYGO Wallet with zero cancellation deductions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 17: ZYGO PRIME MEMBERSHIP ================= -->
+    <div id="view-prime" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">ZYGO PRIME</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-dark" style="text-align: center; border: 2px solid var(--gold-primary);">
+          <div style="font-size: 38px; color: var(--gold-primary); margin-bottom: 8px;">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <h2 style="font-size: 22px; font-weight: 900;">VIP Experience. Every Ride.</h2>
+          <p style="font-size: 12px; color: #94A3B8; margin-top: 4px;">Exclusive perks designed for frequent daily riders</p>
+
+          <div style="margin: 20px 0; text-align: left; background: rgba(255,255,255,0.06); padding: 16px; border-radius: var(--radius-lg);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px;">
+              <i class="fa-solid fa-check" style="color: var(--gold-primary);"></i>
+              <span>Zero cancellation fee on all rides</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px;">
+              <i class="fa-solid fa-check" style="color: var(--gold-primary);"></i>
+              <span>Priority dispatch &bull; Cabs arrive in under 2 mins</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 13px;">
+              <i class="fa-solid fa-check" style="color: var(--gold-primary);"></i>
+              <span>5% instant cashback in wallet on every booking</span>
+            </div>
+          </div>
+
+          <button class="zygo-btn-gold" onclick="activatePrimeMembership()">
+            <span>Activate 1 Year Prime (â‚¹299)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 18: OFFERS & COUPONS ================= -->
+    <div id="view-offers" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Offers &amp; Discounts</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 10px; font-weight: 900; background: #FEF3C7; color: #D97706; padding: 2px 8px; border-radius: 4px;">ACTIVE PROMO</span>
+              <h4 style="font-size: 16px; font-weight: 900; margin-top: 6px;">FLAT 20% OFF Daily Rides</h4>
+              <p style="font-size: 12px; color: #64748B;">Max discount up to â‚¹60 &bull; Auto applied</p>
+            </div>
+            <button class="zygo-btn-primary" style="padding: 8px 14px; font-size: 12px; width: auto;" onclick="applyCoupon('ZYGO20')">APPLY</button>
+          </div>
+        </div>
+
+        <div class="clay-box-white">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 10px; font-weight: 900; background: #DCFCE7; color: #15803D; padding: 2px 8px; border-radius: 4px;">RENTAL SPECIAL</span>
+              <h4 style="font-size: 16px; font-weight: 900; margin-top: 6px;">UP TO 50% OFF Rentals</h4>
+              <p style="font-size: 12px; color: #64748B;">Valid on 4hr &amp; 8hr packages</p>
+            </div>
+            <button class="zygo-btn-primary" style="padding: 8px 14px; font-size: 12px; width: auto;" onclick="applyCoupon('RENT50')">APPLY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 19: SAFETY CENTER ================= -->
+    <div id="view-safety" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Safety Center</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <!-- Emergency SOS Button -->
+        <div class="clay-box-white" style="background: #FFF1F2; border: 2px solid #FECDD3; text-align: center; padding: 24px 16px;">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--emergency-red); color: #FFF; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.4); margin-bottom: 12px; cursor: pointer;" onclick="triggerEmergencySOS()">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <h3 style="font-size: 18px; font-weight: 900; color: #881337;">EMERGENCY POLICE SOS (112)</h3>
+          <p style="font-size: 12px; color: #9F1239; margin-top: 4px;">Instantly sends live GPS tracking to Police Control &amp; Emergency Contacts</p>
+        </div>
+
+        <div class="clay-box-white">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-person-dress" style="color: #EC4899; font-size: 22px;"></i>
+              <div>
+                <strong style="font-size: 14px;">ZYGO PINK &bull; Women Safety Mode</strong>
+                <p style="font-size: 11px; color: #64748B;">Prioritizes top rated verified drivers &amp; route monitoring</p>
+              </div>
+            </div>
+            <input type="checkbox" id="pinkModeCheckbox" checked style="width: 20px; height: 20px; accent-color: #EC4899;" onchange="showToast('ZYGO PINK Women Safety Mode updated!')" />
+          </div>
+        </div>
+
+        <div class="clay-box-white">
+          <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Emergency Contacts</h4>
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between;">
+            <div>
+              <strong style="font-size: 13px;">Family Member (Indore)</strong>
+              <div style="font-size: 11px; color: #64748B;">+91 98765 00000</div>
+            </div>
+            <span style="font-size: 11px; color: var(--success-green); font-weight: 800;">Connected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 20: RECENT TRIP DETAILS RECEIPT ================= -->
+    <div id="view-recent-trip" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">Trip Invoice &amp; Receipt</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white">
+          <div style="text-align: center; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 16px; margin-bottom: 16px;">
+            <span style="font-size: 12px; font-weight: 700; color: #64748B;">TOTAL FARE PAID</span>
+            <div style="font-size: 34px; font-weight: 900; color: var(--deep-navy); margin-top: 2px;">â‚¹120.00</div>
+            <div style="font-size: 11px; color: var(--success-green); font-weight: 800;">Paid via ZYGO Wallet</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Trip ID</span>
+              <strong>ZYG-TRIP-40472</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Ride Category</span>
+              <strong>Prime Sedan</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Pickup</span>
+              <strong>Home (Vijay Nagar)</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Destination</span>
+              <strong>Crystal IT Park, Indore</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Distance Traveled</span>
+              <strong>6.4 KM (18 Mins)</strong>
+            </div>
+          </div>
+
+          <div style="margin-top: 18px;">
+            <button class="zygo-btn-primary" onclick="showToast('Tax invoice PDF downloaded!')">
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>Download Tax Invoice</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 21: ACTIVITY & RIDES HISTORY ================= -->
+    <div id="view-activity" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">My Rides &amp; Bookings</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;" id="activityListContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- ================= VIEW 22: USER ACCOUNT PROFILE ================= -->
+    <div id="view-profile" class="view-screen">
+      <div class="subpage-header">
+        <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-home')">
+          <i class="fa-solid fa-arrow-left"></i>
+        </div>
+        <div class="subpage-title">My Profile</div>
+        <div style="width: 40px;"></div>
+      </div>
+
+      <div style="padding: 20px;">
+        <div class="clay-box-white" style="text-align: center; padding: 26px 20px;">
+          <div style="width: 72px; height: 72px; border-radius: var(--radius-full); background: var(--deep-navy); color: var(--gold-primary); font-size: 28px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;" id="profileAvatarInitial">
+            U
+          </div>
+          <h3 style="font-size: 18px; font-weight: 800;" id="profileNameDisplay">User</h3>
+          <div style="font-size: 13px; color: #64748B;" id="profilePhoneDisplay">+91 ...</div>
+          <div style="margin-top: 6px; display: inline-block; background: rgba(252, 200, 44, 0.2); color: var(--gold-bronze); font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: var(--radius-full);">
+            Verified Rider &bull; ZYGO Member
+          </div>
+        </div>
+
+        <div class="clay-box-white" style="padding: 8px 0;">
+          <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="ZygoRouter.navigate('view-wallet')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-wallet" style="color: var(--deep-navy); width: 20px;"></i>
+              <strong style="font-size: 14px;">ZYGO Wallet &amp; Cashback</strong>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 12px;"></i>
+          </div>
+
+          <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="ZygoRouter.navigate('view-favorites')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-heart" style="color: #EC4899; width: 20px;"></i>
+              <strong style="font-size: 14px;">Saved Favorite Places</strong>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 12px;"></i>
+          </div>
+
+          <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="ZygoRouter.navigate('view-prime')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-crown" style="color: var(--gold-primary); width: 20px;"></i>
+              <strong style="font-size: 14px;">ZYGO Prime Membership</strong>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 12px;"></i>
+          </div>
+
+          <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-bottom: 1px solid var(--border-subtle);" onclick="ZygoRouter.navigate('view-support')">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-headset" style="color: var(--gold-bronze); width: 20px;"></i>
+              <strong style="font-size: 14px;">24x7 Support Helpdesk</strong>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #94A3B8; font-size: 12px;"></i>
+          </div>
+
+          <div style="padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="logoutAndReset()">
+            <div style="display: flex; align-items: center; gap: 12px; color: var(--emergency-red);">
+              <i class="fa-solid fa-arrow-right-from-bracket" style="width: 20px;"></i>
+              <strong style="font-size: 14px;">Sign Out</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= DOCKED BOTTOM NAVIGATION (Master UI 5-Tabs) ================= -->
     <nav class="docked-bottom-nav">
-      <!-- 1. Home -->
-      <a class="nav-tab-item active" onclick="switchNavTab('home')">
+      <a class="nav-tab-item active" data-tab="home" onclick="ZygoRouter.navigate('view-home')">
         <i class="fa-solid fa-house"></i>
         <span>Home</span>
       </a>
 
-      <!-- 2. Services -->
-      <a class="nav-tab-item" onclick="switchNavTab('services')">
+      <a class="nav-tab-item" data-tab="services" onclick="ZygoRouter.navigate('view-services')">
         <i class="fa-solid fa-shapes"></i>
         <span>Services</span>
       </a>
 
-      <!-- 3. Center Book Circle -->
       <div class="center-book-btn-wrap">
-        <div class="center-book-circle" onclick="openDestinationSearch()">
+        <div class="center-book-circle" onclick="ZygoRouter.navigate('view-booking')">
           <i class="fa-solid fa-circle-dot"></i>
         </div>
       </div>
 
-      <!-- 4. Activity -->
-      <a class="nav-tab-item" onclick="switchNavTab('activity')">
+      <a class="nav-tab-item" data-tab="activity" onclick="ZygoRouter.navigate('view-activity')">
         <i class="fa-solid fa-table-list"></i>
         <span>Activity</span>
       </a>
 
-      <!-- 5. Profile -->
-      <a class="nav-tab-item" onclick="switchNavTab('profile')">
+      <a class="nav-tab-item" data-tab="profile" onclick="ZygoRouter.navigate('view-profile')">
         <i class="fa-regular fa-user"></i>
         <span>Profile</span>
       </a>
@@ -1032,202 +1940,483 @@
 
   </div>
 
-  <!-- BOOKING & DESTINATION SHEET MODAL -->
-  <div class="modal-overlay" id="bookingModalOverlay">
-    <div class="modal-sheet-clay">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-        <h3 style="font-size: 18px; font-weight: 800; color: var(--deep-navy);" id="modalBookingTitle">Book Your Ride</h3>
-        <button onclick="closeBookingModal()" style="background: none; border: none; font-size: 20px; color: #94A3B8; cursor: pointer;">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-        <div style="background: #F1F5F9; padding: 12px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-circle-dot" style="color: var(--success-green);"></i>
-          <input type="text" id="sheetPickupInput" value="Indore Railway Station" style="border: none; background: transparent; font-size: 14px; font-weight: 700; width: 100%; outline: none;">
-        </div>
-
-        <div style="background: #F1F5F9; padding: 12px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-location-dot" style="color: var(--emergency-red);"></i>
-          <input type="text" id="sheetDropInput" placeholder="Enter Drop Location" value="Vijay Nagar Square, Indore" style="border: none; background: transparent; font-size: 14px; font-weight: 700; width: 100%; outline: none;">
-        </div>
-      </div>
-
-      <!-- Vehicle Fare Selection -->
-      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-        <div class="mini-info-clay" style="justify-content: space-between; border-color: var(--gold-primary);" onclick="selectTier(this, 'Sedan', 160)">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="fa-solid fa-car" style="font-size: 20px; color: var(--gold-bronze);"></i>
-            <div>
-              <strong style="font-size: 14px;">Prime Sedan</strong>
-              <div style="font-size: 11px; color: #64748B;">AC &bull; Top Captain &bull; 2 min away</div>
-            </div>
-          </div>
-          <div style="text-align: right;">
-            <div style="font-size: 16px; font-weight: 900; color: var(--deep-navy);">₹160</div>
-            <small style="font-size: 10px; color: #059669; font-weight: 700;">Zero Surge</small>
-          </div>
-        </div>
-
-        <div class="mini-info-clay" style="justify-content: space-between;" onclick="selectTier(this, 'Auto', 85)">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="fa-solid fa-taxi" style="font-size: 20px; color: var(--success-green);"></i>
-            <div>
-              <strong style="font-size: 14px;">Zygo Auto</strong>
-              <div style="font-size: 11px; color: #64748B;">Fixed meter &bull; 3 min away</div>
-            </div>
-          </div>
-          <div style="text-align: right;">
-            <div style="font-size: 16px; font-weight: 900; color: var(--deep-navy);">₹85</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Confirm Button -->
-      <button class="btn-book-now" style="width: 100%; padding: 16px; font-size: 15px; border-radius: var(--radius-md); background: var(--deep-navy); color: var(--gold-primary);" onclick="confirmRideBooking()">
-        CONFIRM ZYGO BOOKING &bull; OTP SECURED
-      </button>
-    </div>
-  </div>
-
-  <!-- Shared State Script -->
-  <script src="../shared/store.js"></script>
+  <!-- Shared Modules -->
+  <script src="shared/sound-engine.js"></script>
+  <script src="shared/router.js"></script>
+  <script src="shared/live-store.js"></script>
 
   <script>
-    // App Initialization with Reactive State
-    document.addEventListener('DOMContentLoaded', () => {
-      const state = window.ZygoStore.state;
-      document.getElementById('userName').innerText = state.user.name;
-      document.getElementById('greetingText').innerText = state.user.greeting;
-      document.getElementById('currentLocDisplay').innerText = state.location.address;
-      updateWalletDisplay(state.wallet.balance);
+    let currentSelectedFare = 160;
+    let currentSelectedTier = 'Prime Sedan';
+    let currentPaymentMode = 'Wallet';
 
-      window.ZygoStore.subscribe((newState) => {
-        updateWalletDisplay(newState.wallet.balance);
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+      // Register all views in router
+      ZygoRouter.register('view-auth');
+      ZygoRouter.register('view-home', initHomeScreen);
+      ZygoRouter.register('view-notifications', renderNotificationsScreen);
+      ZygoRouter.register('view-wallet', initWalletScreen);
+      ZygoRouter.register('view-wallet-topup');
+      ZygoRouter.register('view-send-money', initSendMoneyScreen);
+      ZygoRouter.register('view-wallet-history', initWalletHistoryScreen);
+      ZygoRouter.register('view-select-city');
+      ZygoRouter.register('view-booking', initBookingScreen);
+      ZygoRouter.register('view-active-ride');
+      ZygoRouter.register('view-services');
+      ZygoRouter.register('view-parcel');
+      ZygoRouter.register('view-rentals');
+      ZygoRouter.register('view-schedule', initScheduleScreen);
+      ZygoRouter.register('view-favorites', initFavoritesScreen);
+      ZygoRouter.register('view-support');
+      ZygoRouter.register('view-prime');
+      ZygoRouter.register('view-offers');
+      ZygoRouter.register('view-safety');
+      ZygoRouter.register('view-recent-trip');
+      ZygoRouter.register('view-activity', initActivityScreen);
+      ZygoRouter.register('view-profile', initProfileScreen);
+
+      // Check real customer session
+      if (!window.ZygoLiveStore.user) {
+        ZygoRouter.navigate('view-auth');
+      } else {
+        ZygoRouter.navigate('view-home');
+      }
     });
 
-    function updateWalletDisplay(bal) {
-      const el = document.getElementById('walletBalance');
-      if (el) {
-        const parts = bal.toFixed(2).split('.');
-        el.innerHTML = `${Number(parts[0]).toLocaleString('en-IN')}<span style="font-size: 20px;">.${parts[1]}</span>`;
+    function showToast(msg) {
+      const toast = document.getElementById('zygoToast');
+      const text = document.getElementById('zygoToastText');
+      if (toast && text) {
+        text.innerText = msg;
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.display = 'none'; }, 2600);
       }
     }
 
-    function switchNavTab(tab) {
-      document.querySelectorAll('.nav-tab-item').forEach(t => t.classList.remove('active'));
-      const activeTab = event.currentTarget;
-      if (activeTab) activeTab.classList.add('active');
+    function switchAuthTab(tab) {
+      const btnSignup = document.getElementById('authTabSignup');
+      const btnLogin = document.getElementById('authTabLogin');
+      const formSignup = document.getElementById('formCustomerSignup');
+      const formLogin = document.getElementById('formCustomerLogin');
 
-      if (tab === 'services') {
-        openAllServices();
-      } else if (tab === 'activity') {
-        openHistory();
-      } else if (tab === 'profile') {
-        openProfile();
+      if (tab === 'signup') {
+        btnSignup.style.background = 'var(--deep-navy)';
+        btnSignup.style.color = 'var(--gold-primary)';
+        btnLogin.style.background = 'transparent';
+        btnLogin.style.color = '#64748B';
+        formSignup.style.display = 'block';
+        formLogin.style.display = 'none';
+      } else {
+        btnLogin.style.background = 'var(--deep-navy)';
+        btnLogin.style.color = 'var(--gold-primary)';
+        btnSignup.style.background = 'transparent';
+        btnSignup.style.color = '#64748B';
+        formSignup.style.display = 'none';
+        formLogin.style.display = 'block';
       }
     }
 
-    function openDestinationSearch() {
-      document.getElementById('modalBookingTitle').innerText = 'Where to in Indore?';
-      document.getElementById('bookingModalOverlay').style.display = 'flex';
+    function handleCustomerSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('regUserName').value.trim();
+      const phone = document.getElementById('regUserPhone').value.trim();
+      const city = document.getElementById('regUserCity').value;
+
+      if (!name || phone.length !== 10) {
+        showToast('Please enter your full name and 10-digit mobile number.');
+        return;
+      }
+
+      window.ZygoLiveStore.registerCustomer({ name, phone, city });
+      showToast(`Welcome ${name}! â‚¹500 bonus credited.`);
+      ZygoRouter.navigate('view-home');
     }
 
-    function closeBookingModal() {
-      document.getElementById('bookingModalOverlay').style.display = 'none';
+    function handleCustomerLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('loginUserPhone').value.trim();
+      if (phone.length !== 10) {
+        showToast('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+
+      window.ZygoLiveStore.registerCustomer({ name: 'Rider ' + phone.slice(-4), phone, city: 'Indore, Madhya Pradesh' });
+      showToast('Logged in successfully!');
+      ZygoRouter.navigate('view-home');
     }
 
-    function startBooking(type, label) {
-      document.getElementById('modalBookingTitle').innerText = `Book ${label}`;
-      document.getElementById('bookingModalOverlay').style.display = 'flex';
+    function initHomeScreen() {
+      const u = window.ZygoLiveStore.user;
+      if (u) {
+        document.getElementById('homeUserName').innerText = u.name;
+        document.getElementById('homeAvatarInitial').innerText = u.name.charAt(0).toUpperCase();
+        document.getElementById('homeCityDisplay').innerText = u.city;
+      }
+      document.getElementById('homeWalletBalance').innerText = window.ZygoLiveStore.wallet.balance.toFixed(2);
     }
 
-    function selectTier(card, name, fare) {
-      document.querySelectorAll('.modal-sheet-clay .mini-info-clay').forEach(c => c.style.borderColor = 'rgba(167, 164, 161, 0.2)');
-      card.style.borderColor = 'var(--gold-primary)';
+    function selectCity(cityName) {
+      if (window.ZygoLiveStore.user) {
+        window.ZygoLiveStore.user.city = cityName;
+        window.ZygoLiveStore.save('zygo_active_customer', window.ZygoLiveStore.user);
+      }
+      document.getElementById('homeCityDisplay').innerText = cityName;
+      showToast(`City changed to ${cityName}`);
+      ZygoRouter.navigate('view-home');
+    }
+
+    function initBookingScreen(data) {
+      if (data && data.service) {
+        document.getElementById('bookingScreenTitle').innerText = `Book ${data.service}`;
+      } else {
+        document.getElementById('bookingScreenTitle').innerText = 'Book ZYGO Ride';
+      }
+      document.getElementById('selectedPaymentModeText').innerText = `ZYGO Wallet (â‚¹${window.ZygoLiveStore.wallet.balance.toFixed(2)})`;
+    }
+
+    function selectBookingTier(el, tierName, fare, eta) {
+      document.querySelectorAll('.vehicle-option-item').forEach(c => c.style.border = '1px solid rgba(255,255,255,0.7)');
+      el.style.border = '2px solid var(--gold-primary)';
+      currentSelectedTier = tierName;
+      currentSelectedFare = fare;
+    }
+
+    function togglePaymentMode() {
+      currentPaymentMode = (currentPaymentMode === 'Wallet') ? 'Cash to Captain' : 'Wallet';
+      document.getElementById('selectedPaymentModeText').innerText = (currentPaymentMode === 'Wallet')
+        ? `ZYGO Wallet (â‚¹${window.ZygoLiveStore.wallet.balance.toFixed(2)})`
+        : 'Cash on Ride Completion';
     }
 
     function confirmRideBooking() {
+      const pickup = document.getElementById('bookingPickupInput').value.trim();
+      const drop = document.getElementById('bookingDropInput').value.trim();
       const otp = Math.floor(1000 + Math.random() * 9000);
-      alert(`🎉 ZYGO Ride Confirmed!\nNearest Captain dispatched in Indore (~2 min)\n\n4-Digit Security OTP: ${otp}\nShare OTP with driver when cab arrives.`);
-      closeBookingModal();
+
+      const booking = {
+        id: 'ZYG-TRIP-' + Math.floor(10000 + Math.random() * 90000),
+        pickup,
+        drop,
+        tier: currentSelectedTier,
+        fare: currentSelectedFare,
+        otp,
+        date: 'Today, Just Now',
+        status: 'Active',
+        paymentMethod: currentPaymentMode
+      };
+
+      window.ZygoLiveStore.addBooking(booking);
+
+      document.getElementById('activeRideOtpDisplay').innerText = otp;
+      document.getElementById('activeRideFareText').innerText = `â‚¹${currentSelectedFare}.00`;
+      document.getElementById('activeRideVehicleText').innerText = `${currentSelectedTier} (MP 09 AB 4047)`;
+
+      if (window.ZygoSoundEngine) {
+        window.ZygoSoundEngine.playSuccessSound();
+      }
+
+      showToast('ðŸŽ‰ Captain Dispatched! Secret OTP is ' + otp);
+      ZygoRouter.navigate('view-active-ride');
     }
 
-    function openWalletTopup() {
-      const amt = prompt('Enter amount to add to ZYGO Wallet (₹):', '500');
-      if (amt && !isNaN(amt)) {
-        window.ZygoStore.updateWallet(amt, 'UPI Wallet Topup', 'credit');
-        alert(`✅ ₹${amt} successfully added to ZYGO Wallet via UPI!`);
+    function cancelActiveTrip() {
+      showToast('Trip cancelled with zero deduction.');
+      ZygoRouter.navigate('view-home');
+    }
+
+    function initWalletScreen() {
+      document.getElementById('walletPageBalanceDisplay').innerText = `â‚¹${window.ZygoLiveStore.wallet.balance.toFixed(2)}`;
+      const list = document.getElementById('walletRecentTxnsContainer');
+      const txns = window.ZygoLiveStore.wallet.transactions.slice(0, 4);
+
+      if (txns.length === 0) {
+        list.innerHTML = '<div style="color: #94A3B8; text-align: center; padding: 20px;">No transactions yet.</div>';
+        return;
+      }
+
+      let html = '';
+      txns.forEach(t => {
+        const isCredit = t.type === 'credit';
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+            <div>
+              <strong style="font-size: 13px;">${t.title}</strong>
+              <div style="font-size: 11px; color: #94A3B8;">${t.date}</div>
+            </div>
+            <div style="font-size: 15px; font-weight: 900; color: ${isCredit ? 'var(--success-green)' : 'var(--deep-navy)'};">
+              ${isCredit ? '+' : '-'}â‚¹${t.amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function setTopupChip(amt) {
+      document.getElementById('inputTopupAmount').value = amt;
+    }
+
+    function executeAddMoney() {
+      const amt = document.getElementById('inputTopupAmount').value;
+      if (window.ZygoLiveStore.addCustomerMoney(amt)) {
+        if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+        showToast(`âœ… â‚¹${amt} added to ZYGO Wallet!`);
+        ZygoRouter.navigate('view-wallet');
+      } else {
+        showToast('Please enter a valid amount.');
       }
     }
 
-    function openSendMoney() {
-      const to = prompt('Enter receiver mobile number or UPI ID:');
-      if (!to) return;
-      const amt = prompt('Enter amount to send (₹):');
-      if (amt && !isNaN(amt)) {
-        window.ZygoStore.updateWallet(amt, `Sent to ${to}`, 'debit');
-        alert(`✅ ₹${amt} sent to ${to} from ZYGO Wallet!`);
+    function initSendMoneyScreen() {
+      document.getElementById('sendMoneyCurrentBal').innerText = `â‚¹${window.ZygoLiveStore.wallet.balance.toFixed(2)}`;
+    }
+
+    function handleSendMoneySubmit(e) {
+      e.preventDefault();
+      const target = document.getElementById('sendMoneyTarget').value.trim();
+      const amt = document.getElementById('sendMoneyAmount').value;
+      const note = document.getElementById('sendMoneyNote').value.trim() || 'Direct Transfer';
+
+      if (window.ZygoLiveStore.sendCustomerMoney(target, amt, note)) {
+        if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+        showToast(`âœ… â‚¹${amt} sent successfully to ${target}!`);
+        ZygoRouter.navigate('view-wallet');
+      } else {
+        showToast('Insufficient wallet balance or invalid amount.');
       }
     }
 
-    function openHistory() {
-      const txns = window.ZygoStore.state.wallet.transactions.map(t => `${t.date}: ${t.title} - ₹${t.amount}`).join('\n');
-      alert(`📜 ZYGO Transaction History:\n\n${txns}`);
+    function initWalletHistoryScreen() {
+      const list = document.getElementById('walletFullHistoryContainer');
+      const txns = window.ZygoLiveStore.wallet.transactions;
+
+      let html = '<div class="clay-box-white">';
+      txns.forEach(t => {
+        const isCredit = t.type === 'credit';
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+            <div>
+              <strong style="font-size: 14px;">${t.title}</strong>
+              <div style="font-size: 11px; color: #94A3B8;">${t.date} &bull; ${t.id}</div>
+            </div>
+            <div style="font-size: 16px; font-weight: 900; color: ${isCredit ? 'var(--success-green)' : 'var(--deep-navy)'};">
+              ${isCredit ? '+' : '-'}â‚¹${t.amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      list.innerHTML = html;
     }
 
-    function openPrimePlan() {
-      alert('👑 ZYGO PRIME Active!\nPlan: ZYGO GOLD (₹299/mo)\nBenefits: Zero Commission, VIP Support, Priority Cabs.');
+    function renderNotificationsScreen() {
+      const list = document.getElementById('notificationsListContainer');
+      const notes = window.ZygoLiveStore.notifications;
+
+      if (notes.length === 0) {
+        list.innerHTML = '<div class="clay-box-white" style="text-align: center; color: #94A3B8; padding: 30px;">All caught up! No notifications.</div>';
+        return;
+      }
+
+      let html = '';
+      notes.forEach(n => {
+        html += `
+          <div class="clay-box-white">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <strong style="font-size: 14px;">${n.title}</strong>
+              <span style="font-size: 11px; color: #94A3B8;">${n.time}</span>
+            </div>
+            <p style="font-size: 12px; color: #64748B;">${n.message}</p>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+      document.getElementById('notificationBadge').style.display = 'none';
     }
 
-    function applyPromoCode(code) {
-      alert(`🎉 Promo Code ${code} Applied! Discount will be deducted from your next ride fare.`);
+    function clearNotifications() {
+      window.ZygoLiveStore.notifications = [];
+      window.ZygoLiveStore.save('zygo_customer_notifications', []);
+      renderNotificationsScreen();
+      showToast('Notifications cleared.');
     }
 
-    function openProfile() {
-      alert(`👤 ZYGO Profile: ${window.ZygoStore.state.user.name}\nPhone: ${window.ZygoStore.state.user.phone}\nLanguage: ${window.ZygoStore.state.user.language}\nRating: 4.95 ⭐ (Prime Member)`);
+    function scheduleParcelBooking() {
+      const s = document.getElementById('parcelSenderInput').value;
+      const r = document.getElementById('parcelReceiverInput').value;
+      const w = document.getElementById('parcelWeightTier').value;
+
+      if (!r.trim()) {
+        showToast('Please enter delivery receiver address.');
+        return;
+      }
+
+      window.ZygoLiveStore.addBooking({
+        id: 'PRC-' + Math.floor(10000 + Math.random() * 90000),
+        pickup: s,
+        drop: r,
+        tier: 'Parcel Delivery',
+        fare: parseFloat(w),
+        status: 'Scheduled',
+        paymentMethod: 'Wallet'
+      });
+
+      showToast('ðŸ“¦ Parcel Scheduled! Captain arriving in 10 mins.');
+      ZygoRouter.navigate('view-activity');
     }
 
-    function openSafetyCenter() {
-      alert('🛡️ ZYGO Safety Center:\n- 24x7 Emergency Police SOS (112)\n- Live Trip Sharing with Family\n- ZYGO PINK Women Safety Priority');
+    function confirmRentalBooking(pkg, fare) {
+      window.ZygoLiveStore.addBooking({
+        id: 'RNT-' + Math.floor(10000 + Math.random() * 90000),
+        pickup: 'Current Location (Indore)',
+        drop: 'Multi-stop Rental',
+        tier: `Rental (${pkg})`,
+        fare: fare,
+        status: 'Reserved',
+        paymentMethod: 'Wallet'
+      });
+
+      showToast(`ðŸš— ${pkg} Rental booked successfully!`);
+      ZygoRouter.navigate('view-activity');
     }
 
-    function openRecentTrip() {
-      alert('🚗 Recent Ride:\nPickup: Home (Indore)\nDrop: Office (Vijay Nagar)\nFare Paid: ₹120 (Cashback +₹10 credited)');
+    function initScheduleScreen() {
+      const list = document.getElementById('scheduledRidesListContainer');
+      const rides = window.ZygoLiveStore.scheduledRides;
+
+      if (rides.length === 0) {
+        list.innerHTML = '<div style="color: #94A3B8; font-size: 12px; padding: 10px 0;">No upcoming scheduled rides.</div>';
+        return;
+      }
+
+      let html = '';
+      rides.forEach(r => {
+        html += `
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; font-size: 13px;">
+              <strong>${r.date} at ${r.time}</strong>
+              <span style="color: var(--gold-bronze); font-weight: 800;">Confirmed</span>
+            </div>
+            <div style="font-size: 12px; color: #64748B;">From: ${r.pickup} &bull; To: ${r.drop}</div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
     }
 
-    function openLocationPicker() {
-      const newCity = prompt('Select or change your operating city:', 'Indore, Madhya Pradesh');
-      if (newCity) {
-        document.getElementById('currentLocDisplay').innerText = newCity;
+    function handleScheduleSubmit(e) {
+      e.preventDefault();
+      const d = document.getElementById('scheduleDate').value;
+      const t = document.getElementById('scheduleTime').value;
+      const p = document.getElementById('schedulePickup').value;
+      const dr = document.getElementById('scheduleDrop').value;
+
+      window.ZygoLiveStore.addScheduleRide({ date: d, time: t, pickup: p, drop: dr });
+      showToast('âœ… Ride scheduled with guaranteed arrival!');
+      initScheduleScreen();
+    }
+
+    function initFavoritesScreen() {
+      const list = document.getElementById('favoritesListContainer');
+      const addrs = window.ZygoLiveStore.savedAddresses;
+
+      let html = '';
+      addrs.forEach(a => {
+        html += `
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid ${a.icon || 'fa-location-dot'}" style="color: var(--gold-bronze); font-size: 18px;"></i>
+              <div>
+                <strong style="font-size: 14px;">${a.name}</strong>
+                <div style="font-size: 12px; color: #64748B;">${a.address}</div>
+              </div>
+            </div>
+            <button class="search-btn-cta" style="padding: 6px 12px; font-size: 11px;" onclick="bookFromFavorite('${a.address}')">Book</button>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function handleAddFavorite(e) {
+      e.preventDefault();
+      const n = document.getElementById('favNameInput').value.trim();
+      const a = document.getElementById('favAddrInput').value.trim();
+
+      window.ZygoLiveStore.addFavoriteAddress(n, a);
+      showToast(`Saved "${n}" to favorites!`);
+      initFavoritesScreen();
+      e.target.reset();
+    }
+
+    function bookFromFavorite(dest) {
+      document.getElementById('bookingDropInput').value = dest;
+      ZygoRouter.navigate('view-booking');
+    }
+
+    function activatePrimeMembership() {
+      if (window.ZygoLiveStore.user) {
+        window.ZygoLiveStore.user.isPrime = true;
+        window.ZygoLiveStore.save('zygo_active_customer', window.ZygoLiveStore.user);
+      }
+      showToast('ðŸ‘‘ ZYGO PRIME 1-Year Membership Activated!');
+      ZygoRouter.navigate('view-home');
+    }
+
+    function applyCoupon(code) {
+      showToast(`ðŸŽ‰ Coupon ${code} applied to your next ride fare!`);
+      ZygoRouter.navigate('view-booking');
+    }
+
+    function triggerEmergencySOS() {
+      showToast('ðŸš¨ SOS ALERT SENT TO POLICE 112 & FAMILY!');
+    }
+
+    function initActivityScreen() {
+      const list = document.getElementById('activityListContainer');
+      const bookings = window.ZygoLiveStore.bookings;
+
+      if (bookings.length === 0) {
+        list.innerHTML = `
+          <div class="clay-box-white" style="text-align: center; color: #94A3B8; padding: 40px 20px;">
+            <i class="fa-solid fa-clock-rotate-left" style="font-size: 38px; margin-bottom: 10px; display: block; color: var(--gold-primary);"></i>
+            No past rides or activity yet. Book your first ride to see it here!
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      bookings.forEach(b => {
+        html += `
+          <div class="clay-box-white">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <strong>${b.tier} &bull; â‚¹${b.fare}</strong>
+              <span style="color: var(--success-green); font-size: 11px; font-weight: 800;">${b.status}</span>
+            </div>
+            <div style="font-size: 12px; color: #64748B;">From: ${b.pickup}<br>To: ${b.drop}</div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 6px;">${b.date} &bull; ${b.id}</div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function initProfileScreen() {
+      const u = window.ZygoLiveStore.user;
+      if (u) {
+        document.getElementById('profileNameDisplay').innerText = u.name;
+        document.getElementById('profilePhoneDisplay').innerText = `+91 ${u.phone} &bull; ${u.city}`;
+        document.getElementById('profileAvatarInitial').innerText = u.name.charAt(0).toUpperCase();
       }
     }
 
-    function openAllServices() {
-      alert('▦ ZYGO Modular Services:\n1. Cab (Mini, Sedan, SUV, EV)\n2. Auto (Zero Meter Tampering)\n3. Bike Taxi (Speed Transit)\n4. Instant Parcel Courier\n5. Car & Bike Rentals\n6. Travel (Bus, Train, Flight)');
-    }
-
-    function openScheduleTrip() {
-      const d = prompt('Enter pickup date (DD-MM-YYYY):', '15-11-2026');
-      const t = prompt('Enter pickup time (HH:MM AM/PM):', '09:30 AM');
-      if (d && t) {
-        alert(`✅ Trip Scheduled for ${d} at ${t} with Guaranteed Cab Arrival.`);
-      }
-    }
-
-    function openFavorites() {
-      alert('❤️ Saved Favorites:\n1. 🏠 Home (Indore)\n2. 🏢 Office (Vijay Nagar)\n3. ✈️ Indore Devi Ahilyabai Airport (IDR)');
-    }
-
-    function openSupport() {
-      alert('🎧 ZYGO 24x7 Support:\nCall: 1800-ZYGO-HELP (Toll Free)\nChat: Live AI Assistant Active');
-    }
-
-    function openNotifications() {
-      alert('🔔 Notifications:\n1. ₹150 Referral bonus credited to your wallet!\n2. Weekend Special: 20% OFF on all Rentals.');
+    function logoutAndReset() {
+      window.ZygoLiveStore.logoutCustomer();
+      showToast('Signed out successfully.');
+      ZygoRouter.navigate('view-auth');
     }
   </script>
 </body>
 </html>
+

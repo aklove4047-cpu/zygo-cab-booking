@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "466218238375",
+    "project_id": "zygo-4d41c",
+    "storage_bucket": "zygo-4d41c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466218238375:android:dfa1b2bc102894ea56b682",
+        "android_client_info": {
+          "package_name": "com.uktechservices.zygo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466218238375-qom40ahhg6plpdsi86c5va3tqo7uak0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uktechservices.zygo",
+            "certificate_hash": "91a87261db1b31c0fb5d2a88c1898a599a0442ff"
+          }
+        },
+        {
+          "client_id": "466218238375-u4jgt712e8mr5a06d60a5sphktpvtgvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDszOq-1yDlpdMXOHPBLlWZwQQLFn93uYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466218238375-u4jgt712e8mr5a06d60a5sphktpvtgvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466218238375:android:51663fecffcb175256b682",
+        "android_client_info": {
+          "package_name": "com.uktechservices.zygodelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466218238375-u4jgt712e8mr5a06d60a5sphktpvtgvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDszOq-1yDlpdMXOHPBLlWZwQQLFn93uYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466218238375-u4jgt712e8mr5a06d60a5sphktpvtgvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
