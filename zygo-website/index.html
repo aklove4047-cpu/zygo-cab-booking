@@ -2,1218 +2,1231 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Zygo Cabs - India's Fast &amp; Reliable Taxi Booking</title>
-  <meta name="description" content="Book instant cab rides with Zygo. City rides, Outstation cabs, and Airport transfers with verified captains and secure OTP.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ZYGO — Super App</title>
+  <meta name="description" content="ZYGO Super App — Premium Experience. Affordable for Everyone. Mobility, Logistics, Rentals, Travel, and Payments.">
+  <link rel="icon" type="image/png" href="../assets/images/logo_with_name.png">
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
-
-  <!-- Font Awesome -->
+  <!-- Font Awesome Pro Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
   <!-- Leaflet Map CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-
-  <!-- Zygo Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    /* ================= OLA-STYLE ADVANCED MODERN ENHANCEMENTS ================= */
+    /* ================= ZYGO MASTER DESIGN SYSTEM 2.0 ================= */
     :root {
-      --ola-green: #00D26A;
-      --ola-green-dark: #00A854;
-      --ola-yellow: #FFC000;
-      --ola-black: #111827;
-      --ola-gray: #F3F4F6;
-      --ola-card-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+      --bg-pearl: #EDEDEC;
+      --bg-light: #F7F7F6;
+      --surface-white: #FFFFFF;
+      --deep-navy: #040608;
+      --navy-card: #0C1017;
+      --navy-elevated: #141A24;
+      --gold-primary: #FCC82C;
+      --gold-rich: #EFAF19;
+      --gold-bronze: #986209;
+      --gold-champagne: #E7D9A8;
+      --border-silver: #A7A4A1;
+      --border-subtle: rgba(167, 164, 161, 0.25);
+      --emergency-red: #E74C3C;
+      --success-green: #2ECC71;
+      --shadow-clay: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      --shadow-clay-card: 0 14px 30px rgba(4, 6, 8, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      --shadow-dark-card: 0 16px 36px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 26px;
+      --radius-full: 999px;
+      --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* Side Drawer Menu (Ola Style) */
-    .side-drawer-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      z-index: 3000;
-      transition: opacity 0.3s;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
-    .side-drawer {
-      position: fixed;
-      top: 0;
-      left: -320px;
-      width: 300px;
-      height: 100%;
-      background: #FFFFFF;
-      z-index: 3001;
-      box-shadow: 5px 0 25px rgba(0,0,0,0.2);
-      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    body {
+      background-color: var(--bg-pearl);
+      color: var(--deep-navy);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Mobile Container Wrapper (1:1 Smartphone UI) */
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-pearl);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 50px rgba(0,0,0,0.1);
+      padding-bottom: 95px; /* space for bottom nav */
     }
-    .side-drawer.open {
-      left: 0;
-    }
-    .drawer-header {
-      background: #0F172A;
-      color: #FFFFFF;
-      padding: 24px 20px;
+
+    /* ================= 1. STATUS & TOP BAR ================= */
+    .top-status-bar {
+      padding: 14px 20px 8px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
     }
-    .drawer-avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: var(--ola-green);
-      color: #000;
-      font-size: 22px;
+
+    .user-greeting-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .user-avatar-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: #D1D5DB;
+      overflow: hidden;
+      border: 2px solid var(--surface-white);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .user-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .greeting-text-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .greeting-name {
+      font-size: 17px;
       font-weight: 800;
+      color: var(--deep-navy);
+      letter-spacing: -0.3px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-circle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--surface-white);
+      border: 1px solid rgba(167, 164, 161, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .drawer-user h4 {
-      font-size: 16px;
-      font-weight: 800;
-    }
-    .drawer-user p {
-      font-size: 12px;
-      color: #94A3B8;
-      margin-top: 2px;
-    }
-    .drawer-rating-tag {
-      font-size: 11px;
-      background: rgba(255, 192, 0, 0.2);
-      color: var(--ola-yellow);
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: inline-block;
-      margin-top: 4px;
-      font-weight: 700;
-    }
-    .drawer-menu {
-      list-style: none;
-      padding: 14px 0;
-      flex: 1;
-      overflow-y: auto;
-    }
-    .drawer-menu li a {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 14px 24px;
-      color: #1F2937;
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-    .drawer-menu li a:hover {
-      background: #F3F4F6;
-      color: var(--ola-green-dark);
-    }
-    .drawer-menu li a i {
-      width: 20px;
-      color: #64748B;
-      font-size: 16px;
+      color: var(--deep-navy);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
     }
 
-    /* Ola-Style Vehicle List */
-    .ola-fleet-card {
-      border: 2px solid #E5E7EB;
-      border-radius: 14px;
-      padding: 12px 14px;
+    .icon-badge-dot {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      background: var(--emergency-red);
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--surface-white);
+    }
+
+    .brand-pill-btn {
+      background: var(--deep-navy);
+      color: var(--surface-white);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(4, 6, 8, 0.25);
+    }
+
+    /* ================= 2. ZYGO WALLET CLAY-CARD ================= */
+    .wallet-card-container {
+      padding: 8px 20px 14px;
+    }
+
+    .zygo-wallet-clay {
+      background: linear-gradient(135deg, var(--navy-card) 0%, var(--navy-elevated) 100%);
+      border-radius: var(--radius-xl);
+      padding: 22px 20px;
+      color: var(--surface-white);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-dark-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .wallet-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .wallet-label {
+      font-size: 12px;
+      color: #94A3B8;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .wallet-balance-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .wallet-currency {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--gold-primary);
+    }
+
+    .wallet-amount-main {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      color: var(--surface-white);
+    }
+
+    .wallet-coins-badge {
+      background: rgba(252, 200, 44, 0.15);
+      border: 1px solid rgba(252, 200, 44, 0.35);
+      color: var(--gold-primary);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wallet-illustration {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      width: 78px;
+      opacity: 0.88;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+    }
+
+    .wallet-action-pills {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .w-pill-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-full);
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--surface-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+
+    .w-pill-btn:active {
+      transform: scale(0.97);
+      background: rgba(252, 200, 44, 0.2);
+    }
+
+    /* ================= 3. SEARCH & QUICK BOOKING BAR ================= */
+    .search-booking-wrapper {
+      padding: 0 20px 12px;
+    }
+
+    .search-bar-clay {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 6px 8px 6px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-clay-card);
+      border: 1px solid rgba(167, 164, 161, 0.25);
+    }
+
+    .search-input-mock {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      color: #94A3B8;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-book-now {
+      background: var(--deep-navy);
+      color: var(--surface-white);
+      border: none;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(4, 6, 8, 0.25);
+      transition: transform 0.2s;
+    }
+
+    .btn-book-now:active {
+      transform: scale(0.96);
+    }
+
+    /* ================= 4. CURRENT LOCATION STRIP (Indore Phase A) ================= */
+    .location-strip {
+      padding: 0 20px 16px;
+    }
+
+    .location-card {
+      background: var(--gold-champagne);
+      background: linear-gradient(135deg, #FFF9E6 0%, #F5ECCB 100%);
+      border: 1px solid rgba(239, 175, 25, 0.3);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-bottom: 10px;
-      background: #FFFFFF;
     }
-    .ola-fleet-card:hover {
-      border-color: #10B981;
-      background: #F0FDF4;
-    }
-    .ola-fleet-card.active {
-      border-color: #00D26A;
-      background: #F0FDF4;
-      box-shadow: 0 4px 15px rgba(0, 210, 106, 0.15);
-    }
-    .ola-fleet-left {
+
+    .loc-left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
-    .ola-fleet-img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-    }
-    .ola-fleet-title {
+
+    .loc-pin-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-full);
+      background: rgba(252, 200, 44, 0.3);
+      color: var(--gold-bronze);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 15px;
-      font-weight: 800;
-      color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
-    .ola-tag-popular {
-      background: #FEF3C7;
-      color: #D97706;
+
+    .loc-tag {
       font-size: 10px;
       font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: #8C6D23;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .loc-address {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    /* ================= 5. MASTER SERVICES GRID ================= */
+    .section-container {
+      padding: 0 20px 20px;
+    }
+
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--deep-navy);
+      letter-spacing: -0.3px;
+    }
+
+    .section-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748B;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .services-5col-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .service-clay-card {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 14px 6px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-clay-card);
+      border: 1px solid rgba(167, 164, 161, 0.2);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .service-clay-card:active {
+      transform: scale(0.94);
+    }
+
+    .service-3d-img {
+      width: 44px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    .service-card-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--deep-navy);
+    }
+
+    /* ================= 6. QUICK ACTIONS & ZYGO PRIME ================= */
+    .quick-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 12px;
+    }
+
+    .actions-4box-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-square-btn {
+      background: var(--surface-white);
+      border-radius: var(--radius-md);
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: var(--shadow-clay);
+      border: 1px solid rgba(167, 164, 161, 0.18);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .action-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .action-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .prime-banner-clay {
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy-card) 100%);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      color: var(--surface-white);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(252, 200, 44, 0.3);
+      box-shadow: 0 10px 24px rgba(4, 6, 8, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .prime-badge-tag {
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .prime-features-list {
+      list-style: none;
+      font-size: 11px;
+      color: #CBD5E1;
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    .prime-features-list li::before {
+      content: "✓ ";
+      color: var(--gold-primary);
+      font-weight: 900;
+    }
+
+    .btn-join-prime {
+      background: var(--gold-primary);
+      color: var(--deep-navy);
+      border: none;
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 900;
+      width: fit-content;
+      cursor: pointer;
+    }
+
+    .prime-crown-deco {
+      position: absolute;
+      right: -8px;
+      bottom: -6px;
+      font-size: 58px;
+      color: rgba(252, 200, 44, 0.15);
+      transform: rotate(-15deg);
+      pointer-events: none;
+    }
+
+    /* ================= 7. HORIZONTAL OFFERS CAROUSEL ================= */
+    .offers-carousel-row {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .offers-carousel-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .offer-banner-card {
+      flex: 0 0 240px;
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 110px;
+      cursor: pointer;
+    }
+
+    .offer-discount-badge {
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
     }
-    .ola-fleet-desc {
-      font-size: 12px;
-      color: #6B7280;
+
+    .offer-title-text {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
       margin-top: 2px;
     }
-    .ola-fleet-right {
-      text-align: right;
-    }
-    .ola-fleet-fare {
-      font-size: 17px;
-      font-weight: 900;
-      color: #111827;
-    }
-    .ola-fleet-eta {
-      font-size: 11px;
-      color: #059669;
-      font-weight: 700;
+
+    .offer-code-pill {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 800;
+      width: fit-content;
+      margin-top: 4px;
     }
 
-    /* Radar Finding Captain Modal */
-    .radar-modal-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(8px);
-      z-index: 4000;
-      align-items: center;
-      justify-content: center;
-    }
-    .radar-card-inner {
-      background: #FFFFFF;
-      border-radius: 24px;
-      padding: 32px 24px;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      animation: popIn 0.3s ease-out;
-    }
-    @keyframes popIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .radar-ripple-box {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .radar-center-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--ola-green);
-      color: #000;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 2;
-    }
-    .radar-ripple {
+    .offer-card-vehicle {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 3px solid var(--ola-green);
-      animation: rippleAnim 1.8s infinite cubic-bezier(0, 0.2, 0.8, 1);
-    }
-    .radar-ripple:nth-child(2) {
-      animation-delay: 0.6s;
-    }
-    .radar-ripple:nth-child(3) {
-      animation-delay: 1.2s;
-    }
-    @keyframes rippleAnim {
-      0% { transform: scale(0.5); opacity: 1; }
-      100% { transform: scale(1.6); opacity: 0; }
+      right: 6px;
+      bottom: 6px;
+      width: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
     }
 
-    /* Confirmed Captain Card (True Ola Style) */
-    .confirmed-ride-card {
-      display: none;
-      background: #FFFFFF;
-      border-radius: 20px;
-      border: 2px solid #00D26A;
-      box-shadow: 0 10px 30px rgba(0, 210, 106, 0.15);
-      padding: 20px;
-      margin-top: 16px;
-      animation: slideDown 0.3s ease-out;
-    }
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .otp-banner-box {
-      background: #0F172A;
-      color: #FFFFFF;
-      padding: 12px 18px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .otp-code-highlight {
-      font-size: 26px;
-      font-weight: 900;
-      color: var(--ola-yellow);
-      letter-spacing: 4px;
-    }
-    .captain-info-row {
+    /* ================= 8. READY TO RIDE CALLOUT ================= */
+    .ready-ride-box {
+      background: #E8FBF0;
+      border: 1px solid #A7F3D0;
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
     }
-    .captain-meta-details {
+
+    .ready-ride-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .captain-img-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #E2E8F0;
-      border: 2px solid #00D26A;
+
+    .car-circle-green {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      color: #059669;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      font-weight: 800;
-      color: #0F172A;
+      font-size: 17px;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
     }
-    .captain-actions-row {
+
+    /* ================= 9. SAFETY & RECENT TRIP SPLIT ================= */
+    .safety-recent-split {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    .btn-captain-action {
-      background: #F3F4F6;
-      border: none;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 12px;
+
+    .mini-info-clay {
+      background: var(--surface-white);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      box-shadow: var(--shadow-clay);
+      border: 1px solid rgba(167, 164, 161, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
+    }
+
+    /* ================= 10. DOCKED BOTTOM NAVIGATION (Master UI Screenshot) ================= */
+    .docked-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface-white);
+      border-top: 1px solid rgba(167, 164, 161, 0.2);
+      padding: 8px 16px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+    }
+
+    .nav-tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 54px;
+      transition: color 0.2s;
+    }
+
+    .nav-tab-item.active {
+      color: var(--deep-navy);
+    }
+
+    .nav-tab-item i {
+      font-size: 19px;
+    }
+
+    /* Center Elevated Book Button */
+    .center-book-btn-wrap {
+      position: relative;
+      top: -14px;
+    }
+
+    .center-book-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-full);
+      background: var(--deep-navy);
+      border: 4px solid var(--surface-white);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      text-decoration: none;
-      color: #111827;
+      color: var(--gold-primary);
+      font-size: 20px;
+      box-shadow: 0 8px 20px rgba(4, 6, 8, 0.35);
+      cursor: pointer;
+      transition: transform 0.2s;
     }
-    .btn-captain-action:hover {
-      background: #E5E7EB;
+
+    .center-book-circle:active {
+      transform: scale(0.94);
     }
-    .btn-captain-action.sos {
-      background: #FEE2E2;
-      color: #DC2626;
+
+    /* ================= FULL SCREEN MODAL / BOOKING RADAR ================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 8, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-sheet-clay {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface-white);
+      border-radius: 26px 26px 0 0;
+      padding: 24px 20px 32px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+      animation: slideUp 0.28s ease-out;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <!-- ================= SIDE DRAWER (OLA MENU) ================= -->
-  <div class="side-drawer-backdrop" id="drawerBackdrop"></div>
-  <aside class="side-drawer" id="sideDrawer">
-    <div class="drawer-header">
-      <div class="drawer-avatar">U</div>
-      <div class="drawer-user">
-        <h4 id="drawerUserName">Aman Kumar</h4>
-        <p>+91 98765 43210</p>
-        <div class="drawer-rating-tag"><i class="fa-solid fa-star"></i> 4.85 ★ Zygo Rider</div>
-      </div>
-    </div>
-    <ul class="drawer-menu">
-      <li><a href="#booking" onclick="closeDrawer()"><i class="fa-solid fa-car"></i> Book a Ride</a></li>
-      <li><a href="javascript:void(0)" onclick="alert('Zygo Wallet Balance: ₹450.00\nTransactions: 12 rides completed.')"><i class="fa-solid fa-wallet"></i> Zygo Wallet <span style="margin-left:auto; color:#059669; font-weight:700;">₹450</span></a></li>
-      <li><a href="#fleet" onclick="closeDrawer()"><i class="fa-solid fa-taxi"></i> Our Fleet &amp; Rates</a></li>
-      <li><a href="#safety" onclick="closeDrawer()"><i class="fa-solid fa-shield-halved"></i> Safety &amp; Emergency</a></li>
-      <li><a href="#download-app" onclick="closeDrawer()"><i class="fa-solid fa-mobile-screen"></i> Download Rider App</a></li>
-      <li><a href="javascript:void(0)" onclick="alert('Refer code: ZYGO100\nShare with friends to get ₹100 free ride discount!')"><i class="fa-solid fa-gift"></i> Refer &amp; Earn ₹100</a></li>
-      <li><a href="tel:112"><i class="fa-solid fa-phone-volume" style="color:#EF4444;"></i> 24x7 Safety Helpline</a></li>
-      <li><a href="javascript:void(0)" onclick="logoutCustomer()" style="color:#DC2626;"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#DC2626;"></i> Logout Account</a></li>
-    </ul>
-    <div style="padding: 16px; border-top: 1px solid #E5E7EB; font-size: 12px; color: #94A3B8; text-align: center;">
-      Zygo Cabs Mobility v2.8.0 • 100% Verified
-    </div>
-  </aside>
+  <!-- Mobile Viewport -->
+  <div class="app-viewport">
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="header">
-    <div class="container nav-container">
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <button id="openDrawerBtn" class="mobile-menu-btn" style="display: flex; background: none; border: none; font-size: 20px; cursor: pointer; color: #111827;" aria-label="Open Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-        <a href="index.html" class="logo-wrapper">
-          <img src="assets/images/logo_with_name.png" alt="Zygo Cabs" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='block';">
-          <div id="brandFallback" class="brand-fallback-text" style="display: none;">ZYGO <span>CABS</span></div>
-        </a>
+    <!-- 1. TOP STATUS BAR -->
+    <header class="top-status-bar">
+      <div class="user-greeting-box" onclick="openProfile()">
+        <div class="user-avatar-wrap">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Kamlesh" id="headerAvatar">
+        </div>
+        <div>
+          <div class="greeting-text-sub" id="greetingText">Good Morning 👋</div>
+          <div class="greeting-name" id="userName">Kamlesh</div>
+        </div>
       </div>
 
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#booking" class="active">Daily Rides</a></li>
-          <li><a href="#fleet">Our Fleet</a></li>
-          <li><a href="#outstation">Outstation</a></li>
-          <li><a href="#safety">Safety</a></li>
-          <li><a href="#download-app">Download App</a></li>
-        </ul>
-      </nav>
+      <div class="top-actions">
+        <div class="icon-circle-btn" onclick="openNotifications()" title="Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span class="icon-badge-dot"></span>
+        </div>
+        <div class="brand-pill-btn">
+          ZYGO
+        </div>
+      </div>
+    </header>
 
-      <div class="nav-actions">
-        <a href="#download-app" class="btn btn-outline" style="border-color: #00D26A; color: #000; font-weight: 700;">
-          <i class="fa-brands fa-android" style="color: #00D26A;"></i> Get App
-        </a>
-        <button id="openLoginBtn" class="btn btn-primary" style="background: #00D26A; border-color: #00D26A; color: #000; font-weight: 800;">
-          <i class="fa-regular fa-user"></i> Login
-        </button>
+    <!-- 2. ZYGO WALLET CLAY-CARD -->
+    <div class="wallet-card-container">
+      <div class="zygo-wallet-clay">
+        <div class="wallet-header-row">
+          <div>
+            <div class="wallet-label">ZYGO Wallet</div>
+            <div class="wallet-balance-row">
+              <span class="wallet-currency">₹</span>
+              <span class="wallet-amount-main" id="walletBalance">4,560<span style="font-size: 20px;">.75</span></span>
+            </div>
+          </div>
+          <div class="wallet-coins-badge">
+            <i class="fa-solid fa-coins"></i> 1,250 Pts
+          </div>
+        </div>
+
+        <img src="../assets/images/car.png" alt="Credit Card Deco" class="wallet-illustration" onerror="this.style.display='none'">
+
+        <div class="wallet-action-pills">
+          <div class="w-pill-btn" onclick="openWalletTopup()">
+            <i class="fa-solid fa-plus" style="color: var(--gold-primary);"></i> Add Money
+          </div>
+          <div class="w-pill-btn" onclick="openSendMoney()">
+            <i class="fa-solid fa-paper-plane" style="color: var(--gold-primary);"></i> Send Money
+          </div>
+          <div class="w-pill-btn" onclick="openHistory()">
+            <i class="fa-solid fa-clock-rotate-left" style="color: var(--gold-primary);"></i> History
+          </div>
+        </div>
       </div>
     </div>
-  </header>
 
-  <!-- ================= HERO & OLA-STYLE BOOKING ENGINE ================= -->
-  <section class="hero-section" id="booking">
-    <div class="container">
-      <div class="hero-grid">
+    <!-- 3. SEARCH & QUICK BOOKING BAR -->
+    <div class="search-booking-wrapper">
+      <div class="search-bar-clay">
+        <div class="search-input-mock" onclick="openDestinationSearch()">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--deep-navy);"></i>
+          <span>Where are you going?</span>
+        </div>
+        <button class="btn-book-now" onclick="openDestinationSearch()">Book Now</button>
+      </div>
+    </div>
+
+    <!-- 4. CURRENT LOCATION STRIP (Indore - Phase A) -->
+    <div class="location-strip">
+      <div class="location-card" onclick="openLocationPicker()">
+        <div class="loc-left">
+          <div class="loc-pin-icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <div class="loc-tag">Current Location</div>
+            <div class="loc-address" id="currentLocDisplay">Indore, Madhya Pradesh</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-down" style="color: var(--gold-bronze); font-size: 13px;"></i>
+      </div>
+    </div>
+
+    <!-- 5. SERVICES GRID -->
+    <div class="section-container">
+      <div class="section-header-row">
+        <h3 class="section-title">Services</h3>
+        <span class="section-link" onclick="openAllServices()">See All</span>
+      </div>
+
+      <div class="services-5col-grid">
+        <!-- 1. Cab -->
+        <div class="service-clay-card" onclick="startBooking('cab', 'Cab')">
+          <img src="../assets/images/car.png" alt="Cab" class="service-3d-img">
+          <span class="service-card-title">Cab</span>
+        </div>
+
+        <!-- 2. Auto -->
+        <div class="service-clay-card" onclick="startBooking('auto', 'Auto')">
+          <img src="../assets/images/car.png" alt="Auto" class="service-3d-img">
+          <span class="service-card-title">Auto</span>
+        </div>
+
+        <!-- 3. Bike -->
+        <div class="service-clay-card" onclick="startBooking('bike', 'Bike')">
+          <img src="../assets/images/bike.png" alt="Bike" class="service-3d-img" onerror="this.src='../assets/images/car.png'">
+          <span class="service-card-title">Bike</span>
+        </div>
+
+        <!-- 4. Parcel -->
+        <div class="service-clay-card" onclick="startBooking('parcel', 'Parcel')">
+          <img src="../assets/images/car.png" alt="Parcel" class="service-3d-img">
+          <span class="service-card-title">Parcel</span>
+        </div>
+
+        <!-- 5. Rentals -->
+        <div class="service-clay-card" onclick="startBooking('rentals', 'Rentals')">
+          <img src="../assets/images/car.png" alt="Rentals" class="service-3d-img">
+          <span class="service-card-title">Rentals</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. QUICK ACTIONS & ZYGO PRIME -->
+    <div class="section-container">
+      <div class="quick-actions-row">
         
-        <!-- Left: Ola Style Booking Card -->
-        <div class="booking-wrapper">
-          <div class="hero-tag" style="background: #E8FBF0; color: #059669; border-color: #A7F3D0;">
-            <i class="fa-solid fa-circle-check"></i> Zero Surge Guarantee • Verified Captains
-          </div>
-          <h1 class="hero-title">Rides that fit your <span>Pocket &amp; Schedule</span></h1>
-          <p class="hero-subtitle">Affordable city commutes, outstation getaways, and instant airport pickups with live GPS tracking and 4-digit security OTP.</p>
-
-          <div class="booking-card" style="box-shadow: var(--ola-card-shadow); border-radius: 20px;">
-            <!-- Ride & Service Type Tabs (Ola + Parcel Delivery + Schedule) -->
-            <div class="ride-tabs" style="grid-template-columns: repeat(4, 1fr); gap: 6px;">
-              <button class="ride-tab active" data-type="daily">
-                <i class="fa-solid fa-car"></i> Daily
-              </button>
-              <button class="ride-tab" data-type="parcel">
-                <i class="fa-solid fa-box"></i> Parcel
-              </button>
-              <button class="ride-tab" data-type="schedule">
-                <i class="fa-solid fa-calendar-days"></i> Schedule
-              </button>
-              <button class="ride-tab" data-type="rental">
-                <i class="fa-solid fa-clock"></i> Rental
-              </button>
+        <!-- Left: 4 Quick Action Square Buttons -->
+        <div class="actions-4box-grid">
+          <div class="action-square-btn" onclick="openScheduleTrip()">
+            <div class="action-icon-circle" style="background: rgba(52, 152, 219, 0.15); color: #3498DB;">
+              <i class="fa-solid fa-clock"></i>
             </div>
+            <span class="action-label">Schedule</span>
+          </div>
 
-            <!-- Booking Form -->
-            <form id="bookingForm" onsubmit="return false;">
-              
-              <!-- Pickup Input -->
-              <div class="form-group">
-                <div class="input-icon-wrapper">
-                  <i class="fa-solid fa-circle-dot input-icon" style="color: #00D26A;"></i>
-                  <input type="text" id="pickupInput" class="form-control" placeholder="Enter Pickup Location" value="Sector 62, Noida, Uttar Pradesh">
-                  <button type="button" id="locateMeBtn" class="locate-me-btn" style="color: #059669;">
-                    <i class="fa-solid fa-crosshairs"></i> GPS
-                  </button>
-                </div>
-                <div class="popular-chips">
-                  <span class="chip" data-type="pickup" data-location="Sector 62, Noida">Sector 62</span>
-                  <span class="chip" data-type="pickup" data-location="Cyber City, Gurugram">Cyber City</span>
-                  <span class="chip" data-type="pickup" data-location="Connaught Place, New Delhi">Connaught Place</span>
-                  <span class="chip" data-type="pickup" data-location="Huda City Centre, Gurgaon">Huda Metro</span>
-                </div>
-              </div>
-
-              <!-- Drop Input -->
-              <div class="form-group">
-                <div class="input-icon-wrapper">
-                  <i class="fa-solid fa-location-dot input-icon" style="color: #EF4444;"></i>
-                  <input type="text" id="dropInput" class="form-control" placeholder="Where do you want to go?" value="Terminal 3, IGI Airport, New Delhi">
-                </div>
-                <div class="popular-chips">
-                  <span class="chip" data-type="drop" data-location="Indira Gandhi International Airport (DEL)">✈️ IGI Airport</span>
-                  <span class="chip" data-type="drop" data-location="New Delhi Railway Station (NDLS)">🚆 New Delhi Rly</span>
-                  <span class="chip" data-type="drop" data-location="Noida Electronic City Metro">🚇 Electronic City</span>
-                  <span class="chip" data-type="drop" data-location="Select CITYWALK Mall, Saket">🛍️ Saket Mall</span>
-                </div>
-              </div>
-
-              <!-- Parcel Delivery Container (Dynamically Shown for Parcel Tab) -->
-              <div id="parcelConfigBox" style="display: none; background: #F8FAFC; border: 1.5px dashed #00D26A; border-radius: 14px; padding: 14px; margin-bottom: 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                  <span style="font-size: 13px; font-weight: 800; color: #0F172A;"><i class="fa-solid fa-box-open" style="color: #00D26A;"></i> Instant Parcel Details</span>
-                  <span style="font-size: 11px; font-weight: 700; background: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 6px;">Secure Delivery</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
-                  <div>
-                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Sender Name/Phone</label>
-                    <input type="text" id="senderContact" class="form-control" placeholder="e.g. Rahul (+91...)" style="font-size: 12px; padding: 8px 10px; height: auto;">
-                  </div>
-                  <div>
-                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Receiver Name/Phone</label>
-                    <input type="text" id="receiverContact" class="form-control" placeholder="e.g. Priya (+91...)" style="font-size: 12px; padding: 8px 10px; height: auto;">
-                  </div>
-                </div>
-                <div>
-                  <label style="font-size: 11px; font-weight: 700; color: #64748B;">Parcel Category &amp; Weight</label>
-                  <select id="parcelWeightSelect" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
-                    <option value="up_to_5kg">📦 Up to 5 KG (Documents, Food, Clothes) - Standard Rate</option>
-                    <option value="up_to_15kg">📦 5 KG - 15 KG (Box, Electronics) - Heavy Rate (+₹30)</option>
-                    <option value="up_to_30kg">📦 15 KG - 30 KG (Large Cartons) - Cargo Auto (+₹70)</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Schedule Ride Box (Dynamically Shown for Schedule Tab) -->
-              <div id="scheduleConfigBox" style="display: none; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px; margin-bottom: 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                  <span style="font-size: 13px; font-weight: 800; color: #0F172A;"><i class="fa-solid fa-clock" style="color: #2563EB;"></i> Schedule Future Pickup</span>
-                  <span style="font-size: 11px; font-weight: 700; background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 6px;">Guaranteed Cab</span>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                  <div>
-                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Select Date</label>
-                    <input type="date" id="scheduleDate" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
-                  </div>
-                  <div>
-                    <label style="font-size: 11px; font-weight: 700; color: #64748B;">Select Time</label>
-                    <input type="time" id="scheduleTime" class="form-control" style="font-size: 12px; padding: 8px 10px; height: auto;">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Ola-Style Ride Category Cards -->
-              <div style="display: flex; justify-content: space-between; align-items: center; margin: 18px 0 10px;">
-                <h4 style="font-size: 15px; font-weight: 800;">Available Cabs Nearby</h4>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;"><i class="fa-solid fa-bolt"></i> Fastest Pickups</span>
-              </div>
-
-              <div id="fleetContainer">
-                <!-- Bike -->
-                <div class="ola-fleet-card" data-category="bike" onclick="selectFleet(this, 'bike', 55, 'Bike')">
-                  <div class="ola-fleet-left">
-                    <img src="assets/images/bike.png" alt="Bike" class="ola-fleet-img" onerror="this.src='assets/images/car.png'">
-                    <div>
-                      <div class="ola-fleet-title">Zygo Bike</div>
-                      <div class="ola-fleet-desc">Fastest through traffic • Helmet provided</div>
-                    </div>
-                  </div>
-                  <div class="ola-fleet-right">
-                    <div class="ola-fleet-fare" id="fare-bike">₹65</div>
-                    <div class="ola-fleet-eta">2 mins away</div>
-                  </div>
-                </div>
-
-                <!-- Auto -->
-                <div class="ola-fleet-card" data-category="auto" onclick="selectFleet(this, 'auto', 95, 'Auto')">
-                  <div class="ola-fleet-left">
-                    <img src="assets/images/car.png" alt="Auto" class="ola-fleet-img">
-                    <div>
-                      <div class="ola-fleet-title">Zygo Auto</div>
-                      <div class="ola-fleet-desc">Affordable doorstep pickup • No meter hassle</div>
-                    </div>
-                  </div>
-                  <div class="ola-fleet-right">
-                    <div class="ola-fleet-fare" id="fare-auto">₹110</div>
-                    <div class="ola-fleet-eta">3 mins away</div>
-                  </div>
-                </div>
-
-                <!-- Mini AC -->
-                <div class="ola-fleet-card" data-category="mini" onclick="selectFleet(this, 'mini', 165, 'Mini AC')">
-                  <div class="ola-fleet-left">
-                    <img src="assets/images/car.png" alt="Mini" class="ola-fleet-img">
-                    <div>
-                      <div class="ola-fleet-title">Zygo Mini</div>
-                      <div class="ola-fleet-desc">Comfortable AC hatchbacks • Best value</div>
-                    </div>
-                  </div>
-                  <div class="ola-fleet-right">
-                    <div class="ola-fleet-fare" id="fare-mini">₹195</div>
-                    <div class="ola-fleet-eta">4 mins away</div>
-                  </div>
-                </div>
-
-                <!-- Prime Sedan (Default Active) -->
-                <div class="ola-fleet-card active" data-category="sedan" onclick="selectFleet(this, 'sedan', 245, 'Sedan Prime')">
-                  <div class="ola-fleet-left">
-                    <img src="assets/images/car.png" alt="Sedan" class="ola-fleet-img">
-                    <div>
-                      <div class="ola-fleet-title">Prime Sedan <span class="ola-tag-popular">Popular</span></div>
-                      <div class="ola-fleet-desc">Top rated captains • Extra legroom • Free WiFi</div>
-                    </div>
-                  </div>
-                  <div class="ola-fleet-right">
-                    <div class="ola-fleet-fare" id="fare-sedan">₹275</div>
-                    <div class="ola-fleet-eta">2 mins away</div>
-                  </div>
-                </div>
-
-                <!-- Prime SUV -->
-                <div class="ola-fleet-card" data-category="suv" onclick="selectFleet(this, 'suv', 360, 'SUV XL')">
-                  <div class="ola-fleet-left">
-                    <img src="assets/images/car.png" alt="SUV" class="ola-fleet-img">
-                    <div>
-                      <div class="ola-fleet-title">Prime SUV</div>
-                      <div class="ola-fleet-desc">Spacious 6-seater Innova/Ertiga • Big boot</div>
-                    </div>
-                  </div>
-                  <div class="ola-fleet-right">
-                    <div class="ola-fleet-fare" id="fare-suv">₹395</div>
-                    <div class="ola-fleet-eta">5 mins away</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Payment & Coupon Row -->
-              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin: 14px 0; display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <i class="fa-solid fa-money-bill-wave" style="color: #059669; font-size: 16px;"></i>
-                  <select id="paymentMode" style="border: none; background: transparent; font-weight: 700; font-size: 13px; color: #1E293B; cursor: pointer;">
-                    <option value="cash">💵 Cash on Trip</option>
-                    <option value="upi">📱 UPI (Google Pay, PhonePe)</option>
-                    <option value="wallet">💳 Zygo Wallet (₹450.00)</option>
-                  </select>
-                </div>
-                <div style="font-size: 12px; color: #059669; font-weight: 800; cursor: pointer;" onclick="applyPromo()">
-                  <i class="fa-solid fa-tag"></i> <span id="promoTagText">ZYGO50 (-₹50)</span>
-                </div>
-              </div>
-
-              <!-- Main Book Button -->
-              <button type="button" id="bookRideBtn" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 17px; font-weight: 900; background: #00D26A; border-color: #00D26A; color: #000; border-radius: 14px; box-shadow: 0 4px 20px rgba(0, 210, 106, 0.4); display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <span>BOOK ZYGO RIDE</span>
-                <span id="btnBookFareBadge" style="background: #000; color: #fff; padding: 4px 10px; border-radius: 999px; font-size: 13px;">₹275</span>
-              </button>
-
-            </form>
-
-            <!-- Confirmed Trip Card (Appears after booking) -->
-            <div class="confirmed-ride-card" id="confirmedRideCard">
-              <div class="otp-banner-box">
-                <div>
-                  <span style="font-size: 11px; text-transform: uppercase; color: #94A3B8; font-weight: 700;">Start Ride OTP</span>
-                  <div style="font-size: 12px; color: #E2E8F0;">Share with captain after boarding</div>
-                </div>
-                <div class="otp-code-highlight" id="confirmedOtp">8421</div>
-              </div>
-
-              <div class="captain-info-row">
-                <div class="captain-meta-details">
-                  <div class="captain-img-circle">R</div>
-                  <div>
-                    <h4 style="font-size: 15px; font-weight: 800;">Ramesh Sharma <i class="fa-solid fa-circle-check" style="color: #00D26A;"></i></h4>
-                    <div style="font-size: 12px; color: #64748B;"><i class="fa-solid fa-star" style="color: #FFC000;"></i> 4.9 (2,410 trips)</div>
-                    <div style="font-size: 13px; font-weight: 700; color: #1E293B; margin-top: 2px;">White Maruti Dzire • UP 16 AB 4047</div>
-                  </div>
-                </div>
-                <div style="text-align: right;">
-                  <span style="background: #DCFCE7; color: #15803D; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px;">Arriving in 3m</span>
-                  <div style="font-size: 14px; font-weight: 900; color: #111827; margin-top: 4px;" id="confirmedFareText">₹275</div>
-                </div>
-              </div>
-
-              <div class="captain-actions-row">
-                <a href="tel:+919876543210" class="btn-captain-action"><i class="fa-solid fa-phone" style="color: #00D26A;"></i> Call</a>
-                <button class="btn-captain-action" onclick="alert('Captain: On my way, reaching in 2 minutes near your gate.')"><i class="fa-solid fa-message" style="color: #0284C7;"></i> Chat</button>
-                <button class="btn-captain-action sos" onclick="cancelCurrentTrip()"><i class="fa-solid fa-xmark"></i> Cancel</button>
-              </div>
+          <div class="action-square-btn" onclick="openFavorites()">
+            <div class="action-icon-circle" style="background: rgba(231, 76, 60, 0.15); color: #E74C3C;">
+              <i class="fa-solid fa-heart"></i>
             </div>
-
-          </div>
-        </div>
-
-        <!-- Right: Interactive Live Map with Moving Cabs -->
-        <div class="map-wrapper" style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: var(--ola-card-shadow); min-height: 540px;">
-          <div id="rideMap" style="width: 100%; height: 100%; min-height: 540px;"></div>
-
-          <div style="position: absolute; top: 16px; left: 16px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 8px 16px; border-radius: 999px; font-weight: 700; font-size: 12px; color: #111827; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px;">
-            <span style="width: 10px; height: 10px; border-radius: 50%; background: #00D26A; display: inline-block;"></span>
-            <span>Live Radar • <strong>5 Cabs Nearby</strong></span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= OLA-STYLE RADAR SEARCH MODAL ================= -->
-  <div class="radar-modal-backdrop" id="radarModal">
-    <div class="radar-card-inner">
-      <div class="radar-ripple-box">
-        <div class="radar-ripple"></div>
-        <div class="radar-ripple"></div>
-        <div class="radar-ripple"></div>
-        <div class="radar-center-icon">
-          <i class="fa-solid fa-car-side"></i>
-        </div>
-      </div>
-      <h3 style="font-size: 20px; font-weight: 900; color: #111827; margin-bottom: 6px;">Finding Your Captain...</h3>
-      <p style="font-size: 13px; color: #64748B; margin-bottom: 18px;" id="radarStatusText">Contacting 4 nearby captains in Sector 62...</p>
-      <div style="background: #F3F4F6; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; color: #1F2937; display: inline-block;">
-        Estimated Arrival: <strong>2 - 4 mins</strong>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= FLEET SHOWCASE ================= -->
-  <section class="section-pad fleet-section" id="fleet">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag" style="background: #E8FBF0; color: #059669;">Transparent Rates</div>
-        <h2>A Ride for Every Pocket &amp; Need</h2>
-        <p>Choose from bikes, affordable autos, everyday hatchbacks, prime sedans, and family SUVs with verified captains.</p>
-      </div>
-
-      <div class="fleet-grid">
-        <div class="fleet-showcase-card">
-          <img src="assets/images/bike.png" alt="Zygo Bike" class="fleet-card-img" onerror="this.src='assets/images/car.png'">
-          <h3>Zygo Bike</h3>
-          <p>Beat city peak hour traffic with fastest doorstep two-wheeler rides.</p>
-          <div class="fleet-features">
-            <span><i class="fa-solid fa-shield-halved"></i> Helmet Given</span>
-            <span><i class="fa-solid fa-gauge-high"></i> Fastest</span>
-          </div>
-        </div>
-
-        <div class="fleet-showcase-card">
-          <img src="assets/images/car.png" alt="Zygo Auto" class="fleet-card-img">
-          <h3>Zygo Auto</h3>
-          <p>Reliable 3-wheeler auto rides with fixed rates and zero surge meter hassle.</p>
-          <div class="fleet-features">
-            <span><i class="fa-solid fa-user-group"></i> Up to 3 Seats</span>
-            <span><i class="fa-solid fa-indian-rupee-sign"></i> Pocket-Friendly</span>
-          </div>
-        </div>
-
-        <div class="fleet-showcase-card popular">
-          <div class="card-badge" style="background: #00D26A; color: #000; font-weight: 800;">Most Popular</div>
-          <img src="assets/images/car.png" alt="Sedan Prime" class="fleet-card-img">
-          <h3>Prime Sedan</h3>
-          <p>Top-rated captains, premium sedans (Dzire, Etios, Aura) with extra legroom &amp; AC.</p>
-          <div class="fleet-features">
-            <span><i class="fa-solid fa-snowflake"></i> Chilled AC</span>
-            <span><i class="fa-solid fa-wifi"></i> Free In-Cab WiFi</span>
-          </div>
-        </div>
-
-        <div class="fleet-showcase-card">
-          <img src="assets/images/car.png" alt="SUV XL" class="fleet-card-img">
-          <h3>Prime SUV</h3>
-          <p>Spacious 6-seater Innova &amp; Ertiga with large luggage space for family trips.</p>
-          <div class="fleet-features">
-            <span><i class="fa-solid fa-users"></i> 6 Passengers</span>
-            <span><i class="fa-solid fa-suitcase-rolling"></i> 4 Big Bags</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= DOWNLOAD OFFICIAL APKS SECTION ================= -->
-  <section class="section-pad app-download-section" id="download-app" style="background: #0F172A; color: #FFFFFF; padding: 70px 0;">
-    <div class="container">
-      <div class="app-cta-grid" style="align-items: center;">
-        <div class="app-cta-content">
-          <div class="section-tag" style="background: rgba(0, 210, 106, 0.2); color: #00D26A; border: 1px solid #00D26A;">Direct Android APKs</div>
-          <h2 style="color: #FFFFFF; font-size: 36px; margin: 12px 0;">Download Official Zygo Apps</h2>
-          <p style="color: #94A3B8; font-size: 16px; margin-bottom: 24px;">Install the official working Android APKs directly on your phone with zero delay. Fully verified, safe, and lightning fast.</p>
-
-          <div style="display: flex; flex-direction: column; gap: 16px; max-width: 480px;">
-            <!-- Customer APK Download Card Only -->
-            <a href="downloads/zygo-customer.apk" download="Zygo_Customer_App.apk" class="store-btn" style="background: #1E293B; border: 2px solid #00D26A; border-radius: 16px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; text-decoration: none; box-shadow: 0 6px 25px rgba(0, 210, 106, 0.25);">
-              <i class="fa-brands fa-android" style="font-size: 38px; color: #00D26A;"></i>
-              <div style="text-align: left; flex: 1;">
-                <span style="font-size: 11px; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.5px;">For Riders • Android APK v1.0.0</span>
-                <strong style="font-size: 18px; display: block; color: #FFFFFF; margin: 2px 0;">Download Zygo Customer App</strong>
-                <span style="font-size: 12px; color: #00D26A; font-weight: 600;">✓ Ready to Install • 10.0 MB • Instant City Cabs &amp; Parcel</span>
-              </div>
-              <i class="fa-solid fa-circle-down" style="font-size: 26px; color: #00D26A;"></i>
-            </a>
+            <span class="action-label">Favorites</span>
           </div>
 
-          <div style="margin-top: 22px; display: flex; align-items: center; gap: 14px;">
-            <div style="font-size: 13px; color: #94A3B8;">
-              <i class="fa-solid fa-shield-halved" style="color: #00D26A;"></i> 100% Safe, Verified &amp; Signed Official APK
+          <div class="action-square-btn" onclick="openHistory()">
+            <div class="action-icon-circle" style="background: rgba(46, 204, 113, 0.15); color: #2ECC71;">
+              <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
+            <span class="action-label">History</span>
+          </div>
+
+          <div class="action-square-btn" onclick="openSupport()">
+            <div class="action-icon-circle" style="background: rgba(230, 126, 34, 0.15); color: #E67E22;">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <span class="action-label">Support</span>
           </div>
         </div>
 
-        <div class="app-mockup-wrapper" style="text-align: center;">
-          <img src="assets/images/splash_logo.png" alt="Zygo App" class="app-phone-img" style="max-height: 420px; object-fit: contain; filter: drop-shadow(0 15px 35px rgba(0, 210, 106, 0.3));" onerror="this.src='assets/images/car.png'">
+        <!-- Right: ZYGO PRIME Clay Card -->
+        <div class="prime-banner-clay">
+          <i class="fa-solid fa-crown prime-crown-deco"></i>
+          <div>
+            <div class="prime-badge-tag"><i class="fa-solid fa-crown"></i> ZYGO PRIME</div>
+            <div style="font-size: 12px; font-weight: 700; color: #FFF; margin-top: 2px;">Now in Indore!</div>
+            <ul class="prime-features-list">
+              <li>Zero Commission</li>
+              <li>Priority Support</li>
+              <li>Exclusive Offers</li>
+            </ul>
+          </div>
+          <button class="btn-join-prime" onclick="openPrimePlan()">Join Now</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 7. OFFERS FOR YOU (CAROUSEL) -->
+    <div class="section-container">
+      <div class="section-header-row">
+        <h3 class="section-title">Offers for you</h3>
+        <span class="section-link" onclick="openAllOffers()">View All</span>
+      </div>
+
+      <div class="offers-carousel-row">
+        <!-- Offer 1 -->
+        <div class="offer-banner-card" style="background: var(--navy-card); color: #FFF;" onclick="applyPromoCode('ZYGO20')">
+          <div>
+            <span class="offer-discount-badge" style="color: #94A3B8;">FLAT</span>
+            <div class="offer-title-text" style="color: var(--gold-primary);">20% OFF</div>
+            <div style="font-size: 11px; color: #CBD5E1;">On All Rides</div>
+            <span class="offer-code-pill">Code: ZYGO20</span>
+          </div>
+          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
+        </div>
+
+        <!-- Offer 2 -->
+        <div class="offer-banner-card" style="background: var(--gold-primary); color: var(--deep-navy);" onclick="applyPromoCode('RENT50')">
+          <div>
+            <span class="offer-discount-badge" style="color: #64748B;">UP TO</span>
+            <div class="offer-title-text" style="color: var(--deep-navy);">50% OFF</div>
+            <div style="font-size: 11px; color: #334155;">On Rentals</div>
+            <span class="offer-code-pill" style="background: rgba(0,0,0,0.15); color: #000;">Code: RENT50</span>
+          </div>
+          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
+        </div>
+
+        <!-- Offer 3 -->
+        <div class="offer-banner-card" style="background: var(--navy-elevated); color: #FFF;" onclick="applyPromoCode('PARCEL15')">
+          <div>
+            <span class="offer-discount-badge" style="color: #94A3B8;">FLAT</span>
+            <div class="offer-title-text" style="color: var(--gold-rich);">15% OFF</div>
+            <div style="font-size: 11px; color: #CBD5E1;">On Parcel Courier</div>
+            <span class="offer-code-pill">Code: PARCEL15</span>
+          </div>
+          <img src="../assets/images/car.png" alt="Car" class="offer-card-vehicle">
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ================= WHY CHOOSE ZYGO RIDER ADVANTAGE ================= -->
-  <section class="section-pad" style="background: #FFFFFF; padding: 70px 0;">
-    <div class="container">
-      <div class="section-header" style="text-align: center; max-width: 650px; margin: 0 auto 50px;">
-        <div class="section-tag" style="background: #E8FBF0; color: #059669;">Rider Promise</div>
-        <h2 style="font-size: 32px; font-weight: 900; color: #0F172A; margin: 12px 0;">The Safest, Most Affordable Ride in Your City</h2>
-        <p style="color: #64748B;">Over 500,000+ satisfied passengers trust Zygo every single day for office, airport, and late-night travel.</p>
+    <!-- 8. READY TO RIDE CALLOUT STRIP -->
+    <div class="section-container" style="padding-bottom: 12px;">
+      <div class="ready-ride-box">
+        <div class="ready-ride-left">
+          <div class="car-circle-green">
+            <i class="fa-solid fa-car-side"></i>
+          </div>
+          <div>
+            <div style="font-size: 14px; font-weight: 800; color: #065F46;">Ready to Ride</div>
+            <div style="font-size: 11px; color: #047857; font-weight: 600;">Book Cab, Auto, Bike or Parcel &bull; ~2 Min</div>
+          </div>
+        </div>
+        <button class="btn-book-now" style="background: #059669; padding: 9px 18px;" onclick="startBooking('cab', 'Cab')">Book Now</button>
       </div>
+    </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 18px; padding: 28px 24px;">
-          <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(0, 210, 106, 0.15); color: #059669; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px;">
+    <!-- 9. SAFETY & RECENT TRIP SPLIT -->
+    <div class="section-container">
+      <div class="safety-recent-split">
+        <div class="mini-info-clay" onclick="openSafetyCenter()">
+          <div style="width: 34px; height: 34px; border-radius: var(--radius-full); background: rgba(231, 76, 60, 0.12); color: var(--emergency-red); display: flex; align-items: center; justify-content: center; font-size: 15px;">
             <i class="fa-solid fa-shield-halved"></i>
           </div>
-          <h3 style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 8px;">4-Digit Ride Security OTP</h3>
-          <p style="font-size: 14px; color: #64748B; line-height: 1.6;">Your ride begins only when you share the secret 4-digit code generated right inside your Zygo app with the verified driver.</p>
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--deep-navy);">Safety Center</div>
+            <div style="font-size: 10px; color: #64748B;">24x7 SOS Support</div>
+          </div>
         </div>
 
-        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 18px; padding: 28px 24px;">
-          <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(37, 99, 235, 0.12); color: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px;">
-            <i class="fa-solid fa-hand-holding-dollar"></i>
+        <div class="mini-info-clay" onclick="openRecentTrip()">
+          <div style="width: 34px; height: 34px; border-radius: var(--radius-full); background: rgba(52, 152, 219, 0.12); color: #3498DB; display: flex; align-items: center; justify-content: center; font-size: 15px;">
+            <i class="fa-solid fa-clock-rotate-left"></i>
           </div>
-          <h3 style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 8px;">Zero Hidden Surge Surcharges</h3>
-          <p style="font-size: 14px; color: #64748B; line-height: 1.6;">Fixed, upfront rates shown before you click book. What you see is exactly what you pay with zero surprise meter jumps.</p>
-        </div>
-
-        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 18px; padding: 28px 24px;">
-          <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245, 158, 11, 0.15); color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px;">
-            <i class="fa-solid fa-box"></i>
+          <div>
+            <div style="font-size: 12px; font-weight: 800; color: var(--deep-navy);">Recent Trip</div>
+            <div style="font-size: 10px; color: #64748B;">Home &rarr; Office &bull; ₹120</div>
           </div>
-          <h3 style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 8px;">Instant Parcel Express</h3>
-          <p style="font-size: 14px; color: #64748B; line-height: 1.6;">Send documents, lunchboxes, or shopping parcels safely across the city in minutes with live real-time GPS tracking.</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ================= FOOTER (CLEAN & NO ADMIN LINKS) ================= -->
-  <footer class="footer" style="background: #0B1120; color: #94A3B8; padding: 50px 0 25px; border-top: 1px solid rgba(255,255,255,0.08);">
-    <div class="container footer-grid">
-      <div class="footer-about">
-        <div class="brand-fallback-text" style="color: #FFFFFF; font-size: 22px; font-weight: 900; margin-bottom: 12px;">ZYGO <span style="color: #00D26A;">CABS</span></div>
-        <p>India's trusted taxi booking service offering affordable daily city rides, outstation trips, and instant airport transfers with verified captains.</p>
-        <div style="margin-top: 16px; font-size: 13px; color: #64748B;">
-          © 2026 Zygo Mobility Technologies Pvt Ltd. All rights reserved.
+    <!-- 10. DOCKED BOTTOM NAVIGATION (Master UI 5-Tabs) -->
+    <nav class="docked-bottom-nav">
+      <!-- 1. Home -->
+      <a class="nav-tab-item active" onclick="switchNavTab('home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+
+      <!-- 2. Services -->
+      <a class="nav-tab-item" onclick="switchNavTab('services')">
+        <i class="fa-solid fa-shapes"></i>
+        <span>Services</span>
+      </a>
+
+      <!-- 3. Center Book Circle -->
+      <div class="center-book-btn-wrap">
+        <div class="center-book-circle" onclick="openDestinationSearch()">
+          <i class="fa-solid fa-circle-dot"></i>
         </div>
       </div>
 
-      <div class="footer-col">
-        <h4 style="color: #FFFFFF; margin-bottom: 14px;">Quick Links</h4>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-          <li><a href="#booking" style="color: #94A3B8; text-decoration: none;">Book a Cab</a></li>
-          <li><a href="#fleet" style="color: #94A3B8; text-decoration: none;">Our Fleet</a></li>
-          <li><a href="#outstation" style="color: #94A3B8; text-decoration: none;">Outstation Trips</a></li>
-          <li><a href="#safety" style="color: #94A3B8; text-decoration: none;">Safety Guidelines</a></li>
-          <li><a href="#download-app" style="color: #94A3B8; text-decoration: none;">Download Zygo App</a></li>
-        </ul>
-      </div>
+      <!-- 4. Activity -->
+      <a class="nav-tab-item" onclick="switchNavTab('activity')">
+        <i class="fa-solid fa-table-list"></i>
+        <span>Activity</span>
+      </a>
 
-      <div class="footer-col">
-        <h4 style="color: #FFFFFF; margin-bottom: 14px;">Top Cities</h4>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-          <li><a href="#" style="color: #94A3B8; text-decoration: none;">Delhi NCR</a></li>
-          <li><a href="#" style="color: #94A3B8; text-decoration: none;">Noida &amp; Greater Noida</a></li>
-          <li><a href="#" style="color: #94A3B8; text-decoration: none;">Gurugram</a></li>
-          <li><a href="#" style="color: #94A3B8; text-decoration: none;">Bengaluru &amp; Hyderabad</a></li>
-        </ul>
-      </div>
+      <!-- 5. Profile -->
+      <a class="nav-tab-item" onclick="switchNavTab('profile')">
+        <i class="fa-regular fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </nav>
 
-      <div class="footer-col">
-        <h4 style="color: #FFFFFF; margin-bottom: 14px;">24x7 Support</h4>
-        <p style="font-size: 13px; margin-bottom: 10px;">Emergency SOS &amp; Helpline:</p>
-        <div style="font-size: 18px; font-weight: 800; color: #00D26A; margin-bottom: 12px;">+91 98765 43210</div>
-        <p style="font-size: 12px;">Email: support@zygocab.in</p>
-      </div>
-    </div>
-  </footer>
+  </div>
 
-  <!-- ================= OLA-STYLE RIDER AUTH MODAL (LOGIN / SIGNUP) ================= -->
-  <div class="side-drawer-backdrop" id="authModalBackdrop" style="z-index: 5000; align-items: center; justify-content: center;">
-    <div style="background: #FFFFFF; border-radius: 24px; padding: 32px 26px; width: 92%; max-width: 420px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; animation: popIn 0.3s ease-out; margin: auto;">
-      
-      <div style="text-align: center; margin-bottom: 24px;">
-        <div style="width: 58px; height: 58px; border-radius: 16px; background: #E8FBF0; color: #00D26A; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px;">
-          <i class="fa-solid fa-car-side"></i>
-        </div>
-        <h3 style="font-size: 22px; font-weight: 900; color: #111827;" id="authModalTitle">Welcome to Zygo Cabs</h3>
-        <p style="font-size: 13px; color: #64748B; margin-top: 4px;" id="authModalSub">Enter your mobile number to sign in or create an account</p>
-      </div>
-
-      <!-- Step 1: Phone Input -->
-      <div id="authStepPhone">
-        <div class="form-group" style="margin-bottom: 16px;">
-          <label style="font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 6px; display: block;">Mobile Number</label>
-          <div style="display: flex; gap: 8px;">
-            <div style="background: #F3F4F6; border: 1.5px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; font-weight: 800; color: #111827; font-size: 14px;">+91</div>
-            <input type="tel" id="authPhoneInput" class="form-control" placeholder="98765 43210" maxlength="10" value="9876543210" style="flex: 1; font-weight: 700;">
-          </div>
-        </div>
-
-        <button type="button" id="authGetOtpBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; font-weight: 900; background: #00D26A; border-color: #00D26A; color: #000; border-radius: 14px; margin-top: 6px;">
-          Continue with OTP <i class="fa-solid fa-arrow-right"></i>
+  <!-- BOOKING & DESTINATION SHEET MODAL -->
+  <div class="modal-overlay" id="bookingModalOverlay">
+    <div class="modal-sheet-clay">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <h3 style="font-size: 18px; font-weight: 800; color: var(--deep-navy);" id="modalBookingTitle">Book Your Ride</h3>
+        <button onclick="closeBookingModal()" style="background: none; border: none; font-size: 20px; color: #94A3B8; cursor: pointer;">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- Step 2: OTP & Name -->
-      <div id="authStepOtp" style="display: none;">
-        <div class="form-group" style="margin-bottom: 14px;">
-          <label style="font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 6px; display: block;">Your Full Name</label>
-          <input type="text" id="authNameInput" class="form-control" placeholder="e.g. Rahul Sharma" value="Rahul Sharma" style="font-weight: 700;">
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+        <div style="background: #F1F5F9; padding: 12px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-circle-dot" style="color: var(--success-green);"></i>
+          <input type="text" id="sheetPickupInput" value="Indore Railway Station" style="border: none; background: transparent; font-size: 14px; font-weight: 700; width: 100%; outline: none;">
         </div>
 
-        <div class="form-group" style="margin-bottom: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <label style="font-size: 12px; font-weight: 700; color: #374151; margin: 0;">4-Digit OTP Code</label>
-            <span style="font-size: 11px; color: #059669; font-weight: 700; cursor: pointer;" onclick="document.getElementById('authOtpInput').value='1234'">Auto-Fill (1234)</span>
+        <div style="background: #F1F5F9; padding: 12px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-location-dot" style="color: var(--emergency-red);"></i>
+          <input type="text" id="sheetDropInput" placeholder="Enter Drop Location" value="Vijay Nagar Square, Indore" style="border: none; background: transparent; font-size: 14px; font-weight: 700; width: 100%; outline: none;">
+        </div>
+      </div>
+
+      <!-- Vehicle Fare Selection -->
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+        <div class="mini-info-clay" style="justify-content: space-between; border-color: var(--gold-primary);" onclick="selectTier(this, 'Sedan', 160)">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-car" style="font-size: 20px; color: var(--gold-bronze);"></i>
+            <div>
+              <strong style="font-size: 14px;">Prime Sedan</strong>
+              <div style="font-size: 11px; color: #64748B;">AC &bull; Top Captain &bull; 2 min away</div>
+            </div>
           </div>
-          <input type="text" id="authOtpInput" class="form-control" placeholder="1234" maxlength="4" value="1234" style="text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 900; color: #00D26A;">
+          <div style="text-align: right;">
+            <div style="font-size: 16px; font-weight: 900; color: var(--deep-navy);">₹160</div>
+            <small style="font-size: 10px; color: #059669; font-weight: 700;">Zero Surge</small>
+          </div>
         </div>
 
-        <button type="button" id="authVerifyBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; font-weight: 900; background: #00D26A; border-color: #00D26A; color: #000; border-radius: 14px;">
-          Verify &amp; Start Riding <i class="fa-solid fa-check"></i>
-        </button>
-
-        <div style="text-align: center; margin-top: 14px;">
-          <a href="javascript:void(0)" onclick="resetAuthFlow()" style="font-size: 12px; color: #64748B; text-decoration: underline;">Change Phone Number</a>
+        <div class="mini-info-clay" style="justify-content: space-between;" onclick="selectTier(this, 'Auto', 85)">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-taxi" style="font-size: 20px; color: var(--success-green);"></i>
+            <div>
+              <strong style="font-size: 14px;">Zygo Auto</strong>
+              <div style="font-size: 11px; color: #64748B;">Fixed meter &bull; 3 min away</div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 16px; font-weight: 900; color: var(--deep-navy);">₹85</div>
+          </div>
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #94A3B8;">
-        By continuing, you agree to Zygo's Terms of Service &amp; Privacy Policy
-      </div>
-
+      <!-- Confirm Button -->
+      <button class="btn-book-now" style="width: 100%; padding: 16px; font-size: 15px; border-radius: var(--radius-md); background: var(--deep-navy); color: var(--gold-primary);" onclick="confirmRideBooking()">
+        CONFIRM ZYGO BOOKING &bull; OTP SECURED
+      </button>
     </div>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Shared State Script -->
+  <script src="../shared/store.js"></script>
 
   <script>
-    // ================= RIDER AUTH & PROFILE SYSTEM =================
-    const authModalBackdrop = document.getElementById('authModalBackdrop');
-    const authStepPhone = document.getElementById('authStepPhone');
-    const authStepOtp = document.getElementById('authStepOtp');
-    const authPhoneInput = document.getElementById('authPhoneInput');
-    const authNameInput = document.getElementById('authNameInput');
-    const authOtpInput = document.getElementById('authOtpInput');
-    const authGetOtpBtn = document.getElementById('authGetOtpBtn');
-    const authVerifyBtn = document.getElementById('authVerifyBtn');
+    // App Initialization with Reactive State
+    document.addEventListener('DOMContentLoaded', () => {
+      const state = window.ZygoStore.state;
+      document.getElementById('userName').innerText = state.user.name;
+      document.getElementById('greetingText').innerText = state.user.greeting;
+      document.getElementById('currentLocDisplay').innerText = state.location.address;
+      updateWalletDisplay(state.wallet.balance);
 
-    function checkCustomerAuth() {
-      try {
-        const saved = localStorage.getItem('zygo_customer_user');
-        if (saved) {
-          const user = JSON.parse(saved);
-          applyCustomerSession(user);
-          return true;
-        }
-      } catch(e) {}
-      // Open auth modal if not logged in
-      openAuthModal();
-      return false;
-    }
-
-    function openAuthModal() {
-      authModalBackdrop.style.display = 'flex';
-      resetAuthFlow();
-    }
-
-    function closeAuthModal() {
-      authModalBackdrop.style.display = 'none';
-    }
-
-    function resetAuthFlow() {
-      authStepPhone.style.display = 'block';
-      authStepOtp.style.display = 'none';
-      document.getElementById('authModalTitle').innerText = 'Welcome to Zygo Cabs';
-      document.getElementById('authModalSub').innerText = 'Enter your mobile number to sign in or create an account';
-    }
-
-    authGetOtpBtn.addEventListener('click', () => {
-      const phone = authPhoneInput.value.trim();
-      if (phone.length < 10) {
-        alert('Please enter a valid 10-digit mobile number.');
-        return;
-      }
-      authStepPhone.style.display = 'none';
-      authStepOtp.style.display = 'block';
-      document.getElementById('authModalTitle').innerText = 'Verify Your Mobile';
-      document.getElementById('authModalSub').innerText = `Enter the 4-digit OTP sent to +91 ${phone}`;
-    });
-
-    authVerifyBtn.addEventListener('click', () => {
-      const otp = authOtpInput.value.trim();
-      const name = authNameInput.value.trim() || 'Zygo Rider';
-      const phone = authPhoneInput.value.trim();
-
-      if (otp.length !== 4) {
-        alert('Please enter the 4-digit OTP.');
-        return;
-      }
-
-      const user = {
-        id: 'CUST-' + Math.floor(100 + Math.random() * 900),
-        name: name,
-        phone: '+91 ' + phone,
-        wallet: '₹450',
-        totalTrips: 0,
-        status: 'Active',
-        createdAt: new Date().toISOString()
-      };
-
-      // Save customer session
-      localStorage.setItem('zygo_customer_user', JSON.stringify(user));
-
-      // Sync into registered customers store for Admin Panel
-      try {
-        let allCustomers = JSON.parse(localStorage.getItem('zygo_registered_customers') || '[]');
-        if (!allCustomers.some(c => c.phone === user.phone)) {
-          allCustomers.unshift(user);
-          localStorage.setItem('zygo_registered_customers', JSON.stringify(allCustomers));
-        }
-      } catch(e) {}
-
-      applyCustomerSession(user);
-      closeAuthModal();
-      alert(`Welcome ${user.name}! You are now logged in. ₹450 joining bonus added to your Zygo Wallet.`);
-    });
-
-    function applyCustomerSession(user) {
-      document.getElementById('drawerUserName').innerText = user.name;
-      const loginBtn = document.getElementById('openLoginBtn');
-      if (loginBtn) {
-        loginBtn.innerHTML = `<i class="fa-solid fa-user-check"></i> ${user.name.split(' ')[0]}`;
-        loginBtn.onclick = () => {
-          sideDrawer.classList.add('open');
-          drawerBackdrop.style.display = 'block';
-        };
-      }
-    }
-
-    function logoutCustomer() {
-      if (confirm('Are you sure you want to log out of your Zygo account?')) {
-        localStorage.removeItem('zygo_customer_user');
-        closeDrawer();
-        document.getElementById('openLoginBtn').innerHTML = `<i class="fa-regular fa-user"></i> Login`;
-        document.getElementById('openLoginBtn').onclick = openAuthModal;
-        openAuthModal();
-      }
-    }
-
-    // Auto check auth on load
-    window.addEventListener('DOMContentLoaded', () => {
-      checkCustomerAuth();
-    });
-
-    // State
-    let selectedCategory = 'sedan';
-    let currentFare = 275;
-    let discountApplied = false;
-
-    // Side Drawer Handlers
-    const sideDrawer = document.getElementById('sideDrawer');
-    const drawerBackdrop = document.getElementById('drawerBackdrop');
-    const openDrawerBtn = document.getElementById('openDrawerBtn');
-
-    openDrawerBtn.addEventListener('click', () => {
-      sideDrawer.classList.add('open');
-      drawerBackdrop.style.display = 'block';
-    });
-
-    drawerBackdrop.addEventListener('click', closeDrawer);
-
-    function closeDrawer() {
-      sideDrawer.classList.remove('open');
-      drawerBackdrop.style.display = 'none';
-    }
-
-    // Leaflet Map Initialization with Moving Cabs
-    const map = L.map('rideMap', { zoomControl: false }).setView([28.6280, 77.3649], 14);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-
-    // Pickup & Drop Markers
-    const pickupIcon = L.divIcon({
-      html: '<div style="background:#00D26A; border:3px solid #000; width:22px; height:22px; border-radius:50%; box-shadow:0 0 10px #00D26A;"></div>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11]
-    });
-    const dropIcon = L.divIcon({
-      html: '<div style="background:#EF4444; border:3px solid #fff; width:22px; height:22px; border-radius:50%; box-shadow:0 0 10px #EF4444;"></div>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11]
-    });
-
-    const pickupMarker = L.marker([28.6280, 77.3649], { icon: pickupIcon, draggable: true }).addTo(map);
-    pickupMarker.bindPopup("<b>Pickup: Sector 62, Noida</b>").openPopup();
-
-    const dropMarker = L.marker([28.5562, 77.1000], { icon: dropIcon, draggable: true }).addTo(map);
-
-    // Polyline Route
-    let routeLine = L.polyline([[28.6280, 77.3649], [28.5562, 77.1000]], {
-      color: '#00D26A',
-      weight: 5,
-      dashArray: '8, 8'
-    }).addTo(map);
-
-    // Nearby Simulated Cabs
-    const nearbyCabs = [
-      { lat: 28.6295, lng: 77.3660, icon: 'fa-car' },
-      { lat: 28.6265, lng: 77.3630, icon: 'fa-car-side' },
-      { lat: 28.6310, lng: 77.3620, icon: 'fa-motorcycle' },
-      { lat: 28.6250, lng: 77.3680, icon: 'fa-car' },
-    ];
-
-    const cabMarkers = nearbyCabs.map(c => {
-      const icon = L.divIcon({
-        html: `<div style="background:#000; color:#00D26A; width:30px; height:30px; border-radius:50%; border:2px solid #00D26A; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.3);"><i class="fa-solid ${c.icon}" style="font-size:14px;"></i></div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-      });
-      return L.marker([c.lat, c.lng], { icon: icon }).addTo(map);
-    });
-
-    // Subtle drift animation for nearby cabs
-    setInterval(() => {
-      cabMarkers.forEach(m => {
-        const cur = m.getLatLng();
-        const dLat = (Math.random() - 0.5) * 0.0004;
-        const dLng = (Math.random() - 0.5) * 0.0004;
-        m.setLatLng([cur.lat + dLat, cur.lng + dLng]);
-      });
-    }, 3000);
-
-    // Geolocation detection
-    document.getElementById('locateMeBtn').addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          map.setView([lat, lng], 15);
-          pickupMarker.setLatLng([lat, lng]);
-          document.getElementById('pickupInput').value = `Current Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-        }, () => alert('Please allow location permission in your browser or phone settings.'));
-      }
-    });
-
-    // Ride Type Tab Switching (Daily, Parcel, Schedule, Rental)
-    document.querySelectorAll('.ride-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.ride-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const type = tab.dataset.type;
-
-        const parcelBox = document.getElementById('parcelConfigBox');
-        const scheduleBox = document.getElementById('scheduleConfigBox');
-
-        if (parcelBox) parcelBox.style.display = (type === 'parcel') ? 'block' : 'none';
-        if (scheduleBox) scheduleBox.style.display = (type === 'schedule') ? 'block' : 'none';
-
-        if (type === 'parcel') {
-          document.getElementById('pickupInput').placeholder = 'Sender Pickup Address';
-          document.getElementById('dropInput').placeholder = 'Receiver Delivery Address';
-          document.getElementById('bookRideBtn').querySelector('span').innerText = 'BOOK PARCEL DELIVERY';
-        } else if (type === 'schedule') {
-          document.getElementById('bookRideBtn').querySelector('span').innerText = 'SCHEDULE ADVANCE RIDE';
-        } else {
-          document.getElementById('pickupInput').placeholder = 'Enter Pickup Location';
-          document.getElementById('dropInput').placeholder = 'Where do you want to go?';
-          document.getElementById('bookRideBtn').querySelector('span').innerText = 'BOOK ZYGO RIDE';
-        }
+      window.ZygoStore.subscribe((newState) => {
+        updateWalletDisplay(newState.wallet.balance);
       });
     });
 
-    // Fleet Selection Function
-    function selectFleet(card, category, fare, name) {
-      document.querySelectorAll('.ola-fleet-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      selectedCategory = category;
-      currentFare = discountApplied ? Math.max(fare - 50, 30) : fare;
-      document.getElementById('btnBookFareBadge').innerText = '₹' + currentFare;
-    }
-
-    // Apply Promo Code
-    function applyPromo() {
-      if (!discountApplied) {
-        discountApplied = true;
-        currentFare = Math.max(currentFare - 50, 30);
-        document.getElementById('btnBookFareBadge').innerText = '₹' + currentFare;
-        document.getElementById('promoTagText').innerText = 'PROMO ZYGO50 APPLIED (Saved ₹50!)';
-        alert('🎉 Promo Code ZYGO50 Applied! ₹50 discount added to your ride.');
-      } else {
-        alert('Promo code is already applied to this booking.');
+    function updateWalletDisplay(bal) {
+      const el = document.getElementById('walletBalance');
+      if (el) {
+        const parts = bal.toFixed(2).split('.');
+        el.innerHTML = `${Number(parts[0]).toLocaleString('en-IN')}<span style="font-size: 20px;">.${parts[1]}</span>`;
       }
     }
 
-    // Ride Booking Flow (Ola Radar -> Confirmed)
-    const bookRideBtn = document.getElementById('bookRideBtn');
-    const radarModal = document.getElementById('radarModal');
-    const radarStatusText = document.getElementById('radarStatusText');
-    const confirmedRideCard = document.getElementById('confirmedRideCard');
-    const confirmedFareText = document.getElementById('confirmedFareText');
-    const confirmedOtp = document.getElementById('confirmedOtp');
+    function switchNavTab(tab) {
+      document.querySelectorAll('.nav-tab-item').forEach(t => t.classList.remove('active'));
+      const activeTab = event.currentTarget;
+      if (activeTab) activeTab.classList.add('active');
 
-    bookRideBtn.addEventListener('click', () => {
-      const pickup = document.getElementById('pickupInput').value.trim();
-      const drop = document.getElementById('dropInput').value.trim();
-      if (!pickup || !drop) {
-        alert('Please enter both pickup and destination locations.');
-        return;
+      if (tab === 'services') {
+        openAllServices();
+      } else if (tab === 'activity') {
+        openHistory();
+      } else if (tab === 'profile') {
+        openProfile();
       }
+    }
 
-      // Show radar search screen
-      radarModal.style.display = 'flex';
-      radarStatusText.innerText = 'Connecting to 5 nearby captains in Sector 62...';
+    function openDestinationSearch() {
+      document.getElementById('modalBookingTitle').innerText = 'Where to in Indore?';
+      document.getElementById('bookingModalOverlay').style.display = 'flex';
+    }
 
-      setTimeout(() => {
-        radarStatusText.innerText = 'Captain Ramesh Sharma accepted your booking!';
-      }, 1800);
+    function closeBookingModal() {
+      document.getElementById('bookingModalOverlay').style.display = 'none';
+    }
 
-      setTimeout(() => {
-        radarModal.style.display = 'none';
-        bookRideBtn.style.display = 'none';
-        confirmedRideCard.style.display = 'block';
-        confirmedFareText.innerText = '₹' + currentFare;
-        confirmedOtp.innerText = Math.floor(1000 + Math.random() * 9000); // Random 4-Digit OTP
+    function startBooking(type, label) {
+      document.getElementById('modalBookingTitle').innerText = `Book ${label}`;
+      document.getElementById('bookingModalOverlay').style.display = 'flex';
+    }
 
-        // Scroll into view
-        confirmedRideCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 3000);
-    });
+    function selectTier(card, name, fare) {
+      document.querySelectorAll('.modal-sheet-clay .mini-info-clay').forEach(c => c.style.borderColor = 'rgba(167, 164, 161, 0.2)');
+      card.style.borderColor = 'var(--gold-primary)';
+    }
 
-    function cancelCurrentTrip() {
-      if (confirm('Are you sure you want to cancel this booking?')) {
-        confirmedRideCard.style.display = 'none';
-        bookRideBtn.style.display = 'flex';
-        alert('Booking cancelled. No cancellation fee charged.');
+    function confirmRideBooking() {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      alert(`🎉 ZYGO Ride Confirmed!\nNearest Captain dispatched in Indore (~2 min)\n\n4-Digit Security OTP: ${otp}\nShare OTP with driver when cab arrives.`);
+      closeBookingModal();
+    }
+
+    function openWalletTopup() {
+      const amt = prompt('Enter amount to add to ZYGO Wallet (₹):', '500');
+      if (amt && !isNaN(amt)) {
+        window.ZygoStore.updateWallet(amt, 'UPI Wallet Topup', 'credit');
+        alert(`✅ ₹${amt} successfully added to ZYGO Wallet via UPI!`);
       }
+    }
+
+    function openSendMoney() {
+      const to = prompt('Enter receiver mobile number or UPI ID:');
+      if (!to) return;
+      const amt = prompt('Enter amount to send (₹):');
+      if (amt && !isNaN(amt)) {
+        window.ZygoStore.updateWallet(amt, `Sent to ${to}`, 'debit');
+        alert(`✅ ₹${amt} sent to ${to} from ZYGO Wallet!`);
+      }
+    }
+
+    function openHistory() {
+      const txns = window.ZygoStore.state.wallet.transactions.map(t => `${t.date}: ${t.title} - ₹${t.amount}`).join('\n');
+      alert(`📜 ZYGO Transaction History:\n\n${txns}`);
+    }
+
+    function openPrimePlan() {
+      alert('👑 ZYGO PRIME Active!\nPlan: ZYGO GOLD (₹299/mo)\nBenefits: Zero Commission, VIP Support, Priority Cabs.');
+    }
+
+    function applyPromoCode(code) {
+      alert(`🎉 Promo Code ${code} Applied! Discount will be deducted from your next ride fare.`);
+    }
+
+    function openProfile() {
+      alert(`👤 ZYGO Profile: ${window.ZygoStore.state.user.name}\nPhone: ${window.ZygoStore.state.user.phone}\nLanguage: ${window.ZygoStore.state.user.language}\nRating: 4.95 ⭐ (Prime Member)`);
+    }
+
+    function openSafetyCenter() {
+      alert('🛡️ ZYGO Safety Center:\n- 24x7 Emergency Police SOS (112)\n- Live Trip Sharing with Family\n- ZYGO PINK Women Safety Priority');
+    }
+
+    function openRecentTrip() {
+      alert('🚗 Recent Ride:\nPickup: Home (Indore)\nDrop: Office (Vijay Nagar)\nFare Paid: ₹120 (Cashback +₹10 credited)');
+    }
+
+    function openLocationPicker() {
+      const newCity = prompt('Select or change your operating city:', 'Indore, Madhya Pradesh');
+      if (newCity) {
+        document.getElementById('currentLocDisplay').innerText = newCity;
+      }
+    }
+
+    function openAllServices() {
+      alert('▦ ZYGO Modular Services:\n1. Cab (Mini, Sedan, SUV, EV)\n2. Auto (Zero Meter Tampering)\n3. Bike Taxi (Speed Transit)\n4. Instant Parcel Courier\n5. Car & Bike Rentals\n6. Travel (Bus, Train, Flight)');
+    }
+
+    function openScheduleTrip() {
+      const d = prompt('Enter pickup date (DD-MM-YYYY):', '15-11-2026');
+      const t = prompt('Enter pickup time (HH:MM AM/PM):', '09:30 AM');
+      if (d && t) {
+        alert(`✅ Trip Scheduled for ${d} at ${t} with Guaranteed Cab Arrival.`);
+      }
+    }
+
+    function openFavorites() {
+      alert('❤️ Saved Favorites:\n1. 🏠 Home (Indore)\n2. 🏢 Office (Vijay Nagar)\n3. ✈️ Indore Devi Ahilyabai Airport (IDR)');
+    }
+
+    function openSupport() {
+      alert('🎧 ZYGO 24x7 Support:\nCall: 1800-ZYGO-HELP (Toll Free)\nChat: Live AI Assistant Active');
+    }
+
+    function openNotifications() {
+      alert('🔔 Notifications:\n1. ₹150 Referral bonus credited to your wallet!\n2. Weekend Special: 20% OFF on all Rentals.');
     }
   </script>
 </body>
