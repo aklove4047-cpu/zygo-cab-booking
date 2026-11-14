@@ -13,7 +13,7 @@ const DEFAULT_API_CONFIG = {
   TIMEOUT: 15000,
   
   // Google Maps & Navigation
-  GOOGLE_MAPS_KEY: 'AIzaSyAsaQDm6B4mPeDn4g-PgkWnsZmajrvtU-8',
+  GOOGLE_MAPS_KEY: '',
   MAP_PROVIDER: 'leaflet', // 'google' | 'leaflet'
 
   // SMS & Auth Provider

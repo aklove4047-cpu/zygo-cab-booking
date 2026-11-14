@@ -12,6 +12,8 @@ yarn-error.log*
 zygo (1).zip
 *.zip
 android-apps/
+zygo_extracted/
+zygo_extracted/**
 
 
 # Flutter / Android / iOS Build and Cache directories

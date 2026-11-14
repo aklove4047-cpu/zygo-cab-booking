@@ -15,7 +15,7 @@ const DEFAULT_ADMIN_CONFIG = {
   TIMEOUT: 15000,
   
   // Google Maps & Navigation
-  GOOGLE_MAPS_KEY: 'AIzaSyAsaQDm6B4mPeDn4g-PgkWnsZmajrvtU-8',
+  GOOGLE_MAPS_KEY: '',
   MAP_PROVIDER: 'leaflet', // 'leaflet' | 'google'
 
   // SMS & Auth Provider
