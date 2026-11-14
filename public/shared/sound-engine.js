@@ -4,7 +4,7 @@
  * Reliable ringing loop with instant clean start/stop.
  */
 
-class ZygoSoundEngine {
+class ZygoSoundEngineCore {
   constructor() {
     this.audioCtx = null;
     this.ringInterval = null;
@@ -12,19 +12,22 @@ class ZygoSoundEngine {
   }
 
   getAudioContext() {
-    if (!this.audioCtx) {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (AudioContextClass) {
-        this.audioCtx = new AudioContextClass();
+    try {
+      if (!this.audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          this.audioCtx = new AudioContextClass();
+        }
       }
+      if (this.audioCtx && this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume().catch(() => {});
+      }
+      return this.audioCtx;
+    } catch(e) {
+      return null;
     }
-    if (this.audioCtx && this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
-    }
-    return this.audioCtx;
   }
 
-  // Play a single crisp 2-tone ring pattern
   playRingPulse() {
     try {
       const ctx = this.getAudioContext();
@@ -69,14 +72,13 @@ class ZygoSoundEngine {
 
       // Vibration on Android devices if supported
       if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
+        try { navigator.vibrate([200, 100, 200]); } catch(e) {}
       }
     } catch (e) {
       console.warn('Audio ring pulse error:', e);
     }
   }
 
-  // Play success sound for trip completion or OTP verification
   playSuccessSound() {
     try {
       const ctx = this.getAudioContext();
@@ -87,10 +89,10 @@ class ZygoSoundEngine {
       const gain = ctx.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, now); // C5
-      osc.frequency.setValueAtTime(659.25, now + 0.12); // E5
-      osc.frequency.setValueAtTime(783.99, now + 0.24); // G5
-      osc.frequency.setValueAtTime(1046.50, now + 0.36); // C6
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.12);
+      osc.frequency.setValueAtTime(783.99, now + 0.24);
+      osc.frequency.setValueAtTime(1046.50, now + 0.36);
 
       gain.gain.setValueAtTime(0.35, now);
       gain.gain.exponentialRampToValueAtTime(0.01, now + 0.65);
@@ -103,7 +105,6 @@ class ZygoSoundEngine {
     } catch(e) {}
   }
 
-  // Play tap / click feedback tone
   playTapSound() {
     try {
       const ctx = this.getAudioContext();
@@ -125,7 +126,6 @@ class ZygoSoundEngine {
     } catch(e) {}
   }
 
-  // Continuous ring loop until explicitly stopped
   startRinging() {
     if (this.isRinging) return;
     this.isRinging = true;
@@ -137,7 +137,6 @@ class ZygoSoundEngine {
     }, 1300);
   }
 
-  // Stop ringing immediately
   stopRinging() {
     this.isRinging = false;
     if (this.ringInterval) {
@@ -147,4 +146,7 @@ class ZygoSoundEngine {
   }
 }
 
-window.ZygoSoundEngine = new ZygoSoundEngine();
+// Global Singleton Instance
+const zygoSoundInstance = new ZygoSoundEngineCore();
+window.ZygoSoundEngine = zygoSoundInstance;
+var ZygoSoundEngine = zygoSoundInstance;

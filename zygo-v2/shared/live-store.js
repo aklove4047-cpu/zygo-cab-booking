@@ -3,7 +3,7 @@
  * Zero dummy locks: Clean dynamic state for Customer and Driver
  */
 
-class ZygoLiveStore {
+class ZygoLiveStoreCore {
   constructor() {
     this.user = this.load('zygo_active_customer', null);
     this.driver = this.load('zygo_active_driver', null);
@@ -276,4 +276,6 @@ class ZygoLiveStore {
   }
 }
 
-window.ZygoLiveStore = new ZygoLiveStore();
+const zygoLiveStoreInstance = new ZygoLiveStoreCore();
+window.ZygoLiveStore = zygoLiveStoreInstance;
+var ZygoLiveStore = zygoLiveStoreInstance;

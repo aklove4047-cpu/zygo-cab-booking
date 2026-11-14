@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ZYGO Captain â€” Partner App</title>
+  <title>ZYGO Captain — Partner App</title>
   <link rel="icon" type="image/png" href="assets/images/logo_with_name.png">
   
   <!-- Font Awesome Pro Icons -->
@@ -475,7 +475,7 @@
     </div>
 
     <!-- ================= VIEW 1: DRIVER ONBOARDING (Step 1 to 3 matching screenshot) ================= -->
-    <div id="view-driver-auth" class="view-screen">
+    <div id="view-driver-auth" class="view-screen" style="display: block;">
       <!-- Step 1: Choose Services (matching media_1794565364405_5b1653a8.jpg) -->
       <div id="onboardStep1">
         <div class="subpage-header">
@@ -648,7 +648,7 @@
             <!-- Document upload dashed box matching screenshot -->
             <div class="zygo-input-group">
               <label class="zygo-input-label">Other Documents*</label>
-              <div style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer;" onclick="showToast('âœ… Documents (DL, RC, Insurance) Verified.')">
+              <div style="border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer;" onclick="showToast('✅ Documents (DL, RC, Insurance) Verified.')">
                 <i class="fa-regular fa-file-lines" style="font-size: 28px; color: var(--driver-teal); margin-bottom: 8px; display: block;"></i>
                 <span style="font-size: 13px; font-weight: 700; color: #FFF;">Upload documents</span>
                 <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">RC, DL, Insurance, Aadhaar</div>
@@ -696,7 +696,7 @@
       <div class="driver-stats-strip">
         <div>
           <div class="stat-label">TODAY EARNED</div>
-          <div class="stat-value" id="statsTodayEarned" style="color: var(--driver-green);">â‚¹0.00</div>
+          <div class="stat-value" id="statsTodayEarned" style="color: var(--driver-green);">₹0.00</div>
         </div>
         <div>
           <div class="stat-label">COMPLETED</div>
@@ -742,10 +742,10 @@
         <div>
           <span style="font-size: 11px; font-weight: 900; background: rgba(255, 192, 0, 0.2); color: var(--driver-gold); padding: 3px 8px; border-radius: 4px;">INCOMING RIDE REQUEST</span>
           <h3 style="font-size: 18px; font-weight: 900; margin-top: 6px; color: #FFF;" id="alertPassengerName">Aman Verma</h3>
-          <div style="font-size: 12px; color: var(--text-muted);">4.9 â­ &bull; Prime Sedan &bull; 1.2 KM away</div>
+          <div style="font-size: 12px; color: var(--text-muted);">4.9 ⭐ &bull; Prime Sedan &bull; 1.2 KM away</div>
         </div>
         <div style="text-align: right;">
-          <div style="font-size: 26px; font-weight: 900; color: var(--driver-green);">â‚¹240.00</div>
+          <div style="font-size: 26px; font-weight: 900; color: var(--driver-green);">₹240.00</div>
           <div style="font-size: 11px; color: var(--text-muted);">Guaranteed Fare</div>
         </div>
       </div>
@@ -831,7 +831,7 @@
           <div id="tripEndSection" style="display: none;">
             <button class="btn-gold" onclick="finishTripAndCollectFare()">
               <i class="fa-solid fa-flag-checkered"></i>
-              <span>End Trip &amp; Collect Fare (â‚¹240)</span>
+              <span>End Trip &amp; Collect Fare (₹240)</span>
             </button>
           </div>
         </div>
@@ -916,7 +916,7 @@
 
       <div style="padding: 20px;">
         <div class="driver-card-dark" style="text-align: center; padding: 24px 20px;">
-          <div style="font-size: 42px; font-weight: 900; color: var(--driver-gold);">5.0 â­</div>
+          <div style="font-size: 42px; font-weight: 900; color: var(--driver-gold);">5.0 ⭐</div>
           <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Based on 100% rider satisfaction score</div>
         </div>
 
@@ -925,14 +925,14 @@
           <div style="padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
             <div style="display: flex; justify-content: space-between; font-size: 13px;">
               <strong>Aman V.</strong>
-              <span style="color: var(--driver-gold);">â­â­â­â­â­</span>
+              <span style="color: var(--driver-gold);">⭐⭐⭐⭐⭐</span>
             </div>
             <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">"Very polite captain and car was extremely clean with AC on."</p>
           </div>
           <div style="padding: 10px 0;">
             <div style="display: flex; justify-content: space-between; font-size: 13px;">
               <strong>Pooja S.</strong>
-              <span style="color: var(--driver-gold);">â­â­â­â­â­</span>
+              <span style="color: var(--driver-gold);">⭐⭐⭐⭐⭐</span>
             </div>
             <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">"On-time pickup at Vijay Nagar. Smooth driving."</p>
           </div>
@@ -952,7 +952,7 @@
 
       <div style="padding: 20px;">
         <div class="driver-card-dark" style="background: rgba(255, 59, 48, 0.15); border: 2px solid var(--driver-red); text-align: center; padding: 24px 16px;">
-          <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--driver-red); color: #fff; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; cursor: pointer;" onclick="showToast('ðŸš¨ EMERGENCY POLICE ALERT SENT WITH CURRENT GPS!')">
+          <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--driver-red); color: #fff; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; cursor: pointer;" onclick="showToast('🚨 EMERGENCY POLICE ALERT SENT WITH CURRENT GPS!')">
             <i class="fa-solid fa-bell"></i>
           </div>
           <h3 style="font-size: 18px; font-weight: 900; color: #FFF;">DRIVER EMERGENCY SOS (112)</h3>
@@ -1005,7 +1005,7 @@
                 <div style="font-size: 11px; color: var(--text-muted);">Sedan &bull; 100% Rating</div>
               </div>
             </div>
-            <span style="color: var(--driver-green); font-weight: 900;">â‚¹8,450 Earned</span>
+            <span style="color: var(--driver-green); font-weight: 900;">₹8,450 Earned</span>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-dark);">
@@ -1016,7 +1016,7 @@
                 <div style="font-size: 11px; color: var(--text-muted);">Auto &bull; 4.98 Rating</div>
               </div>
             </div>
-            <span style="color: var(--driver-green); font-weight: 900;">â‚¹7,920 Earned</span>
+            <span style="color: var(--driver-green); font-weight: 900;">₹7,920 Earned</span>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
@@ -1027,7 +1027,7 @@
                 <div style="font-size: 11px; color: var(--text-muted);">Prime Cab &bull; 4.95 Rating</div>
               </div>
             </div>
-            <span style="color: var(--driver-green); font-weight: 900;">â‚¹7,110 Earned</span>
+            <span style="color: var(--driver-green); font-weight: 900;">₹7,110 Earned</span>
           </div>
         </div>
       </div>
@@ -1046,8 +1046,8 @@
       <div style="padding: 20px;">
         <div class="driver-card-teal" style="text-align: center;">
           <i class="fa-solid fa-gift" style="font-size: 36px; color: var(--driver-gold); margin-bottom: 8px;"></i>
-          <h3 style="font-size: 20px; font-weight: 900;">Earn â‚¹500 Per Driver</h3>
-          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Invite fellow drivers to ZYGO and get â‚¹500 bonus after their first 10 trips.</p>
+          <h3 style="font-size: 20px; font-weight: 900;">Earn ₹500 Per Driver</h3>
+          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Invite fellow drivers to ZYGO and get ₹500 bonus after their first 10 trips.</p>
 
           <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; margin: 16px 0; font-size: 18px; font-weight: 900; letter-spacing: 2px; color: var(--driver-gold);" id="referralCodeText">
             ZYGOCAP4047
@@ -1116,7 +1116,7 @@
       <div style="padding: 20px;">
         <div class="driver-card-dark" style="text-align: center; padding: 26px 20px;">
           <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Withdrawable Balance</div>
-          <div style="font-size: 38px; font-weight: 900; color: var(--driver-green); margin: 6px 0;" id="walletPageBalanceText">â‚¹0.00</div>
+          <div style="font-size: 38px; font-weight: 900; color: var(--driver-green); margin: 6px 0;" id="walletPageBalanceText">₹0.00</div>
           <div style="font-size: 12px; color: var(--text-muted);">Instant daily settlement via UPI &bull; 0% Commission</div>
 
           <div style="margin-top: 18px;">
@@ -1553,7 +1553,7 @@
         document.getElementById('drawerAvatarInitial').innerText = d.name.charAt(0).toUpperCase();
       }
 
-      document.getElementById('statsTodayEarned').innerText = `â‚¹${window.ZygoLiveStore.driverWallet.todayEarned.toFixed(2)}`;
+      document.getElementById('statsTodayEarned').innerText = `₹${window.ZygoLiveStore.driverWallet.todayEarned.toFixed(2)}`;
       document.getElementById('statsTripsCount').innerText = `${window.ZygoLiveStore.driverWallet.todayTrips} Rides`;
 
       setTimeout(setupLeafletMap, 150);
@@ -1699,7 +1699,7 @@
       document.getElementById('tripEndSection').style.display = 'block';
       document.getElementById('inTripInstructionText').innerText = 'In 500m, Turn Left towards Palasia';
       document.getElementById('activeTripSnippet').innerText = 'In Transit to Palasia Square';
-      showToast('âœ… OTP Verified! Trip Started. Drive safely.');
+      showToast('✅ OTP Verified! Trip Started. Drive safely.');
     }
 
     function finishTripAndCollectFare() {
@@ -1710,7 +1710,7 @@
       document.getElementById('activeTripBar').style.display = 'none';
       activeIncomingTrip = null;
 
-      showToast(`ðŸŽ‰ Trip Completed! â‚¹${fare} added to your wallet.`);
+      showToast(`🎉 Trip Completed! ₹${fare} added to your wallet.`);
       ZygoRouter.navigate('view-driver-wallet');
     }
 
@@ -1825,13 +1825,13 @@
       const u = document.getElementById('payoutUpi').value;
 
       window.ZygoLiveStore.saveDriverWithdrawInfo({ bankName: b, accountNumber: a, ifscCode: i, upiId: u });
-      showToast('âœ… Bank Account & UPI verified and saved.');
+      showToast('✅ Bank Account & UPI verified and saved.');
       ZygoRouter.navigate('view-driver-wallet');
     }
 
     function initDriverWalletScreen() {
       const w = window.ZygoLiveStore.driverWallet;
-      document.getElementById('walletPageBalanceText').innerText = `â‚¹${w.balance.toFixed(2)}`;
+      document.getElementById('walletPageBalanceText').innerText = `₹${w.balance.toFixed(2)}`;
 
       const list = document.getElementById('driverWalletTxnList');
       if (w.transactions.length === 0) {
@@ -1849,7 +1849,7 @@
               <div style="font-size: 11px; color: var(--text-muted);">${t.date}</div>
             </div>
             <div style="font-size: 15px; font-weight: 900; color: ${isCredit ? 'var(--driver-green)' : 'var(--text-white)'};">
-              ${isCredit ? '+' : '-'}â‚¹${t.amount.toFixed(2)}
+              ${isCredit ? '+' : '-'}₹${t.amount.toFixed(2)}
             </div>
           </div>
         `;
@@ -1860,13 +1860,13 @@
     function executeDriverWithdrawal() {
       const bal = window.ZygoLiveStore.driverWallet.balance;
       if (bal <= 0) {
-        showToast('Your withdrawable balance is â‚¹0. Complete rides first.');
+        showToast('Your withdrawable balance is ₹0. Complete rides first.');
         return;
       }
 
       if (window.ZygoLiveStore.driverRequestPayout(bal)) {
         if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
-        showToast(`âœ… â‚¹${bal} transferred instantly to ${window.ZygoLiveStore.driverWithdrawInfo.upiId}!`);
+        showToast(`✅ ₹${bal} transferred instantly to ${window.ZygoLiveStore.driverWithdrawInfo.upiId}!`);
         initDriverWalletScreen();
       }
     }
@@ -1892,7 +1892,7 @@
       const pw = document.getElementById('editParcelCapacity').value;
 
       window.ZygoLiveStore.saveDriverVehicle({ brand: b, model: m, category: c, plate: p, fuelType: f, parcelWeight: pw });
-      showToast('âœ… Vehicle Setup updated and verified.');
+      showToast('✅ Vehicle Setup updated and verified.');
       ZygoRouter.navigate('view-driver-profile');
     }
 
@@ -1915,7 +1915,7 @@
         html += `
           <div class="driver-card-dark">
             <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-              <strong>${tr.customer} &bull; â‚¹${tr.fare}</strong>
+              <strong>${tr.customer} &bull; ₹${tr.fare}</strong>
               <span style="color: var(--driver-green); font-size: 11px; font-weight: 800;">${tr.status}</span>
             </div>
             <div style="font-size: 12px; color: var(--text-muted);">From: ${tr.pickup}<br>To: ${tr.drop}</div>
@@ -1933,4 +1933,3 @@
   </script>
 </body>
 </html>
-
