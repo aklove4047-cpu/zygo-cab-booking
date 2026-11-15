@@ -406,43 +406,89 @@
 
     .services-grid-row {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
       margin-bottom: 24px;
     }
 
     .service-card-item {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 12px 4px;
+      background: #FFFFFF;
+      border-radius: 18px;
+      padding: 12px 6px 10px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
       cursor: pointer;
-      transition: all 0.2s;
-      border: 1px solid rgba(255,255,255,0.7);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .service-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
     .service-card-item:active {
       transform: scale(0.94);
     }
 
-    .service-icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
+    .service-img-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #FFF5D6;
+      margin: 0 auto 8px auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .service-3d-img {
+      width: 58px;
+      height: 46px;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
+      transition: transform 0.2s ease;
+    }
+
+    .service-card-item:hover .service-3d-img {
+      transform: scale(1.08);
     }
 
     .service-card-label {
       font-size: 11px;
       font-weight: 800;
+      color: var(--deep-navy);
+      line-height: 1.25;
+      margin-top: 2px;
+    }
+
+    .service-card-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: var(--deep-navy);
+      color: #FFFFFF;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+
+    .service-card-badge.sparkle {
+      left: auto;
+      right: 6px;
+      background: var(--gold-primary);
       color: var(--deep-navy);
     }
 
@@ -776,7 +822,7 @@
               <div class="wallet-title">ZYGO Wallet</div>
               <div class="wallet-balance-num">
                 <span style="font-size: 20px;">₹</span>
-                <span id="homeWalletBalance">500.00</span>
+                <span id="homeWalletBalance">0.00</span>
               </div>
             </div>
             <div style="font-size: 34px; color: var(--gold-primary); opacity: 0.9;">
@@ -826,39 +872,82 @@
         </div>
 
         <div class="services-grid-row">
-          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
-            <div class="service-icon-wrap" style="background: #FEF3C7; color: #D97706;">
-              <i class="fa-solid fa-taxi"></i>
-            </div>
-            <span class="service-card-label">Cab</span>
-          </div>
-
-          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
-            <div class="service-icon-wrap" style="background: #DCFCE7; color: #15803D;">
-              <i class="fa-solid fa-van-shuttle"></i>
-            </div>
-            <span class="service-card-label">Auto</span>
-          </div>
-
-          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
-            <div class="service-icon-wrap" style="background: #E0E7FF; color: #4338CA;">
-              <i class="fa-solid fa-motorcycle"></i>
-            </div>
-            <span class="service-card-label">Bike</span>
-          </div>
-
+          <!-- 1: Parcel Delivery -->
           <div class="service-card-item" onclick="ZygoRouter.navigate('view-parcel')">
-            <div class="service-icon-wrap" style="background: #FFEDD5; color: #C2410C;">
-              <i class="fa-solid fa-box-open"></i>
+            <div class="service-img-circle">
+              <img src="assets/images/services/parcel_delivery.png" alt="Parcel Delivery" class="service-3d-img" />
             </div>
-            <span class="service-card-label">Parcel</span>
+            <span class="service-card-label">Parcel<br>Delivery</span>
           </div>
 
-          <div class="service-card-item" onclick="ZygoRouter.navigate('view-rentals')">
-            <div class="service-icon-wrap" style="background: #F1F5F9; color: #0F172A;">
-              <i class="fa-solid fa-car-side"></i>
+          <!-- 2: Auto Rickshaw -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
+            <div class="service-img-circle">
+              <img src="assets/images/services/auto_rickshaw.png" alt="Auto Rickshaw" class="service-3d-img" />
             </div>
-            <span class="service-card-label">Rentals</span>
+            <span class="service-card-label">Auto<br>Rickshaw</span>
+          </div>
+
+          <!-- 3: Cab Taxi -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <div class="service-img-circle">
+              <img src="assets/images/services/cab_taxi.png" alt="Cab Taxi" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Cab<br>Taxi</span>
+          </div>
+
+          <!-- 4: Bike Taxi -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <div class="service-img-circle">
+              <img src="assets/images/services/bike_taxi.png" alt="Bike Taxi" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Bike<br>Taxi</span>
+          </div>
+
+          <!-- 5: Bike Lite -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <div class="service-card-badge">%</div>
+            <div class="service-img-circle">
+              <img src="assets/images/services/bike_lite.png" alt="Bike Lite" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Bike<br>Lite</span>
+          </div>
+
+          <!-- 6: Premium Cab -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <div class="service-card-badge sparkle"><i class="fa-solid fa-sparkles"></i></div>
+            <div class="service-img-circle">
+              <img src="assets/images/services/premium_cab.png" alt="Premium Cab" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Premium<br>Cab</span>
+          </div>
+
+          <!-- 7: Rental Cab -->
+          <div class="service-card-item" onclick="ZygoRouter.navigate('view-rentals')">
+            <div class="service-card-badge">%</div>
+            <div class="service-img-circle">
+              <img src="assets/images/services/rental_cab.png" alt="Rental Cab" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Rental<br>Cab</span>
+          </div>
+
+          <!-- 8: Travel -->
+          <div class="service-card-item" onclick="showToast('Outstation intercity travel booking opens soon!')">
+            <div class="service-img-circle">
+              <img src="assets/images/services/travel_luggage.png" alt="Travel" class="service-3d-img" />
+            </div>
+            <span class="service-card-label">Travel</span>
+          </div>
+        </div>
+
+        <!-- Hero Promo Banner (Matches User Reference) -->
+        <div style="background: linear-gradient(135deg, #040608 0%, #0F172A 100%); border-radius: 18px; padding: 16px 18px; color: #FFF; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(4,6,8,0.15); border: 1px solid rgba(255,255,255,0.08);">
+          <div style="max-width: 65%;">
+            <h3 style="font-size: 14px; font-weight: 900; line-height: 1.35; color: #FFFFFF;">Rides made simple,<br>journeys made better!</h3>
+            <div style="font-size: 11px; color: var(--gold-primary); font-weight: 800; margin-top: 6px; letter-spacing: 0.5px;">Safe. Fast. Reliable.</div>
+          </div>
+          <div style="width: 80px; height: 50px; display: flex; align-items: center; justify-content: center;">
+            <img src="assets/images/services/cab_taxi.png" style="width: 80px; height: 52px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));" />
           </div>
         </div>
 
@@ -920,25 +1009,45 @@
         </div>
 
         <div class="offers-scroll-row">
-          <div class="offer-banner-card" style="background: #090D14; color: #FFF; border: 1px solid rgba(255,255,255,0.1);" onclick="ZygoRouter.navigate('view-offers')">
-            <div>
+          <div class="offer-banner-card" style="background: #090D14; color: #FFF; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;" onclick="ZygoRouter.navigate('view-offers')">
+            <div style="flex: 1;">
               <span style="font-size: 11px; font-weight: 800; color: var(--gold-primary);">FLAT 20% OFF</span>
               <h4 style="font-size: 15px; font-weight: 900; margin-top: 4px;">On All Daily Rides</h4>
               <p style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Use coupon at checkout</p>
+              <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
+                Code: ZYGO20
+              </div>
             </div>
-            <div style="margin-top: 14px; display: inline-block; background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
-              Code: ZYGO20
+            <div style="width: 85px; margin-left: 8px;">
+              <img src="assets/images/services/cab_taxi.png" alt="Cab Promo" style="width: 85px; height: 55px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));" />
             </div>
           </div>
 
-          <div class="offer-banner-card" style="background: linear-gradient(135deg, #FCC82C, #EFAF19); color: var(--deep-navy);" onclick="ZygoRouter.navigate('view-offers')">
-            <div>
+          <div class="offer-banner-card" style="background: linear-gradient(135deg, #FCC82C, #EFAF19); color: var(--deep-navy); display: flex; justify-content: space-between; align-items: center;" onclick="ZygoRouter.navigate('view-offers')">
+            <div style="flex: 1;">
               <span style="font-size: 11px; font-weight: 900; color: #000;">UP TO 50% OFF</span>
               <h4 style="font-size: 15px; font-weight: 900; margin-top: 4px;">On Hourly Rentals</h4>
               <p style="font-size: 11px; color: #475569; margin-top: 2px;">Valid on Sedan &amp; SUV</p>
+              <div style="margin-top: 10px; display: inline-block; background: var(--deep-navy); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
+                Code: RENT50
+              </div>
             </div>
-            <div style="margin-top: 14px; display: inline-block; background: var(--deep-navy); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
-              Code: RENT50
+            <div style="width: 85px; margin-left: 8px;">
+              <img src="assets/images/services/rental_cab.png" alt="Rental Promo" style="width: 85px; height: 55px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));" />
+            </div>
+          </div>
+
+          <div class="offer-banner-card" style="background: #1E293B; color: #FFF; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;" onclick="ZygoRouter.navigate('view-offers')">
+            <div style="flex: 1;">
+              <span style="font-size: 11px; font-weight: 800; color: var(--gold-primary);">FLAT 15% OFF</span>
+              <h4 style="font-size: 15px; font-weight: 900; margin-top: 4px;">On Bike Lite &amp; EV</h4>
+              <p style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Save on daily commute</p>
+              <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; color: var(--gold-primary);">
+                Code: BIKELITE
+              </div>
+            </div>
+            <div style="width: 85px; margin-left: 8px;">
+              <img src="assets/images/services/bike_lite.png" alt="Bike Lite Promo" style="width: 85px; height: 55px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));" />
             </div>
           </div>
         </div>
@@ -1015,7 +1124,7 @@
       <div style="padding: 20px;">
         <div class="clay-box-dark" style="text-align: center; padding: 30px 20px;">
           <div style="font-size: 12px; font-weight: 700; color: #94A3B8; text-transform: uppercase;">Total Available Balance</div>
-          <div style="font-size: 38px; font-weight: 900; color: var(--gold-primary); margin: 6px 0;" id="walletPageBalanceDisplay">₹500.00</div>
+          <div style="font-size: 38px; font-weight: 900; color: var(--gold-primary); margin: 6px 0;" id="walletPageBalanceDisplay">₹0.00</div>
           <div style="font-size: 12px; color: #94A3B8;">Linked with Secure UPI &bull; 0% Fee</div>
         </div>
 
@@ -1233,8 +1342,8 @@
           <!-- Bike -->
           <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Bike Taxi', 45, '2 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #E0E7FF; color: #4338CA; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-                <i class="fa-solid fa-motorcycle"></i>
+              <div style="width: 54px; height: 50px; border-radius: var(--radius-md); background: #FFF5D6; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/bike_taxi.png" alt="Bike Taxi" style="width: 50px; height: 38px; object-fit: contain;" />
               </div>
               <div>
                 <div style="font-size: 15px; font-weight: 800;">Bike Taxi</div>
@@ -1250,8 +1359,8 @@
           <!-- Auto -->
           <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Auto', 75, '3 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #DCFCE7; color: #15803D; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-                <i class="fa-solid fa-van-shuttle"></i>
+              <div style="width: 54px; height: 50px; border-radius: var(--radius-md); background: #FFF5D6; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/auto_rickshaw.png" alt="Auto" style="width: 50px; height: 38px; object-fit: contain;" />
               </div>
               <div>
                 <div style="font-size: 15px; font-weight: 800;">Auto</div>
@@ -1267,8 +1376,8 @@
           <!-- Sedan Cab (Selected default) -->
           <div class="clay-box-white vehicle-option-item selected" onclick="selectBookingTier(this, 'Prime Sedan', 160, '1 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0; border: 2px solid var(--gold-primary);">
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-                <i class="fa-solid fa-car-side"></i>
+              <div style="width: 54px; height: 50px; border-radius: var(--radius-md); background: #FFF5D6; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/cab_taxi.png" alt="Prime Sedan" style="width: 50px; height: 38px; object-fit: contain;" />
               </div>
               <div>
                 <div style="font-size: 15px; font-weight: 800;">Prime Sedan</div>
@@ -1284,8 +1393,8 @@
           <!-- SUV Cab -->
           <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Prime SUV', 240, '4 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
             <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: #F1F5F9; color: #0F172A; display: flex; align-items: center; justify-content: center; font-size: 22px;">
-                <i class="fa-solid fa-truck-pickup"></i>
+              <div style="width: 54px; height: 50px; border-radius: var(--radius-md); background: #FFF5D6; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/rental_cab.png" alt="Prime SUV" style="width: 50px; height: 38px; object-fit: contain;" />
               </div>
               <div>
                 <div style="font-size: 15px; font-weight: 800;">Prime SUV</div>
@@ -1297,6 +1406,23 @@
               <div style="font-size: 11px; color: #64748B;">Luggage Friendly</div>
             </div>
           </div>
+
+          <!-- Luxury Cab -->
+          <div class="clay-box-white vehicle-option-item" onclick="selectBookingTier(this, 'Luxury Executive', 380, '6 min away')" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 54px; height: 50px; border-radius: var(--radius-md); background: #FFF5D6; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/premium_cab.png" alt="Luxury Cab" style="width: 50px; height: 38px; object-fit: contain;" />
+              </div>
+              <div>
+                <div style="font-size: 15px; font-weight: 800;">Luxury Executive</div>
+                <div style="font-size: 12px; color: #64748B;">Chauffeur driven &bull; VIP ride</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 900; color: var(--deep-navy);">₹380.00</div>
+              <div style="font-size: 11px; color: var(--gold-bronze); font-weight: 800;">VIP</div>
+            </div>
+          </div>
         </div>
 
         <!-- Payment Mode Toggle -->
@@ -1305,7 +1431,7 @@
             <i class="fa-solid fa-wallet" style="color: var(--deep-navy); font-size: 18px;"></i>
             <div>
               <div style="font-size: 11px; font-weight: 700; color: #94A3B8;">PAYMENT METHOD</div>
-              <div style="font-size: 14px; font-weight: 800;" id="selectedPaymentModeText">ZYGO Wallet (₹500.00)</div>
+              <div style="font-size: 14px; font-weight: 800;" id="selectedPaymentModeText">ZYGO Wallet (₹0.00)</div>
             </div>
           </div>
           <span style="font-size: 12px; font-weight: 800; color: var(--gold-bronze);">Change</span>
@@ -1393,47 +1519,83 @@
       </div>
 
       <div style="padding: 20px;">
-        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px;">DAILY MOBILITY</h4>
+        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px; letter-spacing: 0.5px;">DAILY MOBILITY</h4>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px;">
-          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
-            <i class="fa-solid fa-taxi" style="font-size: 24px; color: #D97706; margin-bottom: 8px;"></i>
+          <!-- 1: Cab Taxi -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/cab_taxi.png" alt="Cab Taxi" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
             <h4 style="font-size: 14px; font-weight: 800;">Cab Taxi</h4>
-            <p style="font-size: 11px; color: #64748B;">Mini, Sedan, SUV, EV</p>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Mini, Sedan, EV &amp; Comfort</p>
           </div>
 
-          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
-            <i class="fa-solid fa-van-shuttle" style="font-size: 24px; color: #15803D; margin-bottom: 8px;"></i>
+          <!-- 2: Auto Rickshaw -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-booking', { service: 'Auto' })">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/auto_rickshaw.png" alt="Auto Rickshaw" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
             <h4 style="font-size: 14px; font-weight: 800;">Auto Rickshaw</h4>
-            <p style="font-size: 11px; color: #64748B;">Pocket-friendly daily commute</p>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Pocket-friendly daily commute</p>
           </div>
 
-          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
-            <i class="fa-solid fa-motorcycle" style="font-size: 24px; color: #4338CA; margin-bottom: 8px;"></i>
+          <!-- 3: Bike Taxi -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/bike_taxi.png" alt="Bike Taxi" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
             <h4 style="font-size: 14px; font-weight: 800;">Bike Taxi</h4>
-            <p style="font-size: 11px; color: #64748B;">Beat the peak hour traffic</p>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Beat the peak hour traffic</p>
           </div>
 
-          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-rentals')">
-            <i class="fa-solid fa-car-side" style="font-size: 24px; color: #0F172A; margin-bottom: 8px;"></i>
-            <h4 style="font-size: 14px; font-weight: 800;">Rentals</h4>
-            <p style="font-size: 11px; color: #64748B;">Hourly multi-stop packages</p>
+          <!-- 4: Bike Lite EV -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-booking', { service: 'Bike' })">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/bike_lite.png" alt="Bike Lite" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
+            <h4 style="font-size: 14px; font-weight: 800;">Bike Lite EV</h4>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Eco-friendly silent ride</p>
+          </div>
+
+          <!-- 5: Premium Cab -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-booking', { service: 'Cab' })">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/premium_cab.png" alt="Premium Cab" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
+            <h4 style="font-size: 14px; font-weight: 800;">Premium Cab</h4>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Executive luxury sedans</p>
+          </div>
+
+          <!-- 6: Rental Cab -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-rentals')">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/rental_cab.png" alt="Rental Cab" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
+            <h4 style="font-size: 14px; font-weight: 800;">Rental Cab</h4>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Hourly multi-stop packages</p>
           </div>
         </div>
 
-        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px;">LOGISTICS &amp; TRAVEL</h4>
+        <h4 style="font-size: 14px; font-weight: 800; color: #64748B; margin-bottom: 12px; letter-spacing: 0.5px;">LOGISTICS &amp; TRAVEL</h4>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="clay-box-white" style="cursor: pointer;" onclick="ZygoRouter.navigate('view-parcel')">
-            <i class="fa-solid fa-box-open" style="font-size: 24px; color: #C2410C; margin-bottom: 8px;"></i>
+          <!-- 7: Parcel Delivery -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="ZygoRouter.navigate('view-parcel')">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/parcel_delivery.png" alt="Parcel Delivery" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
             <h4 style="font-size: 14px; font-weight: 800;">Parcel Delivery</h4>
-            <p style="font-size: 11px; color: #64748B;">Fast doorstep city courier</p>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">Fast doorstep city courier</p>
           </div>
 
-          <div class="clay-box-white" style="cursor: pointer;" onclick="showToast('Outstation intercity cabs booking opens soon!')">
-            <i class="fa-solid fa-road" style="font-size: 24px; color: #7C3AED; margin-bottom: 8px;"></i>
+          <!-- 8: Travel -->
+          <div class="clay-box-white" style="cursor: pointer; text-align: center; padding: 16px 12px;" onclick="showToast('Outstation intercity cabs booking opens soon!')">
+            <div style="width: 70px; height: 50px; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center;">
+              <img src="assets/images/services/travel_luggage.png" alt="Travel" style="width: 70px; height: 48px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));" />
+            </div>
             <h4 style="font-size: 14px; font-weight: 800;">Intercity Travel</h4>
-            <p style="font-size: 11px; color: #64748B;">One-way &amp; round trips</p>
+            <p style="font-size: 11px; color: #64748B; margin-top: 2px;">One-way &amp; round trips</p>
           </div>
         </div>
       </div>
@@ -2028,7 +2190,7 @@
       }
 
       window.ZygoLiveStore.registerCustomer({ name, phone, city });
-      showToast(`Welcome ${name}! ₹500 bonus credited.`);
+      showToast(`Welcome ${name}! Registration successful.`);
       ZygoRouter.navigate('view-home');
     }
 

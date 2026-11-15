@@ -88,7 +88,25 @@ fs.writeFileSync('zygo-website/driver.html', drvHtml, 'utf8');
 fs.writeFileSync('android-apps/zygo-driver-app/app/src/main/assets/www/driver.html', drvHtml, 'utf8');
 console.log('Driver HTML written to public, website, and driver APK assets.');
 
-// 4. Verify Syntax
+// 4. Copy Service Images to all destinations
+const serviceImgDestinations = [
+  'zygo-website/assets/images/services',
+  'android-apps/zygo-customer-app/app/src/main/assets/www/assets/images/services',
+  'android-apps/zygo-driver-app/app/src/main/assets/www/assets/images/services'
+];
+
+if (fs.existsSync('public/assets/images/services')) {
+  const serviceFiles = fs.readdirSync('public/assets/images/services');
+  serviceImgDestinations.forEach(dest => {
+    if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+    serviceFiles.forEach(f => {
+      fs.copyFileSync(path.join('public/assets/images/services', f), path.join(dest, f));
+    });
+  });
+  console.log(`Copied ${serviceFiles.length} service illustrations to all apps and website.`);
+}
+
+// 5. Verify Syntax
 console.log('\nVerifying JavaScript execution...');
 const mockGlobal = {
   window: {},
@@ -130,6 +148,13 @@ try {
   console.log('✓ ZygoRouter.navigate("view-driver-auth") succeeded! Active route:', ZygoRouter.currentRoute);
   ZygoRouter.navigate('view-driver-home');
   console.log('✓ ZygoRouter.navigate("view-driver-home") succeeded! Active route:', ZygoRouter.currentRoute);
+
+  // Test Customer Registration Zero Initial Balance
+  ZygoLiveStore.registerCustomer({ name: 'Rahul Sharma', phone: '9876543210' });
+  if (ZygoLiveStore.wallet.balance !== 0.00) {
+    throw new Error('Customer wallet balance should be 0.00 upon registration, but was ' + ZygoLiveStore.wallet.balance);
+  }
+  console.log('✓ Customer registration verified: wallet balance is exactly ₹' + ZygoLiveStore.wallet.balance.toFixed(2));
 
 } catch (err) {
   console.error('VERIFICATION FAILED:', err);

@@ -9,11 +9,9 @@ class ZygoLiveStoreCore {
     this.driver = this.load('zygo_active_driver', null);
 
     this.wallet = this.load('zygo_customer_wallet', {
-      balance: 500.00,
-      coins: 250,
-      transactions: [
-        { id: 'TXN-WELCOME', type: 'credit', title: 'Welcome Joining Bonus', amount: 500.00, date: 'Today' }
-      ]
+      balance: 0.00,
+      coins: 0,
+      transactions: []
     });
 
     this.driverWallet = this.load('zygo_driver_wallet', {
@@ -38,7 +36,7 @@ class ZygoLiveStoreCore {
     this.scheduledRides = this.load('zygo_scheduled_rides', []);
 
     this.notifications = this.load('zygo_customer_notifications', [
-      { id: 'n1', title: 'Welcome to ZYGO!', message: '₹500 welcome bonus credited to your wallet.', time: 'Just now', unread: true },
+      { id: 'n1', title: 'Welcome to ZYGO!', message: 'Your account is active. Add money to your wallet to start booking.', time: 'Just now', unread: true },
       { id: 'n2', title: 'Special Promo: ZYGO20', message: 'Use code ZYGO20 for 20% discount on your next ride.', time: '1 hour ago', unread: true }
     ]);
 
@@ -92,12 +90,25 @@ class ZygoLiveStoreCore {
       registeredAt: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     };
     this.save('zygo_active_customer', this.user);
+    // Explicit ₹0.00 initial balance on customer registration (no automatic ₹500 credit)
+    this.wallet = {
+      balance: 0.00,
+      coins: 0,
+      transactions: []
+    };
+    this.save('zygo_customer_wallet', this.wallet);
     return this.user;
   }
 
   logoutCustomer() {
     this.user = null;
     localStorage.removeItem('zygo_active_customer');
+    localStorage.removeItem('zygo_customer_wallet');
+    this.wallet = {
+      balance: 0.00,
+      coins: 0,
+      transactions: []
+    };
   }
 
   // Driver Auth

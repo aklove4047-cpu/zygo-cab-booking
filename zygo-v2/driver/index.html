@@ -496,18 +496,28 @@
         <div style="padding: 0 20px;">
           <!-- Checkbox 1: Ride Share -->
           <div class="driver-card-dark" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1.5px solid var(--driver-teal);" onclick="toggleServiceCheck('chkRideShare')">
-            <div>
-              <h4 style="font-size: 16px; font-weight: 800;">Ride Share</h4>
-              <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Click if you want to provide ride share service</p>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 180, 160, 0.12); display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/cab_taxi.png" alt="Ride Share" style="width: 46px; height: 34px; object-fit: contain;" />
+              </div>
+              <div>
+                <h4 style="font-size: 16px; font-weight: 800;">Ride Share</h4>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Accept daily cab, auto &amp; bike rides</p>
+              </div>
             </div>
             <input type="checkbox" id="chkRideShare" checked style="width: 22px; height: 22px; accent-color: var(--driver-teal); pointer-events: none;" />
           </div>
 
           <!-- Checkbox 2: Parcel Delivery -->
           <div class="driver-card-dark" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; border: 1.5px solid var(--driver-teal);" onclick="toggleServiceCheck('chkParcel')">
-            <div>
-              <h4 style="font-size: 16px; font-weight: 800;">Parcel Delivery</h4>
-              <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Click if you want to provide parcel service</p>
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 180, 160, 0.12); display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/services/parcel_delivery.png" alt="Parcel Delivery" style="width: 46px; height: 34px; object-fit: contain;" />
+              </div>
+              <div>
+                <h4 style="font-size: 16px; font-weight: 800;">Parcel Delivery</h4>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Doorstep item pickup &amp; courier drop</p>
+              </div>
             </div>
             <input type="checkbox" id="chkParcel" checked style="width: 22px; height: 22px; accent-color: var(--driver-teal); pointer-events: none;" />
           </div>
