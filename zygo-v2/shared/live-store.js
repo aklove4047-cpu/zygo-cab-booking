@@ -90,25 +90,12 @@ class ZygoLiveStoreCore {
       registeredAt: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     };
     this.save('zygo_active_customer', this.user);
-    // Explicit ₹0.00 initial balance on customer registration (no automatic ₹500 credit)
-    this.wallet = {
-      balance: 0.00,
-      coins: 0,
-      transactions: []
-    };
-    this.save('zygo_customer_wallet', this.wallet);
     return this.user;
   }
 
   logoutCustomer() {
     this.user = null;
     localStorage.removeItem('zygo_active_customer');
-    localStorage.removeItem('zygo_customer_wallet');
-    this.wallet = {
-      balance: 0.00,
-      coins: 0,
-      transactions: []
-    };
   }
 
   // Driver Auth

@@ -150,3 +150,20 @@ class ZygoSoundEngineCore {
 const zygoSoundInstance = new ZygoSoundEngineCore();
 window.ZygoSoundEngine = zygoSoundInstance;
 var ZygoSoundEngine = zygoSoundInstance;
+
+// Auto-unlock Web Audio on first user interaction (critical for mobile browsers)
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  const unlockAudio = () => {
+    try {
+      if (zygoSoundInstance.audioCtx && zygoSoundInstance.audioCtx.state === 'suspended') {
+        zygoSoundInstance.audioCtx.resume();
+      } else if (!zygoSoundInstance.audioCtx) {
+        zygoSoundInstance.getAudioContext();
+      }
+    } catch(e) {}
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+  };
+  document.addEventListener('click', unlockAudio, { once: true, passive: true });
+  document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+}
