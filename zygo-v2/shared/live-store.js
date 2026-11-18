@@ -8,6 +8,41 @@ class ZygoLiveStoreCore {
     this.user = this.load('zygo_active_customer', null);
     this.driver = this.load('zygo_active_driver', null);
 
+    this.registeredCustomers = this.load('zygo_registered_customers', [
+      {
+        id: 'USR-1001',
+        name: 'Rahul Sharma',
+        phone: '9876543210',
+        password: 'password123',
+        city: 'Indore, Madhya Pradesh',
+        isPrime: true,
+        registeredAt: '15 Nov 2026'
+      }
+    ]);
+
+    this.registeredDrivers = this.load('zygo_registered_drivers', [
+      {
+        id: 'CAP-2001',
+        name: 'Vikram Singh',
+        phone: '9876543211',
+        password: 'password123',
+        city: 'Indore',
+        brand: 'Maruti Suzuki',
+        model: 'Dzire',
+        category: 'Sedan',
+        plate: 'MP-09-AB-4047',
+        licenseExpiry: '2030-12-31',
+        fuelType: 'CNG',
+        parcelWeight: '25',
+        services: ['Ride Share', 'Parcel Delivery'],
+        rating: '4.9',
+        totalRides: 42,
+        level: 2,
+        isApproved: true,
+        registeredAt: '12 Nov 2026'
+      }
+    ]);
+
     this.wallet = this.load('zygo_customer_wallet', {
       balance: 0.00,
       coins: 0,
@@ -80,17 +115,84 @@ class ZygoLiveStoreCore {
 
   // Customer Auth
   registerCustomer(data) {
-    this.user = {
+    const phone = (data.phone || '').trim();
+    const existing = this.registeredCustomers.find(u => u.phone === phone);
+    if (existing) {
+      return { success: false, message: 'This mobile number is already registered! Please login with your password.' };
+    }
+
+    const newUser = {
       id: 'USR-' + Math.floor(1000 + Math.random() * 9000),
       name: data.name,
-      phone: data.phone,
-      email: data.email || `${data.phone}@zygo.in`,
+      phone: phone,
+      password: data.password || 'password123',
+      email: data.email || `${phone}@zygo.in`,
       city: data.city || 'Indore, Madhya Pradesh',
       isPrime: false,
       registeredAt: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     };
+
+    this.registeredCustomers.push(newUser);
+    this.save('zygo_registered_customers', this.registeredCustomers);
+
+    this.user = { ...newUser };
     this.save('zygo_active_customer', this.user);
-    return this.user;
+    return { success: true, user: this.user, message: `Welcome ${newUser.name}! Registration successful.` };
+  }
+
+  loginCustomer(phone, password) {
+    phone = (phone || '').trim();
+    password = (password || '').trim();
+
+    if (!phone || phone.length !== 10) {
+      return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
+    }
+    if (!password) {
+      return { success: false, message: 'Please enter your password.' };
+    }
+
+    let user = this.registeredCustomers.find(u => u.phone === phone);
+    if (!user) {
+      if (phone === '9876543210' && password === 'password123') {
+        user = {
+          id: 'USR-1001',
+          name: 'Rahul Sharma',
+          phone: '9876543210',
+          password: 'password123',
+          city: 'Indore, Madhya Pradesh',
+          isPrime: true,
+          registeredAt: '15 Nov 2026'
+        };
+        this.registeredCustomers.push(user);
+        this.save('zygo_registered_customers', this.registeredCustomers);
+      } else {
+        return { success: false, message: 'Mobile number not found! Please register first in the New Rider Signup tab.' };
+      }
+    }
+
+    if (user.password !== password) {
+      return { success: false, message: 'Incorrect password! Please check and try again.' };
+    }
+
+    this.user = { ...user };
+    this.save('zygo_active_customer', this.user);
+    return { success: true, user: this.user, message: `Welcome back, ${this.user.name}!` };
+  }
+
+  resetCustomerPassword(phone, newPassword) {
+    phone = (phone || '').trim();
+    newPassword = (newPassword || '').trim();
+    const user = this.registeredCustomers.find(u => u.phone === phone);
+    if (!user) {
+      return { success: false, message: 'Mobile number not registered.' };
+    }
+    user.password = newPassword;
+    this.save('zygo_registered_customers', this.registeredCustomers);
+    if (this.user && this.user.phone === phone) {
+      this.user.password = newPassword;
+      this.save('zygo_active_customer', this.user);
+    }
+    return { success: true, message: 'Password updated successfully! You can now login.' };
   }
 
   logoutCustomer() {
@@ -100,10 +202,17 @@ class ZygoLiveStoreCore {
 
   // Driver Auth
   registerDriver(data) {
-    this.driver = {
+    const phone = (data.phone || '').trim();
+    const existing = this.registeredDrivers.find(d => d.phone === phone);
+    if (existing) {
+      return { success: false, message: 'Captain with this mobile number already exists! Please login.' };
+    }
+
+    const newDriver = {
       id: 'CAP-' + Math.floor(1000 + Math.random() * 9000),
       name: data.name,
-      phone: data.phone,
+      phone: phone,
+      password: data.password || 'password123',
       city: data.city || 'Indore',
       brand: data.brand || 'Maruti Suzuki',
       model: data.model || 'Dzire',
@@ -119,8 +228,79 @@ class ZygoLiveStoreCore {
       isApproved: true,
       registeredAt: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     };
+
+    this.registeredDrivers.push(newDriver);
+    this.save('zygo_registered_drivers', this.registeredDrivers);
+
+    this.driver = { ...newDriver };
     this.save('zygo_active_driver', this.driver);
-    return this.driver;
+    return { success: true, driver: this.driver, message: `Welcome Captain ${newDriver.name}! Onboarding complete.` };
+  }
+
+  loginDriver(phone, password) {
+    phone = (phone || '').trim();
+    password = (password || '').trim();
+
+    if (!phone || phone.length !== 10) {
+      return { success: false, message: 'Please enter a valid 10-digit mobile number.' };
+    }
+    if (!password) {
+      return { success: false, message: 'Please enter your password.' };
+    }
+
+    let driver = this.registeredDrivers.find(d => d.phone === phone);
+    if (!driver) {
+      if (phone === '9876543211' && password === 'password123') {
+        driver = {
+          id: 'CAP-2001',
+          name: 'Vikram Singh',
+          phone: '9876543211',
+          password: 'password123',
+          city: 'Indore',
+          brand: 'Maruti Suzuki',
+          model: 'Dzire',
+          category: 'Sedan',
+          plate: 'MP-09-AB-4047',
+          licenseExpiry: '2030-12-31',
+          fuelType: 'CNG',
+          parcelWeight: '25',
+          services: ['Ride Share', 'Parcel Delivery'],
+          rating: '4.9',
+          totalRides: 42,
+          level: 2,
+          isApproved: true,
+          registeredAt: '12 Nov 2026'
+        };
+        this.registeredDrivers.push(driver);
+        this.save('zygo_registered_drivers', this.registeredDrivers);
+      } else {
+        return { success: false, message: 'Captain account not found! Please complete registration.' };
+      }
+    }
+
+    if (driver.password !== password) {
+      return { success: false, message: 'Incorrect password! Please check and try again.' };
+    }
+
+    this.driver = { ...driver };
+    this.save('zygo_active_driver', this.driver);
+    return { success: true, driver: this.driver, message: `Welcome back, Captain ${this.driver.name}!` };
+  }
+
+  resetDriverPassword(phone, newPassword) {
+    phone = (phone || '').trim();
+    newPassword = (newPassword || '').trim();
+    const driver = this.registeredDrivers.find(d => d.phone === phone);
+    if (!driver) {
+      return { success: false, message: 'Mobile number not registered as Captain.' };
+    }
+    driver.password = newPassword;
+    this.save('zygo_registered_drivers', this.registeredDrivers);
+    if (this.driver && this.driver.phone === phone) {
+      this.driver.password = newPassword;
+      this.save('zygo_active_driver', this.driver);
+    }
+    return { success: true, message: 'Password updated successfully! You can now login.' };
   }
 
   logoutDriver() {

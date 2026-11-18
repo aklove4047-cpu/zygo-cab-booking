@@ -871,6 +871,26 @@
               </select>
             </div>
 
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">CREATE PASSWORD *</label>
+              <div style="position: relative;">
+                <input type="password" id="regUserPassword" class="zygo-input" placeholder="Min. 4 characters" minlength="4" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('regUserPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">CONFIRM PASSWORD *</label>
+              <div style="position: relative;">
+                <input type="password" id="regUserConfirmPassword" class="zygo-input" placeholder="Re-enter password" minlength="4" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('regUserConfirmPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
             <button type="submit" class="zygo-btn-gold" style="margin-top: 10px;">
               <span>Complete Registration</span>
               <i class="fa-solid fa-arrow-right"></i>
@@ -887,8 +907,26 @@
               </div>
             </div>
 
-            <button type="submit" class="zygo-btn-primary" style="margin-top: 10px;">
-              <span>Verify &amp; Continue</span>
+            <div class="zygo-input-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="zygo-input-label" style="margin-bottom: 0;">PASSWORD *</label>
+                <span style="font-size: 11px; font-weight: 700; color: var(--gold-bronze); cursor: pointer;" onclick="handleCustomerForgotPassword()">Forgot?</span>
+              </div>
+              <div style="position: relative;">
+                <input type="password" id="loginUserPassword" class="zygo-input" placeholder="Enter your password" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('loginUserPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748B; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div style="background: rgba(252, 200, 44, 0.12); border: 1px dashed var(--gold-rich); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; color: #475569; margin-bottom: 12px;">
+              <i class="fa-solid fa-circle-info" style="color: var(--gold-bronze); margin-right: 4px;"></i>
+              Demo Rider: <b>9876543210</b> | Pass: <b>password123</b>
+            </div>
+
+            <button type="submit" class="zygo-btn-primary" style="margin-top: 4px;">
+              <span>Login to Account</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </form>
@@ -2315,32 +2353,101 @@
       }
     }
 
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) {
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        }
+      } else {
+        input.type = 'password';
+        if (icon) {
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+    }
+
+    function handleCustomerForgotPassword() {
+      const phone = prompt('Enter your registered 10-digit mobile number to reset password:');
+      if (!phone || phone.trim().length !== 10) {
+        showToast('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      const newPass = prompt('Enter your new password (minimum 4 characters):');
+      if (!newPass || newPass.trim().length < 4) {
+        showToast('Password must be at least 4 characters.');
+        return;
+      }
+      const res = window.ZygoLiveStore.resetCustomerPassword(phone.trim(), newPass.trim());
+      showToast(res.message);
+      if (res.success) {
+        document.getElementById('loginUserPhone').value = phone.trim();
+        document.getElementById('loginUserPassword').value = newPass.trim();
+      }
+    }
+
     function handleCustomerSignup(e) {
       e.preventDefault();
       const name = document.getElementById('regUserName').value.trim();
       const phone = document.getElementById('regUserPhone').value.trim();
       const city = document.getElementById('regUserCity').value;
+      const pass = document.getElementById('regUserPassword').value.trim();
+      const confirmPass = document.getElementById('regUserConfirmPassword').value.trim();
 
       if (!name || phone.length !== 10) {
         showToast('Please enter your full name and 10-digit mobile number.');
         return;
       }
 
-      window.ZygoLiveStore.registerCustomer({ name, phone, city });
-      showToast(`Welcome ${name}! Registration successful.`);
+      if (pass.length < 4) {
+        showToast('Password must be at least 4 characters.');
+        return;
+      }
+
+      if (pass !== confirmPass) {
+        showToast('Passwords do not match! Please check and confirm.');
+        return;
+      }
+
+      const res = window.ZygoLiveStore.registerCustomer({ name, phone, city, password: pass });
+      if (!res.success) {
+        showToast(res.message);
+        switchAuthTab('login');
+        document.getElementById('loginUserPhone').value = phone;
+        return;
+      }
+
+      showToast(res.message);
       ZygoRouter.navigate('view-home');
     }
 
     function handleCustomerLogin(e) {
       e.preventDefault();
       const phone = document.getElementById('loginUserPhone').value.trim();
+      const pass = document.getElementById('loginUserPassword').value.trim();
+
       if (phone.length !== 10) {
         showToast('Please enter a valid 10-digit mobile number.');
         return;
       }
 
-      window.ZygoLiveStore.registerCustomer({ name: 'Rider ' + phone.slice(-4), phone, city: 'Indore, Madhya Pradesh' });
-      showToast('Logged in successfully!');
+      if (!pass) {
+        showToast('Please enter your account password.');
+        return;
+      }
+
+      const res = window.ZygoLiveStore.loginCustomer(phone, pass);
+      if (!res.success) {
+        showToast(res.message);
+        return;
+      }
+
+      showToast(res.message);
       ZygoRouter.navigate('view-home');
     }
 

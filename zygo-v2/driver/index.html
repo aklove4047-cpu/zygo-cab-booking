@@ -529,8 +529,53 @@
 
           <div style="text-align: center; margin-top: 20px;">
             <span style="font-size: 13px; color: var(--text-muted);">Already registered?</span>
-            <span style="font-size: 13px; font-weight: 800; color: var(--driver-gold); cursor: pointer; margin-left: 6px;" onclick="showDriverQuickLogin()">Login Here</span>
+            <span style="font-size: 13px; font-weight: 800; color: var(--driver-gold); cursor: pointer; margin-left: 6px;" onclick="showDriverLoginModal()">Login Here</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Captain Login Modal -->
+      <div id="driverLoginModal" class="drawer-overlay" style="display: none; align-items: center; justify-content: center; z-index: 9999;">
+        <div style="background: var(--navy-elevated); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 24px; width: 90%; max-width: 380px; box-shadow: var(--shadow-dark-card); animation: fadeIn 0.2s ease;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div style="font-size: 18px; font-weight: 900; color: #FFF;">Captain Login</div>
+            <div onclick="closeDriverLoginModal()" style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #FFF;">
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+
+          <form onsubmit="handleDriverModalLogin(event)">
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">REGISTERED MOBILE NUMBER *</label>
+              <div style="display: flex; gap: 8px;">
+                <span style="padding: 14px 12px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-md); font-weight: 800; font-size: 14px; color: #FFF;">+91</span>
+                <input type="tel" id="modalDriverPhone" class="zygo-input" placeholder="10-digit mobile" maxlength="10" pattern="[0-9]{10}" required />
+              </div>
+            </div>
+
+            <div class="zygo-input-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label class="zygo-input-label" style="margin-bottom: 0;">PASSWORD *</label>
+                <span style="font-size: 11px; font-weight: 700; color: var(--driver-gold); cursor: pointer;" onclick="handleDriverForgotPassword()">Forgot?</span>
+              </div>
+              <div style="position: relative;">
+                <input type="password" id="modalDriverPassword" class="zygo-input" placeholder="Enter captain password" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('modalDriverPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div style="background: rgba(0, 180, 160, 0.12); border: 1px dashed var(--driver-teal); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; color: #94A3B8; margin-bottom: 12px;">
+              <i class="fa-solid fa-circle-info" style="color: var(--driver-teal); margin-right: 4px;"></i>
+              Demo Captain: <b>9876543211</b> | Pass: <b>password123</b>
+            </div>
+
+            <button type="submit" class="btn-teal" style="margin-top: 4px;">
+              <span>Login as Captain</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
         </div>
       </div>
 
@@ -571,6 +616,26 @@
             <div class="zygo-input-group">
               <label class="zygo-input-label">UPI ID FOR INSTANT DAILY SETTLEMENT *</label>
               <input type="text" id="obDriverUpi" class="zygo-input" value="captain@upi" required />
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">CREATE PASSWORD *</label>
+              <div style="position: relative;">
+                <input type="password" id="obDriverPassword" class="zygo-input" placeholder="Min. 4 characters" minlength="4" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('obDriverPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="zygo-input-group">
+              <label class="zygo-input-label">CONFIRM PASSWORD *</label>
+              <div style="position: relative;">
+                <input type="password" id="obDriverConfirmPassword" class="zygo-input" placeholder="Re-enter password" minlength="4" required style="padding-right: 44px;" />
+                <button type="button" onclick="togglePasswordVisibility('obDriverConfirmPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 16px;">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
             </div>
 
             <button class="btn-teal" style="margin-top: 10px;" onclick="goToOnboardStep(3)">
@@ -1358,12 +1423,6 @@
           <span>Refer &amp; Earn</span>
         </div>
 
-        <a class="drawer-menu-item" href="downloads/zygo-driver.apk" download="Zygo_Captain_Driver.apk" style="background: rgba(255, 192, 0, 0.15); border-left: 3px solid var(--driver-gold); color: #fff; text-decoration: none;">
-          <i class="fa-brands fa-android" style="color: var(--driver-gold);"></i>
-          <span>Download Driver APK</span>
-          <span style="margin-left: auto; background: var(--driver-gold); color: #000; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 4px;">10 MB</span>
-        </a>
-
         <div class="drawer-menu-item" onclick="openDrawerOption('view-driver-payout-info')">
           <i class="fa-solid fa-building-columns"></i>
           <span>Add withdraw info</span>
@@ -1497,11 +1556,86 @@
       if (cb) cb.checked = !cb.checked;
     }
 
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) {
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        }
+      } else {
+        input.type = 'password';
+        if (icon) {
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+    }
+
+    function showDriverLoginModal() {
+      const modal = document.getElementById('driverLoginModal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeDriverLoginModal() {
+      const modal = document.getElementById('driverLoginModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleDriverModalLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('modalDriverPhone').value.trim();
+      const pass = document.getElementById('modalDriverPassword').value.trim();
+
+      if (phone.length !== 10) {
+        showToast('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      if (!pass) {
+        showToast('Please enter your password.');
+        return;
+      }
+
+      const res = window.ZygoLiveStore.loginDriver(phone, pass);
+      if (!res.success) {
+        showToast(res.message);
+        return;
+      }
+
+      closeDriverLoginModal();
+      showToast(res.message);
+      ZygoRouter.navigate('view-driver-home');
+    }
+
+    function handleDriverForgotPassword() {
+      const phone = prompt('Enter your registered 10-digit mobile number:');
+      if (!phone || phone.trim().length !== 10) {
+        showToast('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      const newPass = prompt('Enter your new password (minimum 4 characters):');
+      if (!newPass || newPass.trim().length < 4) {
+        showToast('Password must be at least 4 characters.');
+        return;
+      }
+      const res = window.ZygoLiveStore.resetDriverPassword(phone.trim(), newPass.trim());
+      showToast(res.message);
+      if (res.success) {
+        document.getElementById('modalDriverPhone').value = phone.trim();
+        document.getElementById('modalDriverPassword').value = newPass.trim();
+      }
+    }
+
     function completeDriverOnboarding() {
       const name = document.getElementById('obDriverName').value.trim();
       const phone = document.getElementById('obDriverPhone').value.trim();
       const city = document.getElementById('obDriverCity').value;
       const upi = document.getElementById('obDriverUpi').value.trim();
+      const pass = document.getElementById('obDriverPassword').value.trim();
+      const confirmPass = document.getElementById('obDriverConfirmPassword').value.trim();
 
       const brand = document.getElementById('obVehicleBrand').value;
       const model = document.getElementById('obVehicleModel').value.trim();
@@ -1517,11 +1651,24 @@
         return;
       }
 
-      window.ZygoLiveStore.registerDriver({
+      if (pass.length < 4) {
+        showToast('Password must be at least 4 characters.');
+        goToOnboardStep(2);
+        return;
+      }
+
+      if (pass !== confirmPass) {
+        showToast('Passwords do not match! Please check and confirm.');
+        goToOnboardStep(2);
+        return;
+      }
+
+      const res = window.ZygoLiveStore.registerDriver({
         name,
         phone,
         city,
         upiId: upi,
+        password: pass,
         brand,
         model,
         category,
@@ -1531,26 +1678,16 @@
         parcelWeight
       });
 
-      if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
-      showToast(`Welcome Captain ${name}! Registration Approved.`);
-      ZygoRouter.navigate('view-driver-home');
-    }
-
-    function showDriverQuickLogin() {
-      const phone = prompt('Enter your registered 10-digit mobile number:');
-      if (phone && phone.trim().length === 10) {
-        window.ZygoLiveStore.registerDriver({
-          name: 'Captain ' + phone.slice(-4),
-          phone: phone.trim(),
-          city: 'Indore',
-          brand: 'Maruti Suzuki',
-          model: 'Dzire',
-          category: 'Sedan',
-          plate: 'MP-09-AB-4047'
-        });
-        showToast('Welcome back, Captain!');
-        ZygoRouter.navigate('view-driver-home');
+      if (!res.success) {
+        showToast(res.message);
+        showDriverLoginModal();
+        document.getElementById('modalDriverPhone').value = phone;
+        return;
       }
+
+      if (window.ZygoSoundEngine) window.ZygoSoundEngine.playSuccessSound();
+      showToast(res.message);
+      ZygoRouter.navigate('view-driver-home');
     }
 
     // Driver Home & Map Initialization

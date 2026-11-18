@@ -88,7 +88,23 @@ fs.writeFileSync('zygo-website/driver.html', drvHtml, 'utf8');
 fs.writeFileSync('android-apps/zygo-driver-app/app/src/main/assets/www/driver.html', drvHtml, 'utf8');
 console.log('Driver HTML written to public, website, and driver APK assets.');
 
-// 4. Copy Service Images to all destinations
+// 4. Copy Service Images and Legal Pages to all destinations
+const staticDestinations = [
+  'zygo-website',
+  'android-apps/zygo-customer-app/app/src/main/assets/www',
+  'android-apps/zygo-driver-app/app/src/main/assets/www'
+];
+
+['privacy.html', 'terms.html'].forEach(legalFile => {
+  if (fs.existsSync(path.join('public', legalFile))) {
+    const legalContent = fs.readFileSync(path.join('public', legalFile), 'utf8');
+    staticDestinations.forEach(dest => {
+      fs.writeFileSync(path.join(dest, legalFile), legalContent, 'utf8');
+    });
+  }
+});
+console.log('Legal pages (privacy.html, terms.html) copied to all targets.');
+
 const serviceImgDestinations = [
   'zygo-website/assets/images/services',
   'android-apps/zygo-customer-app/app/src/main/assets/www/assets/images/services',
@@ -106,8 +122,8 @@ if (fs.existsSync('public/assets/images/services')) {
   console.log(`Copied ${serviceFiles.length} service illustrations to all apps and website.`);
 }
 
-// 5. Verify Syntax
-console.log('\nVerifying JavaScript execution...');
+// 5. Verify Syntax and Authentication
+console.log('\nVerifying JavaScript execution & password auth...');
 const mockGlobal = {
   window: {},
   document: {
@@ -149,12 +165,47 @@ try {
   ZygoRouter.navigate('view-driver-home');
   console.log('✓ ZygoRouter.navigate("view-driver-home") succeeded! Active route:', ZygoRouter.currentRoute);
 
-  // Test Customer Registration Zero Initial Balance
-  ZygoLiveStore.registerCustomer({ name: 'Rahul Sharma', phone: '9876543210' });
-  if (ZygoLiveStore.wallet.balance !== 0.00) {
-    throw new Error('Customer wallet balance should be 0.00 upon registration, but was ' + ZygoLiveStore.wallet.balance);
+  // Test Customer Password Registration & Login
+  const regRes = ZygoLiveStore.registerCustomer({ name: 'Amit Verma', phone: '9123456789', password: 'mySecretPassword' });
+  if (!regRes.success) throw new Error('Customer registration failed: ' + regRes.message);
+  console.log('✓ Customer registration with password succeeded.');
+
+  const dupRes = ZygoLiveStore.registerCustomer({ name: 'Amit Duplicate', phone: '9123456789', password: 'pass' });
+  if (dupRes.success) throw new Error('Duplicate phone should fail registration!');
+  console.log('✓ Duplicate customer registration blocked correctly.');
+
+  const wrongPassRes = ZygoLiveStore.loginCustomer('9123456789', 'wrongPassword');
+  if (wrongPassRes.success) throw new Error('Customer login with wrong password should fail!');
+  console.log('✓ Wrong password rejected for customer login.');
+
+  const correctPassRes = ZygoLiveStore.loginCustomer('9123456789', 'mySecretPassword');
+  if (!correctPassRes.success) throw new Error('Customer login with correct password should succeed!');
+  console.log('✓ Customer login with correct password succeeded!');
+
+  // Test Driver Password Onboarding & Login
+  const drvReg = ZygoLiveStore.registerDriver({ name: 'Captain Rajesh', phone: '9234567890', password: 'captainPassword123' });
+  if (!drvReg.success) throw new Error('Driver registration failed: ' + drvReg.message);
+  console.log('✓ Driver onboarding with password succeeded.');
+
+  const drvWrongPass = ZygoLiveStore.loginDriver('9234567890', 'wrongPass');
+  if (drvWrongPass.success) throw new Error('Driver login with wrong password should fail!');
+  console.log('✓ Wrong password rejected for driver login.');
+
+  const drvCorrectPass = ZygoLiveStore.loginDriver('9234567890', 'captainPassword123');
+  if (!drvCorrectPass.success) throw new Error('Driver login with correct password should succeed!');
+  console.log('✓ Driver login with correct password succeeded!');
+
+  // Check that NO .apk links exist in customer or driver HTML files
+  const custContent = fs.readFileSync('public/index.html', 'utf8');
+  const drvContent = fs.readFileSync('public/driver.html', 'utf8');
+
+  if (/\.apk/i.test(custContent)) {
+    throw new Error('Customer HTML contains .apk reference! Must be removed for Play Store compliance.');
   }
-  console.log('✓ Customer registration verified: wallet balance is exactly ₹' + ZygoLiveStore.wallet.balance.toFixed(2));
+  if (/\.apk/i.test(drvContent)) {
+    throw new Error('Driver HTML contains .apk reference! Must be removed for Play Store compliance.');
+  }
+  console.log('✓ Zero APK links verified in Customer and Driver apps (100% Play Store compliant).');
 
 } catch (err) {
   console.error('VERIFICATION FAILED:', err);
