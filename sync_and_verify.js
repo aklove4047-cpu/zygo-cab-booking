@@ -124,6 +124,7 @@ if (fs.existsSync('public/assets/images/services')) {
 
 // 4b. Copy Logo and Branding Assets to all destinations
 const logoFiles = [
+  'zygo_logo.png',
   'logo_with_name.png',
   'zygo_customer_icon.png',
   'zygo_hero_logo.png',
