@@ -216,19 +216,65 @@ const ZYGO_VEHICLE_DATABASE = {
     ]
   },
 
-  // ================= 3-WHEELERS (AUTO RICKSHAWS) =================
+  // ================= 3-WHEELERS (PASSENGER AUTO RICKSHAWS) =================
   autos: {
     "Bajaj Auto (3W)": [
-      "Compact RE CNG", "Compact RE LPG", "Maxima Z", "Maxima C (Parcel)", "RE E-TEC 9.0"
+      "Compact RE CNG", "Compact RE LPG", "Maxima Z", "RE E-TEC 9.0"
     ],
     "Piaggio Ape": [
-      "Ape City+", "Ape Auto DX", "Ape E-City FX", "Ape E-Xtra"
+      "Ape City+", "Ape Auto DX", "Ape E-City FX"
     ],
     "Mahindra (3W)": [
-      "Treo Auto EV", "Treo Zor EV", "Alfa DX CNG", "Alfa Plus"
+      "Treo Auto EV", "Alfa DX CNG", "Alfa Passenger"
     ],
     "TVS Motor (3W)": [
       "King Deluxe CNG", "King Duramax", "King EV"
+    ]
+  },
+
+  // ================= THREE-WHEELER LOADING AUTO (CARGO) =================
+  loadingAutos: {
+    "Piaggio Ape (Cargo)": [
+      "Ape Xtra", "Ape Xtra LDX", "Ape Xtra LDX+", "Ape E-Xtra EV"
+    ],
+    "Bajaj Maxima (Cargo)": [
+      "Bajaj Maxima C", "Bajaj Maxima XL Cargo", "Maxima C CNG"
+    ],
+    "Mahindra Alfa & Zor": [
+      "Mahindra Alfa Plus", "Mahindra Alfa Load", "Mahindra Zor Grand EV"
+    ],
+    "Atul Auto (Cargo)": [
+      "Atul Gem Cargo", "Atul Shakti Cargo", "Atul Elite Cargo EV"
+    ],
+    "TVS Motor (Cargo)": [
+      "TVS King Kargo", "TVS King Kargo EV"
+    ],
+    "Euler Motors": [
+      "Euler HiLoad EV"
+    ],
+    "Omega Seiki Mobility": [
+      "Omega Seiki Rage+", "Rage+ Rapid EV", "Rage+ Frost"
+    ]
+  },
+
+  // ================= MINI TRUCKS & PICKUPS (COMMERCIAL LOGISTICS) =================
+  trucks: {
+    "Tata Motors (Commercial)": [
+      "Tata Ace Gold", "Tata Ace Gold Petrol", "Tata Ace Gold Diesel", "Tata Ace EV", 
+      "Tata Intra V10", "Tata Intra V20", "Tata Intra V30", "Tata Intra V50", "Tata Yodha"
+    ],
+    "Mahindra (Commercial)": [
+      "Jeeto", "Jeeto Plus", "Jeeto Strong", "Supro Mini Truck", "Supro Profit Truck", 
+      "Bolero Maxx Pik-Up", "Bolero Camper"
+    ],
+    "Ashok Leyland": [
+      "Dost", "Dost Plus", "Dost Strong", "Bada Dost i1", "Bada Dost i2", "Bada Dost i3", "Bada Dost i4"
+    ],
+    "Maruti Suzuki (Commercial)": [
+      "Super Carry", "Super Carry CNG"
+    ],
+    "Piaggio Commercial": [
+      "Ape Xtra", "Ape Xtra LDX"
     ]
   }
 };
@@ -281,12 +327,14 @@ const ZygoVehicleCatalog = {
     if (!brandSelectElement) return;
     brandSelectElement.innerHTML = '';
 
-    // Create groups: 4-Wheelers, 2-Wheelers, Electric 2W, Auto Rickshaws
+    // Create groups: 4-Wheelers, 2-Wheelers, Electric 2W, Auto Rickshaws, Cargo 3W, Mini Trucks
     const groups = [
       { label: "🚗 Cars & Cabs (4-Wheelers)", brands: Object.keys(this.db.cars) },
+      { label: "🚚 Mini Trucks & Pickups (Commercial Logistics)", brands: Object.keys(this.db.trucks) },
+      { label: "📦 Three-Wheeler Loading Auto (Cargo)", brands: Object.keys(this.db.loadingAutos) },
+      { label: "🛺 Passenger Auto Rickshaws (3-Wheelers)", brands: Object.keys(this.db.autos) },
       { label: "🛵 Bikes & Scooters (2-Wheelers)", brands: Object.keys(this.db.bikes) },
-      { label: "⚡ Electric 2-Wheelers (EV)", brands: Object.keys(this.db.ev2w) },
-      { label: "🛺 Auto Rickshaws (3-Wheelers)", brands: Object.keys(this.db.autos) }
+      { label: "⚡ Electric 2-Wheelers (EV)", brands: Object.keys(this.db.ev2w) }
     ];
 
     let foundSelected = false;

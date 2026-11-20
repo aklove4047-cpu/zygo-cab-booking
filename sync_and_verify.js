@@ -156,7 +156,9 @@ try {
   const bikeBrands = Object.keys(catalog.db.bikes);
   const evBrands = Object.keys(catalog.db.ev2w);
   const autoBrands = Object.keys(catalog.db.autos);
-  console.log(`✓ Vehicle Catalog loaded: ${carBrands.length} Car brands, ${bikeBrands.length} Bike brands, ${evBrands.length} EV brands, ${autoBrands.length} Auto brands.`);
+  const truckBrands = Object.keys(catalog.db.trucks);
+  const loadingAutoBrands = Object.keys(catalog.db.loadingAutos);
+  console.log(`✓ Vehicle Catalog loaded: ${carBrands.length} Cars, ${bikeBrands.length} Bikes, ${evBrands.length} EVs, ${autoBrands.length} Autos, ${truckBrands.length} Mini Trucks, ${loadingAutoBrands.length} Loading Autos.`);
 
   if (!catalog.getModels('Maruti Suzuki').includes('Dzire')) {
     throw new Error('Maruti Suzuki models missing Dzire!');
@@ -164,7 +166,19 @@ try {
   if (!catalog.getModels('Hero MotoCorp').includes('Splendor Plus')) {
     throw new Error('Hero MotoCorp models missing Splendor Plus!');
   }
-  console.log('✓ Vehicle Catalog brand-to-model mapping verified.');
+  if (!catalog.getModels('Tata Motors (Commercial)').includes('Tata Ace Gold')) {
+    throw new Error('Tata Motors Commercial missing Tata Ace Gold!');
+  }
+  if (!catalog.getModels('Ashok Leyland').includes('Dost')) {
+    throw new Error('Ashok Leyland missing Dost!');
+  }
+  if (!catalog.getModels('Bajaj Maxima (Cargo)').includes('Bajaj Maxima C')) {
+    throw new Error('Bajaj Maxima Cargo missing Maxima C!');
+  }
+  if (!catalog.getModels('Euler Motors').includes('Euler HiLoad EV')) {
+    throw new Error('Euler Motors missing Euler HiLoad EV!');
+  }
+  console.log('✓ Commercial trucks and 3W cargo loading autos verified.');
 
   // Test ZygoRouter instance methods
   ZygoRouter.register('view-auth');
