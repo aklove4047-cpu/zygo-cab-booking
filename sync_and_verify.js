@@ -4,7 +4,7 @@ const path = require('path');
 console.log('=== ZYGO V2.0 FILE SYNCHRONIZER & VERIFIER ===');
 
 // 1. Copy shared files
-const sharedFiles = ['design-tokens.js', 'live-store.js', 'router.js', 'sound-engine.js', 'store.js'];
+const sharedFiles = ['design-tokens.js', 'live-store.js', 'router.js', 'sound-engine.js', 'store.js', 'vehicle-catalog.js'];
 const sharedDestinations = [
   'public/shared',
   'zygo-website/shared',
@@ -147,6 +147,24 @@ try {
   console.log('✓ router.js evaluated cleanly.');
   eval(fs.readFileSync('public/shared/live-store.js', 'utf8'));
   console.log('✓ live-store.js evaluated cleanly.');
+  eval(fs.readFileSync('public/shared/vehicle-catalog.js', 'utf8'));
+  console.log('✓ vehicle-catalog.js evaluated cleanly.');
+
+  // Test Vehicle Catalog Database
+  const catalog = window.ZygoVehicleCatalog;
+  const carBrands = Object.keys(catalog.db.cars);
+  const bikeBrands = Object.keys(catalog.db.bikes);
+  const evBrands = Object.keys(catalog.db.ev2w);
+  const autoBrands = Object.keys(catalog.db.autos);
+  console.log(`✓ Vehicle Catalog loaded: ${carBrands.length} Car brands, ${bikeBrands.length} Bike brands, ${evBrands.length} EV brands, ${autoBrands.length} Auto brands.`);
+
+  if (!catalog.getModels('Maruti Suzuki').includes('Dzire')) {
+    throw new Error('Maruti Suzuki models missing Dzire!');
+  }
+  if (!catalog.getModels('Hero MotoCorp').includes('Splendor Plus')) {
+    throw new Error('Hero MotoCorp models missing Splendor Plus!');
+  }
+  console.log('✓ Vehicle Catalog brand-to-model mapping verified.');
 
   // Test ZygoRouter instance methods
   ZygoRouter.register('view-auth');

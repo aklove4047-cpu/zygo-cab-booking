@@ -102,7 +102,7 @@ class ZygoLiveStoreCore {
     try {
       const val = localStorage.getItem(key);
       return val ? JSON.parse(val) : fallback;
-    } catch(e) {
+    } catch (e) {
       return fallback;
     }
   }
@@ -110,7 +110,7 @@ class ZygoLiveStoreCore {
   save(key, val) {
     try {
       localStorage.setItem(key, JSON.stringify(val));
-    } catch(e) {}
+    } catch (e) { }
   }
 
   // Customer Auth

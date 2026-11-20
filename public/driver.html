@@ -666,19 +666,17 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div class="zygo-input-group">
                 <label class="zygo-input-label">Vehicle Brand*</label>
-                <select id="obVehicleBrand" class="zygo-input">
-                  <option value="Maruti Suzuki">Maruti Suzuki</option>
-                  <option value="Hyundai">Hyundai</option>
-                  <option value="Tata">Tata</option>
-                  <option value="Bajaj">Bajaj</option>
-                  <option value="Hero">Hero</option>
-                  <option value="Honda">Honda</option>
+                <select id="obVehicleBrand" class="zygo-input" style="cursor: pointer;">
+                  <!-- Dynamically populated from ZygoVehicleCatalog -->
                 </select>
               </div>
 
               <div class="zygo-input-group">
                 <label class="zygo-input-label">Vehicle Model*</label>
-                <input type="text" id="obVehicleModel" class="zygo-input" value="Dzire" placeholder="e.g. Dzire" required />
+                <select id="obVehicleModel" class="zygo-input" style="cursor: pointer;">
+                  <!-- Dynamically updated based on brand -->
+                </select>
+                <input type="text" id="obVehicleModelCustom" class="zygo-input" placeholder="Type custom model" style="display: none; margin-top: 6px;" />
               </div>
             </div>
 
@@ -1293,17 +1291,17 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="zygo-input-group">
               <label class="zygo-input-label">Vehicle Brand*</label>
-              <select id="editVehicleBrand" class="zygo-input">
-                <option value="Maruti Suzuki" selected>Maruti Suzuki</option>
-                <option value="Hyundai">Hyundai</option>
-                <option value="Tata">Tata</option>
-                <option value="Bajaj">Bajaj</option>
+              <select id="editVehicleBrand" class="zygo-input" style="cursor: pointer;">
+                <!-- Dynamically populated from ZygoVehicleCatalog -->
               </select>
             </div>
 
             <div class="zygo-input-group">
               <label class="zygo-input-label">Vehicle Model*</label>
-              <input type="text" id="editVehicleModel" class="zygo-input" value="Dzire" required />
+              <select id="editVehicleModel" class="zygo-input" style="cursor: pointer;">
+                <!-- Dynamically updated based on brand -->
+              </select>
+              <input type="text" id="editVehicleModelCustom" class="zygo-input" placeholder="Type custom model" style="display: none; margin-top: 6px;" />
             </div>
           </div>
 
@@ -1499,6 +1497,7 @@
   <script src="shared/sound-engine.js"></script>
   <script src="shared/router.js"></script>
   <script src="shared/live-store.js"></script>
+  <script src="shared/vehicle-catalog.js"></script>
 
   <script>
     let isOnline = true;
@@ -1508,6 +1507,11 @@
     let activeIncomingTrip = null;
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dynamic vehicle catalog dropdowns
+      if (window.ZygoVehicleCatalog) {
+        window.ZygoVehicleCatalog.initDynamicDropdowns('obVehicleBrand', 'obVehicleModel', 'obVehicleModelCustom', 'Maruti Suzuki', 'Dzire');
+      }
+
       // Register all views in router
       ZygoRouter.register('view-driver-auth');
       ZygoRouter.register('view-driver-home', initDriverHomeScreen);
@@ -1638,7 +1642,11 @@
       const confirmPass = document.getElementById('obDriverConfirmPassword').value.trim();
 
       const brand = document.getElementById('obVehicleBrand').value;
-      const model = document.getElementById('obVehicleModel').value.trim();
+      let model = document.getElementById('obVehicleModel').value.trim();
+      if (model === 'Other Model') {
+        const customM = document.getElementById('obVehicleModelCustom') ? document.getElementById('obVehicleModelCustom').value.trim() : '';
+        model = customM || 'Custom Model';
+      }
       const category = document.getElementById('obVehicleCategory').value;
       const plate = document.getElementById('obLicensePlate').value.trim();
       const expiry = document.getElementById('obLicenseExpiry').value;
@@ -2021,8 +2029,9 @@
     function initVehicleSetupScreen() {
       const d = window.ZygoLiveStore.driver;
       if (d) {
-        document.getElementById('editVehicleBrand').value = d.brand || 'Maruti Suzuki';
-        document.getElementById('editVehicleModel').value = d.model || 'Dzire';
+        if (window.ZygoVehicleCatalog) {
+          window.ZygoVehicleCatalog.initDynamicDropdowns('editVehicleBrand', 'editVehicleModel', 'editVehicleModelCustom', d.brand || 'Maruti Suzuki', d.model || 'Dzire');
+        }
         document.getElementById('editVehicleCategory').value = d.category || 'Sedan';
         document.getElementById('editParcelCapacity').value = d.parcelWeight || 30;
         document.getElementById('editLicensePlate').value = d.plate || 'MP-09-AB-4047';
@@ -2032,7 +2041,11 @@
 
     function saveVehicleSetupForm() {
       const b = document.getElementById('editVehicleBrand').value;
-      const m = document.getElementById('editVehicleModel').value;
+      let m = document.getElementById('editVehicleModel').value;
+      if (m === 'Other Model') {
+        const customM = document.getElementById('editVehicleModelCustom') ? document.getElementById('editVehicleModelCustom').value.trim() : '';
+        m = customM || 'Custom Model';
+      }
       const c = document.getElementById('editVehicleCategory').value;
       const p = document.getElementById('editLicensePlate').value;
       const f = document.getElementById('editFuelType').value;
