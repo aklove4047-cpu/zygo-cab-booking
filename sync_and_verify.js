@@ -122,6 +122,29 @@ if (fs.existsSync('public/assets/images/services')) {
   console.log(`Copied ${serviceFiles.length} service illustrations to all apps and website.`);
 }
 
+// 4b. Copy Logo and Branding Assets to all destinations
+const logoFiles = [
+  'logo_with_name.png',
+  'zygo_customer_icon.png',
+  'zygo_hero_logo.png',
+  'zygo_hero_icon.png'
+];
+const logoDestinations = [
+  'zygo-website/assets/images',
+  'android-apps/zygo-customer-app/app/src/main/assets/www/assets/images',
+  'android-apps/zygo-driver-app/app/src/main/assets/www/assets/images'
+];
+logoDestinations.forEach(dest => {
+  if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+  logoFiles.forEach(file => {
+    const srcPath = path.join('public/assets/images', file);
+    if (fs.existsSync(srcPath)) {
+      fs.copyFileSync(srcPath, path.join(dest, file));
+    }
+  });
+});
+console.log('Brand logos and icons synchronized across all platforms.');
+
 // 5. Verify Syntax and Authentication
 console.log('\nVerifying JavaScript execution & password auth...');
 const mockGlobal = {

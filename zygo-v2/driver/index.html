@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>ZYGO Captain — Partner App</title>
-  <link rel="icon" type="image/png" href="../assets/images/logo_with_name.png">
+  <title>ZYGO HERO — Partner App</title>
+  <link rel="icon" type="image/png" href="../assets/images/zygo_hero_icon.png">
   
   <!-- Font Awesome Pro Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -476,21 +476,21 @@
 
     <!-- ================= VIEW 1: DRIVER ONBOARDING (Step 1 to 3 matching screenshot) ================= -->
     <div id="view-driver-auth" class="view-screen" style="display: block;">
-      <!-- Step 1: Choose Services (matching media_1794565364405_5b1653a8.jpg) -->
+      <!-- Step 1: Choose Services (ZYGO HERO Partner Onboarding) -->
       <div id="onboardStep1">
         <div class="subpage-header">
-          <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">Signup As A Driver</div>
+          <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">ZYGO HERO Partner Onboarding</div>
           <div style="width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--driver-teal); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900;">
             1 of 3
           </div>
         </div>
 
-        <div style="padding: 24px 20px; text-align: center;">
-          <div style="width: 64px; height: 64px; border-radius: 16px; background: var(--driver-teal); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px;">
-            <i class="fa-solid fa-car"></i>
+        <div style="padding: 24px 20px 16px; text-align: center;">
+          <div style="background: #ffffff; border-radius: 16px; padding: 10px 20px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.35); margin-bottom: 14px;">
+            <img src="assets/images/zygo_hero_logo.png" alt="ZYGO HERO" style="max-height: 48px; width: auto; object-fit: contain;" />
           </div>
-          <h2 style="font-size: 22px; font-weight: 900;">Choose Services</h2>
-          <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Choose the services you want to provide. You can change them anytime in your profile.</p>
+          <h2 style="font-size: 22px; font-weight: 900; color: #FFF;">Choose Services</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Drive, Deliver &amp; Earn with ZYGO HERO. Choose the services you want to provide.</p>
         </div>
 
         <div style="padding: 0 20px;">
@@ -534,11 +534,16 @@
         </div>
       </div>
 
-      <!-- Captain Login Modal -->
+      <!-- ZYGO HERO Partner Login Modal -->
       <div id="driverLoginModal" class="drawer-overlay" style="display: none; align-items: center; justify-content: center; z-index: 9999;">
         <div style="background: var(--navy-elevated); border: 1.5px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 24px; width: 90%; max-width: 380px; box-shadow: var(--shadow-dark-card); animation: fadeIn 0.2s ease;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <div style="font-size: 18px; font-weight: 900; color: #FFF;">Captain Login</div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="background: #FFF; border-radius: 8px; padding: 4px 8px; display: flex; align-items: center;">
+                <img src="assets/images/zygo_hero_icon.png" alt="ZYGO HERO" style="height: 24px; width: 24px; object-fit: contain;" />
+              </div>
+              <div style="font-size: 18px; font-weight: 900; color: #FFF;">ZYGO HERO Login</div>
+            </div>
             <div onclick="closeDriverLoginModal()" style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #FFF;">
               <i class="fa-solid fa-xmark"></i>
             </div>
@@ -559,7 +564,7 @@
                 <span style="font-size: 11px; font-weight: 700; color: var(--driver-gold); cursor: pointer;" onclick="handleDriverForgotPassword()">Forgot?</span>
               </div>
               <div style="position: relative;">
-                <input type="password" id="modalDriverPassword" class="zygo-input" placeholder="Enter captain password" required style="padding-right: 44px;" />
+                <input type="password" id="modalDriverPassword" class="zygo-input" placeholder="Enter partner password" required style="padding-right: 44px;" />
                 <button type="button" onclick="togglePasswordVisibility('modalDriverPassword', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 16px;">
                   <i class="fa-solid fa-eye"></i>
                 </button>
@@ -568,11 +573,11 @@
 
             <div style="background: rgba(0, 180, 160, 0.12); border: 1px dashed var(--driver-teal); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; color: #94A3B8; margin-bottom: 12px;">
               <i class="fa-solid fa-circle-info" style="color: var(--driver-teal); margin-right: 4px;"></i>
-              Demo Captain: <b>9876543211</b> | Pass: <b>password123</b>
+              Demo Partner: <b>9876543211</b> | Pass: <b>password123</b>
             </div>
 
             <button type="submit" class="btn-teal" style="margin-top: 4px;">
-              <span>Login as Captain</span>
+              <span>Login as ZYGO HERO Partner</span>
               <i class="fa-solid fa-arrow-right"></i>
             </button>
           </form>
@@ -615,7 +620,7 @@
 
             <div class="zygo-input-group">
               <label class="zygo-input-label">UPI ID FOR INSTANT DAILY SETTLEMENT *</label>
-              <input type="text" id="obDriverUpi" class="zygo-input" value="captain@upi" required />
+              <input type="text" id="obDriverUpi" class="zygo-input" value="hero@upi" required />
             </div>
 
             <div class="zygo-input-group">
@@ -919,7 +924,7 @@
         <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
           <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <div class="subpage-title">Captain Profile</div>
+        <div class="subpage-title">Hero Partner Profile</div>
         <div style="width: 40px;"></div>
       </div>
 
@@ -985,7 +990,7 @@
         <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
           <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <div class="subpage-title">Captain Reviews</div>
+        <div class="subpage-title">Hero Reviews</div>
         <div style="width: 40px;"></div>
       </div>
 
@@ -1068,7 +1073,7 @@
         <div class="driver-card-teal" style="text-align: center;">
           <i class="fa-solid fa-trophy" style="font-size: 34px; color: var(--driver-gold); margin-bottom: 8px;"></i>
           <h3 style="font-size: 18px; font-weight: 900;">You are Ranked #1 in Indore</h3>
-          <p style="font-size: 12px; opacity: 0.9;">Top performing captain of the week</p>
+          <p style="font-size: 12px; opacity: 0.9;">Top performing ZYGO HERO partner of the week</p>
         </div>
 
         <div class="driver-card-dark">
@@ -1166,7 +1171,7 @@
 
             <div class="zygo-input-group">
               <label class="zygo-input-label">UPI ID (FOR INSTANT PAYOUTS) *</label>
-              <input type="text" id="payoutUpi" class="zygo-input" value="captain@upi" required />
+              <input type="text" id="payoutUpi" class="zygo-input" value="hero@upi" required />
             </div>
 
             <button type="submit" class="btn-teal">
@@ -1217,7 +1222,7 @@
         <div class="subpage-back-btn" onclick="ZygoRouter.navigate('view-driver-home')">
           <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <div class="subpage-title">Captain Support</div>
+        <div class="subpage-title">ZYGO HERO Support</div>
         <div style="width: 40px;"></div>
       </div>
 
@@ -1225,11 +1230,11 @@
         <div class="driver-card-teal" style="text-align: center;">
           <i class="fa-solid fa-headset" style="font-size: 34px; color: var(--driver-gold); margin-bottom: 10px;"></i>
           <h3 style="font-size: 18px; font-weight: 900;">24x7 Driver Partner Helpline</h3>
-          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Direct call to ZYGO Captain Operations Center</p>
+          <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Direct call to ZYGO HERO Operations Center</p>
           <div style="margin-top: 16px;">
             <a href="tel:18002664047" class="btn-gold" style="text-decoration: none; display: inline-flex;">
               <i class="fa-solid fa-phone"></i>
-              <span>Call Toll-Free: 1800-ZYGO-CAPTAIN</span>
+              <span>Call Toll-Free: 1800-ZYGO-HERO</span>
             </a>
           </div>
         </div>
@@ -1917,7 +1922,7 @@
 
     function confirmDeleteDriverAccount() {
       closeDriverDrawer();
-      if (confirm('Permanently delete your Captain account and history? This cannot be undone.')) {
+      if (confirm('Permanently delete your ZYGO HERO account and history? This cannot be undone.')) {
         window.ZygoLiveStore.deleteDriverAccount();
         showToast('Account permanently removed.');
         ZygoRouter.navigate('view-driver-auth');
